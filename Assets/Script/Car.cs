@@ -35,10 +35,6 @@ public class Car : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    void Start()
-    {
         currentHP = maxHP;
     }
 

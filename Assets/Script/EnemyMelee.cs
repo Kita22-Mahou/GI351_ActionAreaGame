@@ -1,44 +1,42 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyMelee : MonoBehaviour
 {
-
     [Header("Target")]
 
     public float detectRange = 8f;
     public float attackRange = 1.2f;
+    private Transform player;
+    private Transform car;
 
     [Header("Movement")]
 
     public float moveSpeed = 2f;
+    private Rigidbody2D rb;
+
+    [Header("HP")]
+
+    public float maxHP = 50f;
+    public float currentHP;
 
     [Header("Attack")]
 
     public float attackDamage = 10f;
     public float attackCooldown = 1f;
-
     private float attackTimer = 0f;
-
-
-    private Transform player;
-    private Transform car;
-
-    private Rigidbody2D rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
 
+        currentHP = maxHP;
+    }
     void Start()
     {
 
-        GameObject playerObject =
-            GameObject.FindGameObjectWithTag("Player");
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
-        GameObject CarObject =
-            GameObject.FindGameObjectWithTag("Car");
-
+        GameObject CarObject = GameObject.FindGameObjectWithTag("Car");
 
         if (playerObject != null)
         {
@@ -50,7 +48,6 @@ public class EnemyController : MonoBehaviour
             car = CarObject.transform;
         }
     }
-
 
     void Update()
     {
@@ -109,48 +106,38 @@ public class EnemyController : MonoBehaviour
                     player.position
                 );
 
-
             if (playerDistance <= detectRange &&
                 playerDistance < closestDistance)
             {
                 closestTarget = player;
-
                 closestDistance = playerDistance;
             }
         }
 
-
         if (car != null)
         {
-            float vehicleDistance =
+            float carDistance =
                 Vector2.Distance(
                     transform.position,
                     car.position
                 );
 
-
-            if (vehicleDistance <= detectRange &&
-                vehicleDistance < closestDistance)
+            if (carDistance <= detectRange &&
+                carDistance < closestDistance)
             {
                 closestTarget = car;
-
-                closestDistance = vehicleDistance;
+                closestDistance = carDistance;
             }
         }
-
 
         return closestTarget;
     }
 
     void MoveToTarget(Transform target)
     {
-        Vector2 direction =
-            ((Vector2)target.position -
-            (Vector2)transform.position).normalized;
+        Vector2 direction = ((Vector2)target.position - (Vector2)transform.position).normalized;
 
-
-        rb.linearVelocity =
-            direction * moveSpeed;
+        rb.linearVelocity = direction * moveSpeed;
     }
 
     void Attack(Transform target)
@@ -163,17 +150,14 @@ public class EnemyController : MonoBehaviour
 
         if (target.CompareTag("Player"))
         {
-            SwordMan playerScript =
-                target.GetComponent<SwordMan>();
+            SwordMan playerScript = target.GetComponent<SwordMan>();
 
 
             if (playerScript != null)
             {
                 playerScript.TakeDamage(attackDamage);
 
-                Debug.Log(
-                    "👾 Enemy Attack Player"
-                );
+                Debug.Log("Enemy Attack Player");
             }
         }
 
@@ -188,10 +172,40 @@ public class EnemyController : MonoBehaviour
             {
                 carScript.TakeDamage(attackDamage);
 
-                Debug.Log(
-                    "👾 Enemy Attack Car"
-                );
+                Debug.Log("Enemy Attack Car");
             }
         }
     }
+
+    public void TakeDamage(float damage)
+    {
+        currentHP -= damage;
+
+        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+
+        Debug.Log("Enemy HP: " + currentHP);
+
+
+        if (currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        rb.linearVelocity = Vector2.zero;
+
+        Debug.Log("Enemy Dead");
+
+        Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, detectRange);
+
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+
 }
