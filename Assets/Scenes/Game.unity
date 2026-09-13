@@ -316,11 +316,11 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -19.403774}
+  m_LocalScale: {x: 1.7639796, y: 1.7639796, z: 1.7639796}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1894542723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &651089578
 GameObject:
@@ -849,7 +849,7 @@ Transform:
   m_GameObject: {fileID: 1021988074}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0075856857, y: 0.002950402, z: -0.36247832, w: 0.9319567}
-  m_LocalPosition: {x: 0.69, y: 0.18, z: 0}
+  m_LocalPosition: {x: 1.09, y: -0.02, z: -0}
   m_LocalScale: {x: 0.3186, y: 0.8339864, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1195,11 +1195,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.474121
+      value: 5.95
       objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.1021464
+      value: -2.56
       objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1726,8 +1726,13 @@ MonoBehaviour:
   currentOverheat: 0
   overheatRate: 30
   coolDownRate: 10
-  callSpeed: 7
+  isBoosting: 0
+  isOverheated: 0
+  destination: {x: 0, y: 0}
+  direction: {x: 0, y: 0}
+  callSpeed: 2
   callStopDistance: 1.5
+  isCalling: 0
   player: {fileID: 1894542723}
 --- !u!50 &1823166718
 Rigidbody2D:
@@ -1871,7 +1876,7 @@ Transform:
   m_GameObject: {fileID: 1823166716}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.71, y: 0, z: 0}
+  m_LocalPosition: {x: -12.79, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1890,6 +1895,7 @@ GameObject:
   - component: {fileID: 1894542721}
   - component: {fileID: 1894542720}
   - component: {fileID: 1894542719}
+  - component: {fileID: 1894542724}
   m_Layer: 0
   m_Name: SwordMan
   m_TagString: Player
@@ -1916,17 +1922,20 @@ MonoBehaviour:
   attackPoint: {fileID: 1021988075}
   attackRange: 0.9
   attackDamage: 20
+  attackCooldown: 0.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
-  attackCooldown: 0.5
+  canAttack: 1
   dashSpeed: 12
   dashDuration: 0.15
   dashCooldown: 0.5
+  isDashing: 0
+  canDash: 1
   skillRadius: 2.5
   skillDamage: 40
   skillCooldown: 5
-  rb: {fileID: 1894542720}
+  canSkill: 1
 --- !u!50 &1894542720
 Rigidbody2D:
   serializedVersion: 5
@@ -2060,13 +2069,36 @@ Transform:
   m_GameObject: {fileID: 1894542718}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.61, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 0.5669, y: 0.5669, z: 0.5669}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1021988075}
+  - {fileID: 519420032}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1894542724
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894542718}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 820f38f85e343304f8320dbed66583c9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2032625298
 GameObject:
   m_ObjectHideFlags: 0
@@ -2203,11 +2235,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3315926402107003275, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.59584
+      value: 7.54
       objectReference: {fileID: 0}
     - target: {fileID: 3315926402107003275, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.33026
+      value: 5.47
       objectReference: {fileID: 0}
     - target: {fileID: 3315926402107003275, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2270,7 +2302,6 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 519420032}
   - {fileID: 1894542723}
   - {fileID: 1823166721}
   - {fileID: 1115630250}

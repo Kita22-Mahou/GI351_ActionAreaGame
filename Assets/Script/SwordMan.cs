@@ -5,53 +5,54 @@ using System.Collections;
 public class SwordMan : MonoBehaviour
 {
     [Header("Movement")]
-    public float speed = 5;
-    public int facingDirection = 1;
+    [SerializeField] private float speed = 5;
+    [SerializeField] private int facingDirection = 1;
+    private Rigidbody2D rb;
 
     [Header("HP")]
     public float maxHP = 100f;
     public float currentHP = 0f;
 
     [Header("Attack")]
+    [SerializeField] private Transform attackPoint;
 
-    public Transform attackPoint;
+    [SerializeField] private float attackRange = 1.2f;
 
-    public float attackRange = 1.2f;
+    [SerializeField] private float attackDamage = 20f;
 
-    public float attackDamage = 20f;
+    [SerializeField] private float attackCooldown = 0.5f;
 
-    public LayerMask enemyLayer;
+    [SerializeField] private LayerMask enemyLayer;
 
-    public float attackCooldown = 0.5f;
-
-    private bool canAttack = true;
+    [SerializeField] private bool canAttack = true;
 
     [Header("Dash")]
+    [SerializeField] private float dashSpeed = 12f;
 
-    public float dashSpeed = 12f;
+    [SerializeField] private float dashDuration = 0.15f;
 
-    public float dashDuration = 0.15f;
+    [SerializeField] private float dashCooldown = 0.5f;
 
-    public float dashCooldown = 0.5f;
+    [SerializeField] private bool isDashing = false;
 
-    private bool isDashing = false;
-
-    private bool canDash = true;
+    [SerializeField] private bool canDash = true;
 
     [Header("Skill")]
+    [SerializeField] private float skillRadius = 2.5f;
 
-    public float skillRadius = 2.5f;
+    [SerializeField] private float skillDamage = 40f;
 
-    public float skillDamage = 40f;
+    [SerializeField] private float skillCooldown = 5f;
 
-    public float skillCooldown = 5f;
+    [SerializeField] private bool canSkill = true;
 
-    private bool canSkill = true;
+    [Header("Referent")]
+    public static SwordMan instance;
 
-    public Rigidbody2D rb;
-
+    #region Event System
     private void Awake()
     {
+        instance = this;
         rb = GetComponent<Rigidbody2D>();
 
         currentHP = maxHP;
@@ -71,18 +72,24 @@ public class SwordMan : MonoBehaviour
 
         if (Keyboard.current.eKey.wasPressedThisFrame)
         {
-            Sikll();
+            Skill();
         }
-        
-
+        if (Keyboard.current.qKey.wasPressedThisFrame)
+        {
+            Call();
+        }
     }
 
     void FixedUpdate()
     {
-        if (isDashing)
-            return;
+        Move();
+        Flip();
+    }
+    #endregion
 
-
+    #region Movement
+    void Move()
+    {
         float horizontal = 0f;
         float vertical = 0f;
 
@@ -106,33 +113,33 @@ public class SwordMan : MonoBehaviour
             horizontal = 1f;
         }
 
-
         Vector2 movement = new Vector2(horizontal, vertical);
-
         movement = movement.normalized;
-
-        if (horizontal > 0 &&
-            transform.localScale.x < 0)
-        {
-            Flip();
-        }
-
-        else if (horizontal < 0 &&
-                 transform.localScale.x > 0)
-        {
-            Flip();
-        }
 
         rb.linearVelocity = movement * speed;
     }
 
     void Flip()
     {
-        facingDirection *= -1;
-        transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y,transform.localScale.z);
+        float horizontal = 0f;
+
+        if (horizontal > 0 &&
+            transform.localScale.x < 0)
+        {
+            facingDirection *= -1;
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        }
+
+        else if (horizontal < 0 &&
+                 transform.localScale.x > 0)
+        {
+            facingDirection *= -1;
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        }
     }
+    #endregion
 
-
+    #region Abilities
     public void Attack()
     {
         if (!canAttack)
@@ -216,7 +223,7 @@ public class SwordMan : MonoBehaviour
         canDash = true;
     }
 
-    public void Sikll()
+    public void Skill()
     {
         if (!canSkill)
             return;
@@ -256,6 +263,18 @@ public class SwordMan : MonoBehaviour
         Debug.Log("Skill Ready!");
     }
 
+    void Call()
+    {
+        Debug.Log("Call");
+        Car.Instance.MakeCall(GetCallPosition());
+    }
+
+    public Transform GetCallPosition()
+    {
+        return this.transform;
+    }
+    #endregion
+
     public void TakeDamage(float damage)
     {
         currentHP -= damage;
@@ -271,8 +290,6 @@ public class SwordMan : MonoBehaviour
             PlayerDead();
         }
     }
-
-
 
     void PlayerDead()
     {

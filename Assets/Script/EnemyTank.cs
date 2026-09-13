@@ -4,25 +4,26 @@ public class EnemyTank : MonoBehaviour
 {
     [Header("Attack")]
 
-    public float attackDamage = 30f;
-    public float attackCooldown = 2f;
-    private float attackTimer = 0f;
+    [SerializeField] private float attackDamage = 30f;
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float attackTimer = 0f;
 
     [Header("HP")]
 
-    public float maxHP = 250f;
-    public float currentHP;
+    [SerializeField] private float maxHP = 250f;
+    [SerializeField] private float currentHP;
 
     [Header("Movement")]
-    public float moveSpeed = 1f;
-
-    [Header("Target")]
-    public float detectRange = 12f;
-    public float attackRange = 1.5f;
-    private Transform player;
-    private Transform car;
+    [SerializeField] private float moveSpeed = 1f;
     private Rigidbody2D rb;
 
+    [Header("Target")]
+    [SerializeField] private float detectRange = 12f;
+    [SerializeField] private float attackRange = 1.5f;
+    private Transform player;
+    private Transform car;
+
+    #region Event System
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -94,7 +95,9 @@ public class EnemyTank : MonoBehaviour
 
         FlipToTarget(target);
     }
+    #endregion
 
+    #region Movement
     void FlipToTarget(Transform target)
     {
         if (target.position.x > transform.position.x)
@@ -163,6 +166,7 @@ public class EnemyTank : MonoBehaviour
 
         rb.linearVelocity = direction * moveSpeed;
     }
+    #endregion
 
     void Attack(Transform target)
     {

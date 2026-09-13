@@ -8,32 +8,37 @@ public class Car : MonoBehaviour
     public float currentHP = 0f;
 
     [Header("Movement")]
-    public float normalSpeed = 2f;
-    public float boostSpeed = 5f;
+    [SerializeField] private float normalSpeed = 2f;
+    [SerializeField] private float boostSpeed = 5f;
+    private Rigidbody2D rb;
 
     [Header("Overheat")]
     public float maxOverheat = 100f;
     public float currentOverheat = 0f;
 
-    public float overheatRate = 30f;
-    public float coolDownRate = 20f;
+    [SerializeField] private float overheatRate = 30f;
+    [SerializeField] private float coolDownRate = 20f;
 
-    private bool isBoosting = false;
-    private bool isOverheated = false;
+    [SerializeField] private bool isBoosting = false;
+    [SerializeField] private bool isOverheated = false;
 
     [Header("Call")]
+    [SerializeField] private Vector2 destination;
+    [SerializeField] private Vector2 direction;
+    [SerializeField] private float callSpeed = 2f;
+    [SerializeField] private float callStopDistance = 1.5f;
 
-    public float callSpeed = 7f;
-    public float callStopDistance = 1.5f;
+    [SerializeField] private bool isCalling = false;
 
-    private bool isCalling = false;
+    [SerializeField] private Transform player;
 
-    public Transform player;
+    [Header("Referent")]
+    public static Car Instance;
 
-    private Rigidbody2D rb;
-
+    #region Event System
     void Awake()
     {
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
         currentHP = maxHP;
     }
@@ -43,11 +48,6 @@ public class Car : MonoBehaviour
     {
         HandleBoost();
         HandleOverheat();
-
-        if (Keyboard.current != null &&Keyboard.current.qKey.wasPressedThisFrame)
-        {
-            Call();
-        }
     }
 
 
@@ -55,39 +55,12 @@ public class Car : MonoBehaviour
     {
         if (isCalling)
         {
-            MoveToPlayer();
-        }
-        else
-        {
-            Move();
+            CallMove();
         }
     }
+    #endregion
 
-    void Move()
-    {
-        if (currentHP <= 0)
-        {
-            rb.linearVelocity = Vector2.zero;
-            return;
-        }
-
-        float hpPercent = currentHP / maxHP;
-
-        float hpSpeedMultiplier = Mathf.Lerp(0.5f, 1f ,hpPercent);
-
-
-        float currentSpeed = normalSpeed;
-
-        if (isBoosting && !isOverheated)
-        {
-            currentSpeed = boostSpeed * hpSpeedMultiplier;
-        }
-
-        transform.Translate(
-            Vector2.right * currentSpeed * Time.fixedDeltaTime
-        );
-    }
-
+    #region Movement
     void HandleBoost()
     {
         isBoosting = Keyboard.current.fKey.isPressed;
@@ -133,42 +106,35 @@ public class Car : MonoBehaviour
         }
     }
 
-    void Call()
+    public void MakeCall(Transform target)
     {
         isCalling = true;
-
-        Debug.Log("Call");
+        destination = target.position;
     }
 
-    void MoveToPlayer()
+    void CallMove()
     {
-        if (player == null)
-            return;
-
         float distance =
             Vector2.Distance(
                 transform.position,
-                player.position
+                destination
             );
 
         if (distance <= callStopDistance)
         {
             rb.linearVelocity = Vector2.zero;
-
             isCalling = false;
-
-            Debug.Log("Comenaaaa");
-
+            Debug.Log("Im here");
             return;
         }
 
-
         Vector2 direction =
-            ((Vector2)player.position -
-             (Vector2)transform.position).normalized;
+           ((Vector2)destination -
+            (Vector2)transform.position).normalized;
 
         rb.linearVelocity = direction * callSpeed;
     }
+    #endregion
 
 
     public void TakeDamage(float damage)
@@ -189,5 +155,10 @@ public class Car : MonoBehaviour
     {
         Debug.Log("DESTROYED!");
 
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawLine(transform.position, destination);
     }
 }

@@ -3,29 +3,30 @@ using UnityEngine;
 public class EnemyRange : MonoBehaviour
 {
     [Header("Target")]
-    public float detectRange = 10f;
-    public float attackRange = 8f;
-    public float keepDistance = 3f;
+    [SerializeField] private float detectRange = 10f;
+    [SerializeField] private float attackRange = 8f;
+    [SerializeField] private float keepDistance = 3f;
     private Transform player;
     private Transform car;
 
     [Header("Movement")]
-    public float moveSpeed = 1.5f;
-
-    [Header("HP")]
-    public float maxHP = 40f;
-    public float currentHP;
-
-    [Header("Attack")]
-    public float attackDamage = 5f;
-    public float attackCooldown = 1.5f;
-    private float attackTimer = 0f;
-
-    [Header("Projectile")]
-    public GameObject BulletPrefab;
-    public Transform firePoint;
+    [SerializeField] private float moveSpeed = 1.5f;
     private Rigidbody2D rb;
 
+    [Header("HP")]
+    [SerializeField] private float maxHP = 40f;
+    [SerializeField] private float currentHP;
+
+    [Header("Attack")]
+    [SerializeField] private float attackDamage = 5f;
+    [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private float attackTimer = 0f;
+
+    [Header("Projectile")]
+    [SerializeField] private GameObject BulletPrefab;
+    [SerializeField] private Transform firePoint;
+
+    #region Event System
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -116,6 +117,7 @@ public class EnemyRange : MonoBehaviour
         //    rb.linearVelocity = Vector2.zero;
         //}
     }
+    #endregion
 
     void Filp(Transform target)
     {
@@ -145,7 +147,7 @@ public class EnemyRange : MonoBehaviour
         }
     }
 
-
+    #region Movement
     Transform FindClosestTarget()
     {
         Transform closestTarget = null;
@@ -199,7 +201,9 @@ public class EnemyRange : MonoBehaviour
         rb.linearVelocity =
             direction * moveSpeed;
     }
+    #endregion
 
+    #region Abilities
     void Attack(Transform target)
     {
         if (attackTimer > 0)
@@ -284,6 +288,7 @@ public class EnemyRange : MonoBehaviour
             );
         }
     }
+    #endregion
 
     public void TakeDamage(float damage)
     {

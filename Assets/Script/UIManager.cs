@@ -14,14 +14,12 @@ public class UIManager : MonoBehaviour
     public Slider CarHPBar;
     public Slider overheatBar;
 
-
     void Update()
     {
         UpdatePlayerHP();
         UpdateCarHP();
         UpdateOverheat();
     }
-
 
     void UpdatePlayerHP()
     {
@@ -31,7 +29,6 @@ public class UIManager : MonoBehaviour
         playerHPBar.value = player.currentHP / player.maxHP;
     }
 
-
     void UpdateCarHP()
     {
         if (car == null)
@@ -39,7 +36,6 @@ public class UIManager : MonoBehaviour
 
         CarHPBar.value = car.currentHP / car.maxHP;
     }
-
 
     void UpdateOverheat()
     {

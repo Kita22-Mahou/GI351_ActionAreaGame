@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    public float speed = 6f;
-    public float lifeTime = 3f;
+    [SerializeField] private float speed = 6f;
+    [SerializeField] private float lifeTime = 3f;
 
+    [SerializeField] private float damage;
     private Vector2 direction;
-    private float damage;
 
     private void Start()
     {

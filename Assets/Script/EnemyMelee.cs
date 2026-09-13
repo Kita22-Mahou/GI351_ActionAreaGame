@@ -3,28 +3,25 @@ using UnityEngine;
 public class EnemyMelee : MonoBehaviour
 {
     [Header("Target")]
-
-    public float detectRange = 8f;
-    public float attackRange = 1.2f;
+    [SerializeField] private float detectRange = 8f;
+    [SerializeField] private float attackRange = 1.2f;
     private Transform player;
     private Transform car;
 
     [Header("Movement")]
-
-    public float moveSpeed = 2f;
+    [SerializeField] private float moveSpeed = 2f;
     private Rigidbody2D rb;
 
     [Header("HP")]
-
-    public float maxHP = 50f;
-    public float currentHP;
+    [SerializeField] private float maxHP = 50f;
+    [SerializeField] private float currentHP;
 
     [Header("Attack")]
+    [SerializeField] private float attackDamage = 10f;
+    [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private float attackTimer = 0f;
 
-    public float attackDamage = 10f;
-    public float attackCooldown = 1f;
-    private float attackTimer = 0f;
-
+    #region Event System
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -91,7 +88,9 @@ public class EnemyMelee : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
         }
     }
+    #endregion
 
+    #region Movement
     Transform FindClosestTarget()
     {
         Transform closestTarget = null;
@@ -139,6 +138,7 @@ public class EnemyMelee : MonoBehaviour
 
         rb.linearVelocity = direction * moveSpeed;
     }
+    #endregion
 
     void Attack(Transform target)
     {
