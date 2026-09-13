@@ -121,7 +121,7 @@ public class SwordMan : MonoBehaviour
 
     void Flip()
     {
-        float horizontal = 0f;
+        float horizontal = this.rb.linearVelocityX;
 
         if (horizontal > 0 &&
             transform.localScale.x < 0)
