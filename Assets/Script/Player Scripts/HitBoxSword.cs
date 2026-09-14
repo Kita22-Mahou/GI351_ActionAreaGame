@@ -7,15 +7,26 @@ public class Sword : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy"))
-            return;
+        if (collision.CompareTag("Enemy"))
+        {
+            collision.SendMessage(
+                "TakeDamage",
+                 damage,
+                 SendMessageOptions.DontRequireReceiver);
+        }
+        
 
-        collision.SendMessage(
-            "TakeDamage",
-            damage,
-            SendMessageOptions.DontRequireReceiver
-        );
 
-        Debug.Log("Hit Enemy!");
+        if (collision.CompareTag("Tree"))
+        {
+            collision.SendMessage(
+                "TakeDamage",
+                damage,
+                SendMessageOptions.DontRequireReceiver);
+
+            Debug.Log("Hit Tree!");
+        }
+
+            
     }
 }

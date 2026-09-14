@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Car
   - Enemy
+  - Tree
+  - Dog
   layers:
   - Default
   - TransparentFX
