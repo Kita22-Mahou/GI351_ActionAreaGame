@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1010507381671341520}
   m_Layer: 6
   m_Name: EnemyRange
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,6 +194,7 @@ MonoBehaviour:
   currentHP: 0
   attackDamage: 5
   attackCooldown: 1.5
+  attackTimer: 0
   BulletPrefab: {fileID: 8919160750724397162, guid: f8980f11a26b4da40968a9b0b1dde08b, type: 3}
   firePoint: {fileID: 8041529212634394808}
 --- !u!1 &3770934925238857726

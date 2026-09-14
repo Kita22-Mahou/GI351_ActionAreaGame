@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6926719188410467260}
   m_Layer: 6
   m_Name: Tank
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   attackDamage: 28.56
   attackCooldown: 1.8
+  attackTimer: 0
   maxHP: 203
   currentHP: 0
   moveSpeed: 1.35

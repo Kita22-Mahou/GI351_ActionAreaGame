@@ -14,17 +14,19 @@ public class SwordMan : MonoBehaviour
     public float currentHP = 0f;
 
     [Header("Attack")]
-    [SerializeField] private Transform attackPoint;
+    //[SerializeField] private Transform attackPoint;
 
-    [SerializeField] private float attackRange = 1.2f;
+    //[SerializeField] private float attackRange = 1.2f;
 
-    [SerializeField] private float attackDamage = 20f;
+    //[SerializeField] private float attackDamage = 20f;
 
     [SerializeField] private float attackCooldown = 0.5f;
 
     [SerializeField] private LayerMask enemyLayer;
 
     [SerializeField] private bool canAttack = true;
+
+    private float attackTimer = 0f;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 12f;
@@ -48,6 +50,8 @@ public class SwordMan : MonoBehaviour
 
     [Header("Referent")]
     public static SwordMan instance;
+    public GameObject sword;
+    public GameObject swordHitbox;
 
     #region Event System
     private void Awake()
@@ -56,6 +60,9 @@ public class SwordMan : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         currentHP = maxHP;
+        sword.SetActive(false);
+        swordHitbox.SetActive(false);
+
     }
 
     private void Update()
@@ -77,6 +84,16 @@ public class SwordMan : MonoBehaviour
         if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             Call();
+        }
+
+        if (attackTimer > 0)
+        {
+            attackTimer -= Time.deltaTime;
+
+            if (attackTimer <= 0)
+            {
+                HideSword();
+            }
         }
     }
 
@@ -142,44 +159,22 @@ public class SwordMan : MonoBehaviour
     #region Abilities
     public void Attack()
     {
-        if (!canAttack)
-            return;
-
         if (isDashing)
             return;
 
-        canAttack = false;
+        if (attackTimer > 0)
+            return;
 
-        Debug.Log("Player Attack!");
+        sword.SetActive(true);
+        swordHitbox.SetActive(true);
 
-        if (attackPoint != null)
-        {
-            Collider2D[] enemies =
-                Physics2D.OverlapCircleAll(
-                    attackPoint.position,
-                    attackRange,
-                    enemyLayer
-                );
-
-
-            foreach (Collider2D enemy in enemies)
-            {
-                enemy.SendMessage(
-                    "TakeDamage",
-                    attackDamage,
-                    SendMessageOptions.DontRequireReceiver
-                );
-
-                Debug.Log("Hit Enemy!");
-            }
-        }
-
-        StartCoroutine(AttackCooldown());
+        attackTimer = 0.25f;
+        attackcooldown();
     }
 
 
 
-    IEnumerator AttackCooldown()
+    IEnumerator attackcooldown()
     {
         yield return new WaitForSeconds(attackCooldown);
 
@@ -190,16 +185,16 @@ public class SwordMan : MonoBehaviour
     public void Dash()
     {
 
-    if (!canDash)
-        return;
+        if (!canDash)
+            return;
 
-    if (isDashing)
-        return;
+        if (isDashing)
+            return;
 
 
-    StartCoroutine(DashCoroutine());
+        StartCoroutine(DashCoroutine());
 
-    Debug.Log("Player Dash!");
+        Debug.Log("Player Dash!");
     }
 
     IEnumerator DashCoroutine()
@@ -207,12 +202,12 @@ public class SwordMan : MonoBehaviour
         isDashing = true;
         canDash = false;
 
-        rb.linearVelocity = new Vector2(facingDirection * dashSpeed,0f);
+        rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0f);
 
 
         yield return new WaitForSeconds(dashDuration);
 
-        rb.linearVelocity =Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
 
 
         isDashing = false;
@@ -236,6 +231,10 @@ public class SwordMan : MonoBehaviour
 
         Debug.Log("Player Skill!");
 
+        sword.SetActive(true);
+
+        attackTimer = skillCooldown;
+
         Collider2D[] enemies =
     Physics2D.OverlapCircleAll(
         transform.position,
@@ -246,7 +245,7 @@ public class SwordMan : MonoBehaviour
 
         foreach (Collider2D enemy in enemies)
         {
-            enemy.SendMessage("TakeDamage",skillDamage,SendMessageOptions.DontRequireReceiver);
+            enemy.SendMessage("TakeDamage", skillDamage, SendMessageOptions.DontRequireReceiver);
 
 
             Debug.Log("Skill Hit Enemy!");
@@ -273,6 +272,15 @@ public class SwordMan : MonoBehaviour
     {
         return this.transform;
     }
+
+    void HideSword()
+    {
+        if (sword != null)
+        {
+            sword.SetActive(false);
+        }
+    }
+
     #endregion
 
     public void TakeDamage(float damage)
@@ -303,11 +311,6 @@ public class SwordMan : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if(attackPoint != null)
-        {
-            Gizmos.DrawWireSphere(attackPoint.position,attackRange);
-        }
-
         Gizmos.DrawWireSphere(transform.position, skillRadius);
     }
 
