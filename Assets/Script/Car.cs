@@ -25,7 +25,6 @@ public class Car : MonoBehaviour
     [Header("Call")]
     [SerializeField] private Vector2 destination;
     [SerializeField] private Vector2 direction;
-    [SerializeField] private float callSpeed = 2f;
     [SerializeField] private float callStopDistance = 1.5f;
 
     [SerializeField] private bool isCalling = false;
@@ -132,7 +131,7 @@ public class Car : MonoBehaviour
            ((Vector2)destination -
             (Vector2)transform.position).normalized;
 
-        rb.linearVelocity = direction * callSpeed;
+        rb.linearVelocity = direction * normalSpeed;
     }
     #endregion
 

@@ -22,6 +22,8 @@ public class AreaGeneration : MonoBehaviour
 
     public LayerMask area;
 
+    private int downCounter;
+
     public float minX;
     public float maxX;
     public float minY;
@@ -56,6 +58,7 @@ public class AreaGeneration : MonoBehaviour
         {
             if (transform.position.x < maxX)
             {
+                downCounter = 0;
                 Vector2 newPos = new Vector2(transform.position.x + moveAmount, transform.position.y);
                 transform.position = newPos;
 
@@ -81,6 +84,7 @@ public class AreaGeneration : MonoBehaviour
         {
             if (transform.position.x > minX)
             {
+                downCounter = 0;
                 Vector2 newPos = new Vector2(transform.position.x - moveAmount, transform.position.y);
                 transform.position = newPos;
 
@@ -96,19 +100,29 @@ public class AreaGeneration : MonoBehaviour
         }
         else if (direction == 5) // Move BOTTOM
         {
-            if(transform.position.y > minY)
+            downCounter++;
+
+            if (transform.position.y > minY)
             {
                 Collider2D areaDetection = Physics2D.OverlapCircle(transform.position, 1, area);
                 if (areaDetection.GetComponent<AreaType>().type != 1 && areaDetection.GetComponent<AreaType>().type != 3)
                 {
-                    areaDetection.GetComponent<AreaType>().AreaDestruction();
-
-                    int randBottomArea = Random.Range(1, 4);
-                    if (randBottomArea == 2)
+                    if (downCounter >= 2) // if move down twice, it will spawn LRTB
                     {
-                        randBottomArea = 1;
+                        areaDetection.GetComponent<AreaType>().AreaDestruction();
+                        Instantiate(areas[3], transform.position, Quaternion.identity);
                     }
-                    Instantiate(areas[randBottomArea], transform.position, Quaternion.identity);
+                    else // spawn LRB , LRBT
+                    {
+                        areaDetection.GetComponent<AreaType>().AreaDestruction();
+
+                        int randBottomArea = Random.Range(1, 4);
+                        if (randBottomArea == 2)
+                        {
+                            randBottomArea = 1;
+                        }
+                        Instantiate(areas[randBottomArea], transform.position, Quaternion.identity);
+                    }
                 }
 
                 Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount);
