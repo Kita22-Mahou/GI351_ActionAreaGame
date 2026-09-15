@@ -7,14 +7,18 @@ public class Wood : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Player"))
-        {
-            return;
-        }
+            if (collision.CompareTag("Player"))
+            {
+                Collect();
+            }
 
-        Debug.Log("Get Wood");
+    }
 
+    public void Collect()
+    {
         Inventory.AddWood(amount);
+
+        Debug.Log("Get Wood +" + amount);
 
         Destroy(gameObject);
     }

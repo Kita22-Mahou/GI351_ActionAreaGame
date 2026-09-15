@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6926719188410467260}
   m_Layer: 6
   m_Name: Tank
-  m_TagString: Enemy
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,8 +173,13 @@ MonoBehaviour:
   attackDamage: 28.56
   attackCooldown: 1.8
   attackTimer: 0
-  maxHP: 203
+  maxHP: 47.2
   currentHP: 0
   moveSpeed: 1.35
   detectRange: 20
   attackRange: 1.96
+  dropItem1: {fileID: 7309028741782905952, guid: 2e75985aa8d091346ad04afcac5aa285, type: 3}
+  dropItem2: {fileID: 5363026362718207471, guid: 44d69ed624c14e448aaa6118a0dc8f22, type: 3}
+  dropItem3: {fileID: 4282307788093197428, guid: 9656746dafb73764e8c4bb9738c44bf1, type: 3}
+  dropChance: 87.27
+  dropRadius: 0.5

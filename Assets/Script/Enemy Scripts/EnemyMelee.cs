@@ -21,6 +21,12 @@ public class EnemyMelee : MonoBehaviour
     [SerializeField] private float attackCooldown = 1f;
     [SerializeField] private float attackTimer = 0f;
 
+    [Header("Drop")]
+    [SerializeField] private GameObject dropItem1;
+    [SerializeField] private GameObject dropItem2;
+    [SerializeField] private float dropChance = 10f;
+    [SerializeField] private float dropRadius = 0.5f;
+
     #region Event System
     private void Awake()
     {
@@ -192,6 +198,40 @@ public class EnemyMelee : MonoBehaviour
         }
     }
 
+    void DropItems()
+    {
+        CheckDrop(dropItem1);
+        CheckDrop(dropItem2);
+    }
+
+    void CheckDrop(GameObject item)
+    {
+        if (item == null)
+            return;
+
+        float randomChance = Random.Range(0f, 100f);
+
+        if (randomChance <= dropChance)
+        {
+            Vector2 randomPosition =
+                Random.insideUnitCircle * dropRadius;
+
+            Vector3 spawnPosition =
+                transform.position +
+                new Vector3(
+                    randomPosition.x,
+                    randomPosition.y,
+                    0f
+                );
+
+            Instantiate(
+                item,
+                spawnPosition,
+                Quaternion.identity
+            );
+        }
+    }
+
     void Die()
     {
         rb.linearVelocity = Vector2.zero;
@@ -199,6 +239,8 @@ public class EnemyMelee : MonoBehaviour
         Debug.Log("Enemy Dead");
 
         Destroy(gameObject);
+
+        DropItems();
     }
 
     private void OnDrawGizmosSelected()

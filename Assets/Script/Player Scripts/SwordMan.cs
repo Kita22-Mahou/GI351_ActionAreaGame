@@ -233,7 +233,7 @@ public class SwordMan : MonoBehaviour
 
         sword.SetActive(true);
 
-        attackTimer = skillCooldown;
+        attackTimer = attackCooldown;
 
         Collider2D[] enemies =
     Physics2D.OverlapCircleAll(
