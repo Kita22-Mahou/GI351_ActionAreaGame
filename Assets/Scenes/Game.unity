@@ -519,63 +519,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1001 &140631027
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 23.049425
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -7.4602494
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7265257893994334199, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7829823259287942790, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-      propertyPath: m_Name
-      value: Tree1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
 --- !u!1001 &211244215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2260,7 +2203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2559229383934123816, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2633,7 +2576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1218229870778524528, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3886106962128653844, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3593,7 +3536,7 @@ MonoBehaviour:
   - {fileID: 620194627354003208, guid: 1056704c13d21f24b996f53ee058e2bb, type: 3}
   - {fileID: 620194627354003208, guid: 9ec63ee15dfe40a44864d6debea9b4a8, type: 3}
   moveAmount: 50
-  startTimeBtwArea: 0.25
+  startTimeBtwArea: 0.5
   area:
     serializedVersion: 2
     m_Bits: 128
@@ -3980,7 +3923,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3348858995144509124, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6926719188410467260, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
       propertyPath: maxHP
@@ -4020,4 +3963,3 @@ SceneRoots:
   - {fileID: 1292736142}
   - {fileID: 58267629}
   - {fileID: 707656035}
-  - {fileID: 140631027}
