@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 195647076187222899}
   - component: {fileID: 434942869790106031}
   m_Layer: 0
-  m_Name: 'Object Spawn Point '
+  m_Name: 'Tree Spawn Point '
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
