@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1425087569306205865}
   - component: {fileID: 1668348867979601373}
-  - component: {fileID: 7014350664212358966}
   - component: {fileID: -6411925217433732923}
+  - component: {fileID: 447402739969121707}
   m_Layer: 0
   m_Name: Wall Tile
   m_TagString: Untagged
@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.5, y: -0.5, z: 0}
-  m_LocalScale: {x: 6.25, y: 6.25, z: 1.0416666}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -60,7 +60,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,18 +83,30 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -100
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1089450098, guid: bb73cf9f3ee76674381f58fa5e7ed922, type: 3}
+  m_Sprite: {fileID: 1248327441, guid: bb73cf9f3ee76674381f58fa5e7ed922, type: 3}
   m_Color: {r: 0.42379144, g: 0.22917409, b: 0.4716981, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!61 &7014350664212358966
+--- !u!114 &-6411925217433732923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126965228360536380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
+--- !u!61 &447402739969121707
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,23 +144,11 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-6411925217433732923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126965228360536380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
