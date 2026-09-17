@@ -14,11 +14,7 @@ public class SwordMan : MonoBehaviour
     public float currentHP = 0f;
 
     [Header("Attack")]
-    //[SerializeField] private Transform attackPoint;
-
-    //[SerializeField] private float attackRange = 1.2f;
-
-    //[SerializeField] private float attackDamage = 20f;
+    [SerializeField] private Collider2D[] swordHitbox;
 
     [SerializeField] private float attackCooldown = 0.5f;
 
@@ -51,7 +47,6 @@ public class SwordMan : MonoBehaviour
     [Header("Referent")]
     public static SwordMan instance;
     public GameObject sword;
-    public GameObject swordHitbox;
 
     #region Event System
     private void Awake()
@@ -61,7 +56,6 @@ public class SwordMan : MonoBehaviour
 
         currentHP = maxHP;
         sword.SetActive(false);
-        swordHitbox.SetActive(false);
 
     }
 
@@ -69,7 +63,7 @@ public class SwordMan : MonoBehaviour
     {
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Attack();
+            Attack2();
         }
 
         if (Keyboard.current.shiftKey.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
@@ -105,6 +99,7 @@ public class SwordMan : MonoBehaviour
     #endregion
 
     #region Movement
+
     void Move()
     {
         float horizontal = 0f;
@@ -154,9 +149,66 @@ public class SwordMan : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
         }
     }
+
+    public int FaceDetect()
+    {
+
+        float horizontal = rb.linearVelocityX;
+        float vertical = rb.linearVelocityY;
+
+        if (vertical > 0) // Face Up
+        {
+            return 1;
+        }
+        if (horizontal > 0 && vertical > 0) // Face Right Up
+        {
+            return 2;
+        }
+        if (horizontal > 0) // Face Right
+        {
+            return 3;
+        }
+        if (horizontal > 0 && vertical < 0) // Face Right Down
+        {
+            return 4;
+        }
+        if (vertical < 0) // Face Down
+        {
+            return 5;
+        }
+
+        return 0;
+    }
     #endregion
 
     #region Abilities
+    void Attack2()
+    {
+        int direction = FaceDetect();
+
+        if (direction == 1)
+        {
+            swordHitbox[0].enabled = true;
+        }
+        else if (direction == 2)
+        {
+            swordHitbox[1].enabled = true;
+        }
+        else if (direction == 3)
+        {
+            swordHitbox[2].enabled = true;
+        }
+        else if (direction == 4)
+        {
+            swordHitbox[3].enabled = true;
+        }
+        else if (direction == 5)
+        {
+            swordHitbox[4].enabled = true;
+        }
+
+    }
+
     public void Attack()
     {
         if (isDashing)
@@ -166,13 +218,10 @@ public class SwordMan : MonoBehaviour
             return;
 
         sword.SetActive(true);
-        swordHitbox.SetActive(true);
 
         attackTimer = 0.25f;
         attackcooldown();
     }
-
-
 
     IEnumerator attackcooldown()
     {

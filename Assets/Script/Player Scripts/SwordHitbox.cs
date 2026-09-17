@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Sword : MonoBehaviour
+public class SwordHitBox : MonoBehaviour
 {
     [SerializeField] private float damage = 20f;
 
