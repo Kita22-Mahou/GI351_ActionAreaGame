@@ -7,7 +7,7 @@ public class SwordMan : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private GameObject characterSprite;
     [SerializeField] private float speed = 5;
-    [SerializeField] private int facingDirection = 1;
+    [SerializeField] private int faceDirection = 1;
     private Rigidbody2D rb;
 
     [Header("HP")]
@@ -15,39 +15,30 @@ public class SwordMan : MonoBehaviour
     public float currentHP = 0f;
 
     [Header("Attack")]
-    [SerializeField] private bool isAttacking = false;
-
-    [SerializeField] private int faceDirection;
-
     [SerializeField] private GameObject[] swordHitbox;
-
-    [SerializeField] private float attackCooldown = 0.5f;
-
     [SerializeField] private LayerMask enemyLayer;
 
     [SerializeField] private bool canAttack = true;
-
-    private float attackTimer = 0f;
+    [SerializeField] private bool isAttacking = false;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 12f;
-
     [SerializeField] private float dashDuration = 0.15f;
-
     [SerializeField] private float dashCooldown = 0.5f;
 
     [SerializeField] private bool isDashing = false;
-
     [SerializeField] private bool canDash = true;
 
     [Header("Skill")]
-    [SerializeField] private float skillRadius = 2.5f;
+    [SerializeField] private GameObject skillHitbox;
 
+    [SerializeField] private float skillRadius = 1.5f;
     [SerializeField] private float skillDamage = 40f;
-
     [SerializeField] private float skillCooldown = 5f;
+    [SerializeField] private float skillDuration = 0.1f;
 
     [SerializeField] private bool canSkill = true;
+    [SerializeField] private bool isSkilling = false;
 
     [Header("Referent")]
     public static SwordMan instance;
@@ -61,6 +52,8 @@ public class SwordMan : MonoBehaviour
 
         currentHP = maxHP;
         sword.SetActive(false);
+
+        skillRadius = skillHitbox.GetComponent<CircleCollider2D>().radius;
 
     }
 
@@ -159,14 +152,12 @@ public class SwordMan : MonoBehaviour
         if (horizontal > 0 &&
             spriteTransform.localScale.x < 0)
         {
-            facingDirection *= -1;
             spriteTransform.localScale = new Vector3(spriteTransform.localScale.x * -1, spriteTransform.localScale.y, spriteTransform.localScale.z);
         }
 
         else if (horizontal < 0 &&
                  spriteTransform.localScale.x > 0)
         {
-            facingDirection *= -1;
             spriteTransform.localScale = new Vector3(spriteTransform.localScale.x * -1, spriteTransform.localScale.y, spriteTransform.localScale.z);
         }
     }
@@ -217,6 +208,9 @@ public class SwordMan : MonoBehaviour
     void Attack2()
     {
         if (isDashing)
+            return;
+
+        if (isSkilling)
             return;
 
         int direction = faceDirection;
@@ -326,16 +320,22 @@ public class SwordMan : MonoBehaviour
     IEnumerator DashCoroutine()
     {
         yield return new WaitForSeconds(dashDuration);
+
         rb.linearVelocity = Vector2.zero;
+
         isDashing = false;
 
         yield return new WaitForSeconds(dashCooldown);
+
         canDash = true;
     }
 
     public void Skill()
     {
         if (!canSkill)
+            return;
+
+        if (isAttacking)
             return;
 
         if (isDashing)
@@ -346,22 +346,17 @@ public class SwordMan : MonoBehaviour
 
         Debug.Log("Player Skill!");
 
-        sword.SetActive(true);
-
-        attackTimer = attackCooldown;
+        skillHitbox.SetActive(true);
 
         Collider2D[] enemies =
     Physics2D.OverlapCircleAll(
         transform.position,
         skillRadius,
-        enemyLayer
-    );
-
+        enemyLayer );
 
         foreach (Collider2D enemy in enemies)
         {
             enemy.SendMessage("TakeDamage", skillDamage, SendMessageOptions.DontRequireReceiver);
-
 
             Debug.Log("Skill Hit Enemy!");
         }
@@ -370,6 +365,10 @@ public class SwordMan : MonoBehaviour
 
     IEnumerator SkillCooldown()
     {
+        yield return new WaitForSeconds(skillDuration);
+
+        skillHitbox.SetActive(true);
+
         yield return new WaitForSeconds(skillCooldown);
 
         canSkill = true;
@@ -377,7 +376,7 @@ public class SwordMan : MonoBehaviour
         Debug.Log("Skill Ready!");
     }
 
-    void Call()
+    void Call() // Call cart
     {
         Debug.Log("Call");
         Car.Instance.MakeCall(GetCallPosition());
@@ -387,15 +386,6 @@ public class SwordMan : MonoBehaviour
     {
         return this.transform;
     }
-
-    void HideSword()
-    {
-        if (sword != null)
-        {
-            sword.SetActive(false);
-        }
-    }
-
     #endregion
 
     public void TakeDamage(float damage)
