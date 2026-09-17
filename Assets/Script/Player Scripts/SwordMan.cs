@@ -5,6 +5,7 @@ using System.Collections;
 public class SwordMan : MonoBehaviour
 {
     [Header("Movement")]
+    [SerializeField] private GameObject characterSprite;
     [SerializeField] private float speed = 5;
     [SerializeField] private int facingDirection = 1;
     private Rigidbody2D rb;
@@ -14,7 +15,7 @@ public class SwordMan : MonoBehaviour
     public float currentHP = 0f;
 
     [Header("Attack")]
-    [SerializeField] private bool isAttacking;
+    [SerializeField] private bool isAttacking = false;
 
     [SerializeField] private int faceDirection;
 
@@ -65,10 +66,11 @@ public class SwordMan : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log(faceDirection);
         if (Keyboard.current.wKey.isPressed ||
             Keyboard.current.aKey.isPressed ||
             Keyboard.current.sKey.isPressed ||
-            Keyboard.current.dKey.isPressed)  // if walking -> detect
+            Keyboard.current.dKey.isPressed)  // make FaceDetect not return 0
         {
             faceDirection = FaceDetect();
         }
@@ -78,7 +80,7 @@ public class SwordMan : MonoBehaviour
             Attack2();
         }
 
-        if (Keyboard.current.shiftKey.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
         {
             Dash();
         }
@@ -91,29 +93,12 @@ public class SwordMan : MonoBehaviour
         {
             Call();
         }
-
-        //if (attackTimer > 0)
-        //{
-        //    attackTimer -= Time.deltaTime;
-
-        //    if (attackTimer <= 0)
-        //    {
-        //        HideSword();
-        //    }
-        //}
     }
 
     void FixedUpdate()
     {
-        if (!isAttacking)
-        {
-            Move();
-            Flip();
-        }
-        if (isAttacking)
-        {
-            rb.linearVelocity = Vector2.zero;
-        }
+        Move();
+        Flip();
     }
     #endregion
 
@@ -121,6 +106,16 @@ public class SwordMan : MonoBehaviour
 
     void Move()
     {
+        if(isAttacking)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (isDashing)
+            return;
+
+
         float horizontal = 0f;
         float vertical = 0f;
 
@@ -152,20 +147,27 @@ public class SwordMan : MonoBehaviour
 
     void Flip()
     {
+        if (isAttacking)
+            return;
+
+        if (isDashing)
+            return;
+
         float horizontal = this.rb.linearVelocityX;
+        Transform spriteTransform = characterSprite.transform;
 
         if (horizontal > 0 &&
-            transform.localScale.x < 0)
+            spriteTransform.localScale.x < 0)
         {
             facingDirection *= -1;
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            spriteTransform.localScale = new Vector3(spriteTransform.localScale.x * -1, spriteTransform.localScale.y, spriteTransform.localScale.z);
         }
 
         else if (horizontal < 0 &&
-                 transform.localScale.x > 0)
+                 spriteTransform.localScale.x > 0)
         {
             facingDirection *= -1;
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            spriteTransform.localScale = new Vector3(spriteTransform.localScale.x * -1, spriteTransform.localScale.y, spriteTransform.localScale.z);
         }
     }
 
@@ -194,6 +196,18 @@ public class SwordMan : MonoBehaviour
         {
             return 5;
         }
+        if (horizontal < 0 && vertical < 0) // Face Left Down
+        {
+            return 6;
+        }
+        if (horizontal < 0 && vertical == 0) // Face Left 
+        {
+            return 7;
+        }
+        if (horizontal < 0 && vertical > 0) // Face Left Up
+        {
+            return 8;
+        }
 
         return 0;
     }
@@ -202,6 +216,9 @@ public class SwordMan : MonoBehaviour
     #region Abilities
     void Attack2()
     {
+        if (isDashing)
+            return;
+
         int direction = faceDirection;
 
         if (direction == 1)
@@ -234,6 +251,24 @@ public class SwordMan : MonoBehaviour
             swordHitbox[4].SetActive(true);
             StartCoroutine(DisableHitbox(4));
         }
+        else if (direction == 6)
+        {
+            isAttacking = true;
+            swordHitbox[5].SetActive(true);
+            StartCoroutine(DisableHitbox(5));
+        }
+        else if (direction == 7)
+        {
+            isAttacking = true;
+            swordHitbox[6].SetActive(true);
+            StartCoroutine(DisableHitbox(6));
+        }
+        else if (direction == 8)
+        {
+            isAttacking = true;
+            swordHitbox[7].SetActive(true);
+            StartCoroutine(DisableHitbox(7));
+        }
 
     }
 
@@ -245,37 +280,43 @@ public class SwordMan : MonoBehaviour
         swordHitbox[hitboxNumber].SetActive(false);
     }
 
-    //public void Attack()
-    //{
-    //    if (isDashing)
-    //        return;
-
-    //    if (attackTimer > 0)
-    //        return;
-
-    //    sword.SetActive(true);
-
-    //    attackTimer = 0.25f;
-    //    attackcooldown();
-    //}
-
-    IEnumerator attackcooldown()
-    {
-        yield return new WaitForSeconds(attackCooldown);
-
-        canAttack = true;
-    }
-
-
     public void Dash()
     {
+        if (isAttacking)
+            return;
 
         if (!canDash)
             return;
 
-        if (isDashing)
-            return;
+        float horizontal = rb.linearVelocityX;
+        float vertical = rb.linearVelocityY;
 
+        if (Keyboard.current.wKey.isPressed)
+        {
+            vertical = 1f;
+        }
+
+        if (Keyboard.current.sKey.isPressed)
+        {
+            vertical = -1f;
+        }
+
+        if (Keyboard.current.aKey.isPressed)
+        {
+            horizontal = -1f;
+        }
+
+        if (Keyboard.current.dKey.isPressed)
+        {
+            horizontal = 1f;
+        }
+
+        Vector2 movement = new Vector2(horizontal, vertical);
+        movement = movement.normalized;
+
+        rb.linearVelocity = movement * dashSpeed;
+        isDashing = true;
+        canDash = false;
 
         StartCoroutine(DashCoroutine());
 
@@ -284,22 +325,11 @@ public class SwordMan : MonoBehaviour
 
     IEnumerator DashCoroutine()
     {
-        isDashing = true;
-        canDash = false;
-
-        rb.linearVelocity = new Vector2(facingDirection * dashSpeed, 0f);
-
-
         yield return new WaitForSeconds(dashDuration);
-
         rb.linearVelocity = Vector2.zero;
-
-
         isDashing = false;
 
         yield return new WaitForSeconds(dashCooldown);
-
-
         canDash = true;
     }
 
