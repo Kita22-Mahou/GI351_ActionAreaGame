@@ -13,10 +13,6 @@ public class EnemyRange : MonoBehaviour
     [SerializeField] private float moveSpeed = 1.5f;
     private Rigidbody2D rb;
 
-    [Header("HP")]
-    [SerializeField] private float maxHP = 40f;
-    [SerializeField] private float currentHP;
-
     [Header("Attack")]
     [SerializeField] private float attackDamage = 5f;
     [SerializeField] private float attackCooldown = 1.5f;
@@ -26,18 +22,10 @@ public class EnemyRange : MonoBehaviour
     [SerializeField] private GameObject BulletPrefab;
     [SerializeField] private Transform firePoint;
 
-    [Header("Drop")]
-    [SerializeField] private GameObject dropItem1;
-    [SerializeField] private GameObject dropItem2;
-    [SerializeField] private float dropChance = 10f;
-    [SerializeField] private float dropRadius = 0.5f;
-
     #region Event System
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        currentHP = maxHP;
     }
     void Start()
     {
@@ -295,70 +283,6 @@ public class EnemyRange : MonoBehaviour
         }
     }
     #endregion
-
-    public void TakeDamage(float damage)
-    {
-        currentHP -= damage;
-
-        currentHP =
-            Mathf.Clamp(
-                currentHP,
-                0f,
-                maxHP
-            );
-
-        Debug.Log("Range Enemy HP: " +currentHP);
-
-        if (currentHP <= 0)
-        {
-            Die();
-        }
-    }
-
-    void DropItems()
-    {
-        CheckDrop(dropItem1);
-        CheckDrop(dropItem2);
-    }
-
-    void CheckDrop(GameObject item)
-    {
-        if (item == null)
-            return;
-
-        float randomChance = Random.Range(0f, 100f);
-
-        if (randomChance <= dropChance)
-        {
-            Vector2 randomPosition =
-                Random.insideUnitCircle * dropRadius;
-
-            Vector3 spawnPosition =
-                transform.position +
-                new Vector3(
-                    randomPosition.x,
-                    randomPosition.y,
-                    0f
-                );
-
-            Instantiate(
-                item,
-                spawnPosition,
-                Quaternion.identity
-            );
-        }
-    }
-
-    void Die()
-    {
-        rb.linearVelocity =Vector2.zero;
-
-        Debug.Log("Range Enemy Dead!");
-
-        Destroy(gameObject);
-
-        DropItems();
-    }
 
     private void OnDrawGizmosSelected()
     {

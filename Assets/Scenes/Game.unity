@@ -405599,10 +405599,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Melee
       objectReference: {fileID: 0}
-    - target: {fileID: 2559229383934123816, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.95
@@ -406100,25 +406096,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1010507381671341520, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
-      propertyPath: dropItem1
-      value: 
-      objectReference: {fileID: 5363026362718207471, guid: 44d69ed624c14e448aaa6118a0dc8f22, type: 3}
-    - target: {fileID: 1010507381671341520, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
-      propertyPath: dropItem2
-      value: 
-      objectReference: {fileID: 7309028741782905952, guid: 2e75985aa8d091346ad04afcac5aa285, type: 3}
-    - target: {fileID: 1010507381671341520, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
-      propertyPath: dropChance
-      value: 74.17
-      objectReference: {fileID: 0}
     - target: {fileID: 1218229870778524528, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
       propertyPath: m_Name
       value: EnemyRange
-      objectReference: {fileID: 0}
-    - target: {fileID: 1218229870778524528, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3886106962128653844, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
       propertyPath: m_LocalPosition.x
@@ -406635,6 +406615,8 @@ MonoBehaviour:
   isBoosting: 0
   isOverheated: 0
   callStopDistance: 1.5
+  isCalling: 0
+  isCallingToMouse: 0
   itemDetectRange: 3
   itemCollectDistance: 1
   itemLayer:
@@ -406815,6 +406797,7 @@ GameObject:
   - component: {fileID: 1894542723}
   - component: {fileID: 1894542721}
   - component: {fileID: 1894542720}
+  - component: {fileID: 1894542725}
   - component: {fileID: 1894542719}
   - component: {fileID: 1894542724}
   m_Layer: 0
@@ -406973,6 +406956,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1894542725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894542718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9744f1f4b768e4281196d099bb0be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthPoint
+  maxHP: 100
+  currentHP: 0
 --- !u!1 &1908750995
 GameObject:
   m_ObjectHideFlags: 0
@@ -407541,26 +407538,6 @@ PrefabInstance:
     - target: {fileID: 3348858995144509124, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
       propertyPath: m_Name
       value: Tank
-      objectReference: {fileID: 0}
-    - target: {fileID: 3348858995144509124, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6926719188410467260, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
-      propertyPath: maxHP
-      value: 173.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 6926719188410467260, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
-      propertyPath: moveSpeed
-      value: 0.93
-      objectReference: {fileID: 0}
-    - target: {fileID: 6926719188410467260, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
-      propertyPath: attackDamage
-      value: 25.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6926719188410467260, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
-      propertyPath: attackCooldown
-      value: 2.62
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

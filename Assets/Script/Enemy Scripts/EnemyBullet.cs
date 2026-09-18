@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyBullet : MonoBehaviour
 {
@@ -28,8 +29,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SwordMan player =
-                collision.GetComponent<SwordMan>();
+            PlayerHealthPoint player = collision.GetComponent<PlayerHealthPoint>();
 
             if (player != null)
             {

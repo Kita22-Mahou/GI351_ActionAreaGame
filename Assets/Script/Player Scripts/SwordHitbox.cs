@@ -9,24 +9,28 @@ public class SwordHitBox : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            collision.SendMessage(
-                "TakeDamage",
-                 damage,
-                 SendMessageOptions.DontRequireReceiver);
-        }
-        
+            EnemyHealthPoint target = collision.GetComponent<EnemyHealthPoint>();
+            if (target == null)
+            {
+                Debug.Log("Enemy | Target = null");
+                return;
+            }
 
+            target.GetComponent<EnemyHealthPoint>().TakeDamage(damage);
+            Debug.Log($"Player | Enemy takes {damage} damage");
+        }
 
         if (collision.CompareTag("Tree"))
         {
-            collision.SendMessage(
-                "TakeDamage",
-                damage,
-                SendMessageOptions.DontRequireReceiver);
+            Tree target = collision.GetComponent<Tree>();
+            if (target == null)
+            {
+                Debug.Log("Tree | Target = null");
+                return;
+            }
 
-            Debug.Log("Hit Tree!");
+            target.GetComponent<Tree>().TakeDamage(damage);
+            Debug.Log($"Player | Enemy takes {damage} damage");
         }
-
-            
     }
 }

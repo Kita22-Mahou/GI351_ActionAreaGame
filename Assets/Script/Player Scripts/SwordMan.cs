@@ -397,32 +397,6 @@ public class SwordMan : MonoBehaviour
     }
     #endregion
 
-    public void TakeDamage(float damage)
-    {
-        currentHP -= damage;
-
-        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
-
-        Debug.Log("PlayerHP: " + currentHP);
-
-        if (currentHP <= 0)
-        {
-            currentHP = 0;
-
-            PlayerDead();
-        }
-    }
-
-    void PlayerDead()
-    {
-        rb.linearVelocity = Vector2.zero;
-
-        Debug.Log("Player Dead");
-
-        Destroy(gameObject);
-
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, skillRadius);

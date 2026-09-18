@@ -12,27 +12,15 @@ public class EnemyMelee : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     private Rigidbody2D rb;
 
-    [Header("HP")]
-    [SerializeField] private float maxHP = 50f;
-    [SerializeField] private float currentHP;
-
     [Header("Attack")]
     [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackCooldown = 1f;
     [SerializeField] private float attackTimer = 0f;
 
-    [Header("Drop")]
-    [SerializeField] private GameObject dropItem1;
-    [SerializeField] private GameObject dropItem2;
-    [SerializeField] private float dropChance = 10f;
-    [SerializeField] private float dropRadius = 0.5f;
-
     #region Event System
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        currentHP = maxHP;
     }
     void Start()
     {
@@ -156,8 +144,7 @@ public class EnemyMelee : MonoBehaviour
 
         if (target.CompareTag("Player"))
         {
-            SwordMan playerScript = target.GetComponent<SwordMan>();
-
+            PlayerHealthPoint playerScript = target.GetComponent<PlayerHealthPoint>();
 
             if (playerScript != null)
             {
@@ -167,12 +154,9 @@ public class EnemyMelee : MonoBehaviour
             }
         }
 
-
         else if (target.CompareTag("Car"))
         {
-            Car carScript =
-                target.GetComponent<Car>();
-
+            Car carScript = target.GetComponent<Car>();
 
             if (carScript != null)
             {
@@ -181,66 +165,6 @@ public class EnemyMelee : MonoBehaviour
                 Debug.Log("Enemy Attack Car");
             }
         }
-    }
-
-    public void TakeDamage(float damage)
-    {
-        currentHP -= damage;
-
-        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
-
-        Debug.Log("Enemy HP: " + currentHP);
-
-
-        if (currentHP <= 0)
-        {
-            Die();
-        }
-    }
-
-    void DropItems()
-    {
-        CheckDrop(dropItem1);
-        CheckDrop(dropItem2);
-    }
-
-    void CheckDrop(GameObject item)
-    {
-        if (item == null)
-            return;
-
-        float randomChance = Random.Range(0f, 100f);
-
-        if (randomChance <= dropChance)
-        {
-            Vector2 randomPosition =
-                Random.insideUnitCircle * dropRadius;
-
-            Vector3 spawnPosition =
-                transform.position +
-                new Vector3(
-                    randomPosition.x,
-                    randomPosition.y,
-                    0f
-                );
-
-            Instantiate(
-                item,
-                spawnPosition,
-                Quaternion.identity
-            );
-        }
-    }
-
-    void Die()
-    {
-        rb.linearVelocity = Vector2.zero;
-
-        Debug.Log("Enemy Dead");
-
-        Destroy(gameObject);
-
-        DropItems();
     }
 
     private void OnDrawGizmosSelected()
