@@ -1,6 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using UnityEngine.UIElements;
 
 public class SwordMan : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class SwordMan : MonoBehaviour
     public float currentHP = 0f;
 
     [Header("Attack")]
-    [SerializeField] private GameObject[] swordHitbox;
+    [SerializeField] private GameObject swordHitbox;
     [SerializeField] private LayerMask enemyLayer;
 
     [SerializeField] private bool canAttack = true;
@@ -70,7 +71,7 @@ public class SwordMan : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Attack2();
+            AttackDirection();
         }
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
@@ -209,7 +210,7 @@ public class SwordMan : MonoBehaviour
     #endregion
 
     #region Abilities
-    void Attack2()
+    void AttackDirection()
     {
         if (isDashing)
             return;
@@ -219,55 +220,64 @@ public class SwordMan : MonoBehaviour
 
         int direction = faceDirection;
 
-        if (direction == 1)
+        if (direction == 1) // Up
         {
-            isAttacking = true;
-            swordHitbox[0].SetActive(true);
-            StartCoroutine(DisableHitbox(0));
+            Attack(
+                new Vector2(0, 1.25f),
+                Quaternion.Euler(0, 0, 90));
         }
-        else if (direction == 2)
+        else if (direction == 2) // Right Up
         {
-            isAttacking = true;
-            swordHitbox[1].SetActive(true);
-            StartCoroutine(DisableHitbox(1));
+            Attack(
+                new Vector2(0.85f, 0.85f),
+                Quaternion.Euler(0, 0, 45));
         }
-        else if (direction == 3)
+        else if (direction == 3) // Right
         {
-            isAttacking = true;
-            swordHitbox[2].SetActive(true);
-            StartCoroutine(DisableHitbox(2));
+            Attack(
+                new Vector2(1.25f, 0),
+                Quaternion.Euler(0, 0, 0));
         }
-        else if (direction == 4)
+        else if (direction == 4) // Right Down
         {
-            isAttacking = true;
-            swordHitbox[3].SetActive(true);
-            StartCoroutine(DisableHitbox(3));
+            Attack(
+                new Vector2(0.85f, -0.85f),
+                Quaternion.Euler(0, 0, -45));
         }
-        else if (direction == 5)
+        else if (direction == 5) // Down
         {
-            isAttacking = true;
-            swordHitbox[4].SetActive(true);
-            StartCoroutine(DisableHitbox(4));
+            Attack(
+                new Vector2(0, -1.25f),
+                Quaternion.Euler(0, 0, 90));
         }
-        else if (direction == 6)
+        else if (direction == 6) // Left Down
         {
-            isAttacking = true;
-            swordHitbox[5].SetActive(true);
-            StartCoroutine(DisableHitbox(5));
+            Attack(
+                new Vector2(-0.85f, -0.85f),
+                Quaternion.Euler(0, 0, 45));
         }
-        else if (direction == 7)
+        else if (direction == 7) // Left
         {
-            isAttacking = true;
-            swordHitbox[6].SetActive(true);
-            StartCoroutine(DisableHitbox(6));
+            Attack(
+                new Vector2(-1.25f, 0),
+                Quaternion.Euler(0, 0, 0));
         }
-        else if (direction == 8)
+        else if (direction == 8) // Left Up
         {
-            isAttacking = true;
-            swordHitbox[7].SetActive(true);
-            StartCoroutine(DisableHitbox(7));
+            Attack(
+                new Vector2(-0.85f, 0.85f),
+                Quaternion.Euler(0, 0, -45));
         }
 
+    }
+
+    void Attack( Vector2 pos, Quaternion rot) // ให้ Hitbox ย้ายจุดไปรอบๆ
+    {
+        isAttacking = true;
+        swordHitbox.transform.position = (Vector2)transform.position + pos;
+        swordHitbox.transform.rotation = rot;
+        swordHitbox.SetActive(true);
+        StartCoroutine(DisableHitbox(0));
     }
 
     IEnumerator DisableHitbox(int hitboxNumber)
@@ -275,7 +285,7 @@ public class SwordMan : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         isAttacking = false;
-        swordHitbox[hitboxNumber].SetActive(false);
+        swordHitbox.SetActive(false);
     }
 
     public void Dash()
