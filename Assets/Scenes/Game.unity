@@ -255,6 +255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood
       objectReference: {fileID: 0}
+    - target: {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -351,7 +355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &81125709
 Grid:
   m_ObjectHideFlags: 0
@@ -1008,6 +1012,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree
       objectReference: {fileID: 0}
+    - target: {fileID: 3204621393364437521, guid: 3c1f828f2bced344c86ce8768f732c7d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6349895523453444753, guid: 3c1f828f2bced344c86ce8768f732c7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.8234797
@@ -1401,7 +1409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &314749288
 Transform:
   m_ObjectHideFlags: 0
@@ -404468,6 +404476,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wood (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -406622,11 +406634,7 @@ MonoBehaviour:
   coolDownRate: 10
   isBoosting: 0
   isOverheated: 0
-  destination: {x: 0, y: 0}
-  direction: {x: 0, y: 0}
   callStopDistance: 1.5
-  isCalling: 0
-  player: {fileID: 1894542723}
   itemDetectRange: 3
   itemCollectDistance: 1
   itemLayer:
@@ -406830,11 +406838,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SwordMan
   characterSprite: {fileID: 978729259}
   speed: 5.5
-  facingDirection: 1
+  faceDirection: 0
   maxHP: 100
   currentHP: 100
-  isAttacking: 0
-  faceDirection: 0
   swordHitbox:
   - {fileID: 580844925}
   - {fileID: 1410940703}
@@ -406844,20 +406850,23 @@ MonoBehaviour:
   - {fileID: 170836836}
   - {fileID: 102767685}
   - {fileID: 209745423}
-  attackCooldown: 0.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
   canAttack: 1
+  isAttacking: 0
   dashSpeed: 17
   dashDuration: 0.15
   dashCooldown: 2
   isDashing: 0
   canDash: 1
+  skillHitbox: {fileID: 314749287}
   skillRadius: 2.5
   skillDamage: 40
   skillCooldown: 5
+  skillDuration: 0.1
   canSkill: 1
+  isSkilling: 0
   sword: {fileID: 1021988074}
 --- !u!50 &1894542720
 Rigidbody2D:
@@ -406980,7 +406989,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1908750996
 MonoBehaviour:
   m_ObjectHideFlags: 0

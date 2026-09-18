@@ -23,13 +23,13 @@ public class Car : MonoBehaviour
     [SerializeField] private bool isOverheated = false;
 
     [Header("Call")]
-    [SerializeField] private Vector2 destination;
-    [SerializeField] private Vector2 direction;
     [SerializeField] private float callStopDistance = 1.5f;
-
+    private Vector2 destination;
     [SerializeField] private bool isCalling = false;
 
-    [SerializeField] private Transform player;
+    [Header("Call to mouse")]
+    private Vector2 destinationToMouse;
+    [SerializeField] private bool isCallingToMouse = false;
 
     [Header("Item Detect")]
     [SerializeField] private float itemDetectRange = 3f;
@@ -64,6 +64,11 @@ public class Car : MonoBehaviour
             CallMove();
             return;
         }
+        if (isCallingToMouse)
+        {
+            CallToMouse();
+            return;
+        }
         DetectItem();
     }
     #endregion
@@ -71,7 +76,7 @@ public class Car : MonoBehaviour
     #region Movement
     void HandleBoost()
     {
-        isBoosting = Keyboard.current.fKey.isPressed;
+        //isBoosting = Keyboard.current.fKey.isPressed;
 
         if (isOverheated)
         {
@@ -85,7 +90,7 @@ public class Car : MonoBehaviour
         {
             currentOverheat += overheatRate * Time.deltaTime;
 
-            currentOverheat = Mathf.Clamp(currentOverheat, 0f ,maxOverheat);
+            currentOverheat = Mathf.Clamp(currentOverheat, 0f, maxOverheat);
 
             if (currentOverheat >= maxOverheat)
             {
@@ -105,7 +110,7 @@ public class Car : MonoBehaviour
                 currentOverheat = 0;
             }
 
-            
+
             if (currentOverheat <= 20f)
             {
                 isOverheated = false;
@@ -113,14 +118,18 @@ public class Car : MonoBehaviour
         }
     }
 
-    public void MakeCall(Transform target)
+    public void MakeCall(Transform playerPos)
     {
+        isCallingToMouse = false;
         isCalling = true;
-        destination = target.position;
+        destination = playerPos.position;
     }
 
     void CallMove()
     {
+        if (isCallingToMouse)
+            return;
+
         float distance =
             Vector2.Distance(
                 transform.position,
@@ -135,86 +144,118 @@ public class Car : MonoBehaviour
             return;
         }
 
-        Vector2 direction = ((Vector2)destination -(Vector2)transform.position).normalized;
+        Vector2 direction = ((Vector2)destination - (Vector2)transform.position).normalized;
 
         rb.linearVelocity = direction * normalSpeed;
     }
 
-    void DetectItem()
+    public void MakeCallToMouse(Vector2 mousePos)
     {
-        if (targetItem == null)
-        {
-            FindNearestItem();
-        }
+        isCalling = false;
+        isCallingToMouse = true;
+        destinationToMouse = mousePos;
+    }
 
-        if (targetItem == null)
-        {
-            rb.linearVelocity = Vector2.zero;
+    void CallToMouse()
+    {
+        if (isCalling)
             return;
-        }
 
         float distance =
-            Vector2.Distance(
-                transform.position,
-                targetItem.position
-            );
+               Vector2.Distance(
+                   transform.position,
+                   destinationToMouse
+               );
 
-        if (distance <= itemCollectDistance)
+        if (distance <= callStopDistance)
         {
-            CollectTargetItem();
+            rb.linearVelocity = Vector2.zero;
+            isCallingToMouse = false;
+            Debug.Log("Im here");
             return;
         }
 
-        Vector2 direction =
-            ((Vector2)targetItem.position -
-             (Vector2)transform.position).normalized;
+        Vector2 direction = ((Vector2)destinationToMouse - (Vector2)transform.position).normalized;
 
         rb.linearVelocity = direction * normalSpeed;
     }
 
-    void FindNearestItem()
-    {
-        Collider2D[] items =
-            Physics2D.OverlapCircleAll(
-                transform.position,
-                itemDetectRange,
-                itemLayer
-            );
 
-        float closestDistance = Mathf.Infinity;
-
-        targetItem = null;
-
-        foreach (Collider2D item in items)
+        void DetectItem()
         {
+            if (targetItem == null)
+            {
+                FindNearestItem();
+            }
+
+            if (targetItem == null)
+            {
+                rb.linearVelocity = Vector2.zero;
+                return;
+            }
+
             float distance =
                 Vector2.Distance(
                     transform.position,
-                    item.transform.position
+                    targetItem.position
                 );
 
-            if (distance < closestDistance)
+            if (distance <= itemCollectDistance)
             {
-                closestDistance = distance;
-                targetItem = item.transform;
+                CollectTargetItem();
+                return;
+            }
+
+            Vector2 direction =
+                ((Vector2)targetItem.position -
+                 (Vector2)transform.position).normalized;
+
+            rb.linearVelocity = direction * normalSpeed;
+        }
+
+        void FindNearestItem()
+        {
+            Collider2D[] items =
+                Physics2D.OverlapCircleAll(
+                    transform.position,
+                    itemDetectRange,
+                    itemLayer
+                );
+
+            float closestDistance = Mathf.Infinity;
+
+            targetItem = null;
+
+            foreach (Collider2D item in items)
+            {
+                float distance =
+                    Vector2.Distance(
+                        transform.position,
+                        item.transform.position
+                    );
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    targetItem = item.transform;
+                }
             }
         }
-    }
 
-    void CollectTargetItem()
-    {
-        if (targetItem == null)
-            return;
+        void CollectTargetItem()
+        {
+            if (targetItem == null)
+                return;
 
-        targetItem.SendMessage("Collect",SendMessageOptions.DontRequireReceiver);
+            targetItem.SendMessage("Collect", SendMessageOptions.DontRequireReceiver);
 
-        //Destroy(targetItem.gameObject);
+            //Destroy(targetItem.gameObject);
 
-        targetItem = null;
+            targetItem = null;
 
-        rb.linearVelocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
 
-    }
+        }
 
     #endregion
 
@@ -242,8 +283,10 @@ public class Car : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawLine(transform.position, destination);
+        Gizmos.DrawLine(transform.position, destinationToMouse);
 
         Gizmos.DrawWireSphere(transform.position, itemDetectRange);
-        Gizmos.DrawWireSphere(transform.position,itemCollectDistance);
+        Gizmos.DrawWireSphere(transform.position, itemCollectDistance);
+
     }
 }

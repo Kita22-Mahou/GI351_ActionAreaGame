@@ -86,6 +86,10 @@ public class SwordMan : MonoBehaviour
         {
             Call();
         }
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            CallToMouse();
+        }
     }
 
     void FixedUpdate()
@@ -379,12 +383,17 @@ public class SwordMan : MonoBehaviour
     void Call() // Call cart
     {
         Debug.Log("Call");
-        Car.Instance.MakeCall(GetCallPosition());
+        Car.Instance.MakeCall(this.transform);
     }
 
-    public Transform GetCallPosition()
+    void CallToMouse()
     {
-        return this.transform;
+        Debug.Log("Call to mouse");
+
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Car.Instance.MakeCallToMouse((Vector2)mousePosition);
+
+        Debug.Log(mousePosition);
     }
     #endregion
 
