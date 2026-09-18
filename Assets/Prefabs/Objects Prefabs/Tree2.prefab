@@ -103,9 +103,11 @@ GameObject:
   - component: {fileID: 3607095738151092363}
   - component: {fileID: 3891570765757396605}
   - component: {fileID: 8276252349432883041}
+  - component: {fileID: 3274991730977238761}
+  - component: {fileID: 8697460622587443324}
   m_Layer: 0
   m_Name: Tree2
-  m_TagString: Untagged
+  m_TagString: Tree
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,3 +177,81 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
+--- !u!114 &3274991730977238761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8369295572167807362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d861914fcdaf26944aa88a814fd31755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TreeFade
+  treeSprite: {fileID: 7249760838115774040}
+  fadeAlpha: 0.3
+  fadeSpeed: 5
+--- !u!60 &8697460622587443324
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8369295572167807362}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.40284407, y: 1.3281764}
+      - {x: 2.698627, y: 2.227509}
+      - {x: 2.9252536, y: 3.138133}
+      - {x: 1.7575758, y: 4.076589}
+      - {x: -0.027504385, y: 5.8660154}
+      - {x: -1.1746017, y: 6.326211}
+      - {x: -1.8620942, y: 4.4254785}
+      - {x: -3.008735, y: 2.9036317}
+      - {x: -2.3012125, y: 1.9767205}
+      - {x: -0.6964277, y: 1.3870409}
+      - {x: -0.65633225, y: 1.1303506}
+      - {x: -0.43022788, y: 0.86370695}
+      - {x: -0.33594623, y: 0.8185535}
+      - {x: -0.039857626, y: 0.731365}
+      - {x: 0.67361796, y: 0.87735033}
+      - {x: 0.5840489, y: 1.0232444}
+  m_UseDelaunayMesh: 1

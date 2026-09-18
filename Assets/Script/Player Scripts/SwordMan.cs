@@ -18,7 +18,8 @@ public class SwordMan : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private GameObject swordHitbox;
     [SerializeField] private LayerMask enemyLayer;
-
+    [SerializeField] private float baseAttackDamage = 20f;
+    [SerializeField] private float damageBonus = 0f;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private bool isAttacking = false;
 
@@ -40,6 +41,7 @@ public class SwordMan : MonoBehaviour
 
     [SerializeField] private bool canSkill = true;
     [SerializeField] private bool isSkilling = false;
+    [HideInInspector] public bool isInShop = false;
 
     [Header("Referent")]
     public static SwordMan instance;
@@ -407,6 +409,43 @@ public class SwordMan : MonoBehaviour
     }
     #endregion
 
+
+    #region Buff
+    public float GetAttackDamage()
+    {
+        return baseAttackDamage + damageBonus;
+    }
+
+    public void UpgradeDamage(float amount)
+    {
+        damageBonus += amount;
+        Debug.Log("Attack Damage: " + GetAttackDamage());
+    }
+
+    public void UpgradeSpeed(float amount)
+    {
+        speed += amount;
+        Debug.Log("Speed: " + speed);
+    }
+
+    public void UpgradeMaxHP(float amount)
+    {
+        maxHP += amount;
+        currentHP += amount;
+
+        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+
+        Debug.Log("MaxHP: " + maxHP);
+    }
+
+    public void Heal(float amount)
+    {
+        currentHP += amount;
+        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+
+        Debug.Log("Player HP: " + currentHP);
+    }
+    #endregion
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, skillRadius);
