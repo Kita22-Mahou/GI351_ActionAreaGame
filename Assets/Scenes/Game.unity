@@ -404664,6 +404664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   player: {fileID: 1894542719}
+  carHP: {fileID: 1823166723}
   car: {fileID: 1823166717}
   playerHPBar: {fileID: 699804451}
   CarHPBar: {fileID: 2032625300}
@@ -404874,11 +404875,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.95
+      value: 11.61
       objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.56
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -405713,6 +405714,7 @@ GameObject:
   - component: {fileID: 1823166719}
   - component: {fileID: 1823166718}
   - component: {fileID: 1823166717}
+  - component: {fileID: 1823166723}
   - component: {fileID: 1823166722}
   m_Layer: 0
   m_Name: Car
@@ -405733,8 +405735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b533fed53017bd4abacc717af06795e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Car
-  maxHP: 100
-  currentHP: 0
   normalSpeed: 2
   boostSpeed: 3.5
   maxOverheat: 50
@@ -405915,6 +405915,20 @@ MonoBehaviour:
   bone: 0
   blood: 0
   hide: 0
+--- !u!114 &1823166723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823166716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c62801c319d1114dba2912d6c1bee5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarHealthPoint
+  maxHP: 100
+  currentHP: 0
 --- !u!1 &1894542718
 GameObject:
   m_ObjectHideFlags: 0
@@ -405928,6 +405942,7 @@ GameObject:
   - component: {fileID: 1894542720}
   - component: {fileID: 1894542725}
   - component: {fileID: 1894542719}
+  - component: {fileID: 1894542726}
   - component: {fileID: 1894542724}
   m_Layer: 0
   m_Name: SwordMan
@@ -406091,6 +406106,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthPoint
   maxHP: 100
   currentHP: 0
+--- !u!114 &1894542726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894542718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f9e053c534adc14abef2671f6ea383f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FaceDetector
+  faceDetectDirection: 0
 --- !u!1 &1908750995
 GameObject:
   m_ObjectHideFlags: 0

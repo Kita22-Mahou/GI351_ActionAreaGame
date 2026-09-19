@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public SwordMan player;
 
     [Header("Car")]
+    public CarHealthPoint carHP;
     public Car car;
 
     [Header("UI")]
@@ -34,7 +35,7 @@ public class UIManager : MonoBehaviour
         if (car == null)
             return;
 
-        CarHPBar.value = car.currentHP / car.maxHP;
+        CarHPBar.value = carHP.currentHP / carHP.maxHP;
     }
 
     void UpdateOverheat()

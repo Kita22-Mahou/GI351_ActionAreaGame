@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class EnemyMelee : MonoBehaviour
 {
@@ -10,17 +11,25 @@ public class EnemyMelee : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private int faceDirection = 2;
     private Rigidbody2D rb;
 
     [Header("Attack")]
+    [SerializeField] private GameObject attackHitbox;
     [SerializeField] private float attackDamage = 10f;
-    [SerializeField] private float attackCooldown = 1f;
-    [SerializeField] private float attackTimer = 0f;
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float attackTime = 0f;
+
+    [SerializeField] private bool isAttacking = false;
+
+    [Header("Referent")]
+    private FaceDetector faceDetector;
 
     #region Event System
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        faceDetector = GetComponent<FaceDetector>();
     }
     void Start()
     {
@@ -42,9 +51,11 @@ public class EnemyMelee : MonoBehaviour
 
     void Update()
     {
-        if (attackTimer > 0)
+        faceDirection = faceDetector.faceDetectDirection;
+
+        if (attackTime > 0)
         {
-            attackTimer -= Time.deltaTime;
+            attackTime -= Time.deltaTime;
         }
     }
 
@@ -52,7 +63,7 @@ public class EnemyMelee : MonoBehaviour
     {
         Transform target = FindClosestTarget();
 
-        if (target == null)
+        if (target == null) // if no target = stand still
         {
             rb.linearVelocity = Vector2.zero;
             return;
@@ -64,16 +75,19 @@ public class EnemyMelee : MonoBehaviour
                 target.position
             );
 
-        if (distance <= attackRange)
+        if (distance <= attackRange) // Attack
         {
             rb.linearVelocity = Vector2.zero;
 
-            Attack(target);
+            if (attackTime <= 0)
+            {
+                AttackDirection(target);
+            }
 
             return;
         }
 
-        if (distance <= detectRange)
+        if (distance <= detectRange) // Movement
         {
             MoveToTarget(target);
         }
@@ -87,7 +101,7 @@ public class EnemyMelee : MonoBehaviour
     #region Movement
     Transform FindClosestTarget()
     {
-        Transform closestTarget = null;
+        Transform target = null;
 
         float closestDistance = Mathf.Infinity;
 
@@ -102,7 +116,7 @@ public class EnemyMelee : MonoBehaviour
             if (playerDistance <= detectRange &&
                 playerDistance < closestDistance)
             {
-                closestTarget = player;
+                target = player;
                 closestDistance = playerDistance;
             }
         }
@@ -118,12 +132,12 @@ public class EnemyMelee : MonoBehaviour
             if (carDistance <= detectRange &&
                 carDistance < closestDistance)
             {
-                closestTarget = car;
+                target = car;
                 closestDistance = carDistance;
             }
         }
 
-        return closestTarget;
+        return target;
     }
 
     void MoveToTarget(Transform target)
@@ -134,37 +148,38 @@ public class EnemyMelee : MonoBehaviour
     }
     #endregion
 
-    void Attack(Transform target)
+    void AttackDirection(Transform target) // คำนวณทิศทางการโจมตี และหมุนไปทางที่โจมตี
     {
-        if (attackTimer > 0)
-            return;
+        Vector2 direction = (target.position - transform.position).normalized;
+        float attackRange = 1.25f;
 
+        Vector2 attackPosition = direction * attackRange;
 
-        attackTimer = attackCooldown;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
-        if (target.CompareTag("Player"))
-        {
-            PlayerHealthPoint playerScript = target.GetComponent<PlayerHealthPoint>();
+        Attack(attackPosition, rotation);
+    }
 
-            if (playerScript != null)
-            {
-                playerScript.TakeDamage(attackDamage);
+    void Attack(Vector2 pos, Quaternion rot)
+    {
+        isAttacking = true;
+        attackHitbox.transform.position = (Vector2)transform.position + pos;
+        attackHitbox.transform.rotation = rot;
+        attackHitbox.SetActive(true);
+        attackHitbox.GetComponent<CircleCollider2D>().enabled = true;
+        StartCoroutine(DisableHitbox());
+    }
 
-                Debug.Log("Enemy Attack Player");
-            }
-        }
+    IEnumerator DisableHitbox()
+    {
+        yield return new WaitForSeconds(0.2f);
 
-        else if (target.CompareTag("Car"))
-        {
-            Car carScript = target.GetComponent<Car>();
-
-            if (carScript != null)
-            {
-                carScript.TakeDamage(attackDamage);
-
-                Debug.Log("Enemy Attack Car");
-            }
-        }
+        isAttacking = false;
+        attackHitbox.SetActive(false);
+        attackHitbox.GetComponent<CircleCollider2D>().enabled = false;
+        attackHitbox.GetComponent<EnemyAttackHitbox>().HashSetClear();
+        attackTime = attackCooldown;
     }
 
     private void OnDrawGizmosSelected()

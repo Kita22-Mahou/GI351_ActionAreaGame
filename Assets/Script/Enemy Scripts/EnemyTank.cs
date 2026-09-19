@@ -183,7 +183,7 @@ public class EnemyTank : MonoBehaviour
 
         else if (target.CompareTag("Car"))
         {
-            Car carScript = target.GetComponent<Car>();
+            CarHealthPoint carScript = target.GetComponent<CarHealthPoint>();
 
             if (carScript != null)
             {

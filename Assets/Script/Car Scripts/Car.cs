@@ -3,9 +3,6 @@ using UnityEngine.InputSystem;
 
 public class Car : MonoBehaviour
 {
-    [Header("HP")]
-    public float maxHP = 100f;
-    public float currentHP = 0f;
 
     [Header("Movement")]
     [SerializeField] private float normalSpeed = 2f;
@@ -46,7 +43,6 @@ public class Car : MonoBehaviour
     {
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
-        currentHP = maxHP;
     }
 
 
@@ -258,27 +254,6 @@ public class Car : MonoBehaviour
         }
 
     #endregion
-
-
-    public void TakeDamage(float damage)
-    {
-        currentHP -= damage;
-
-        Debug.Log("HP: " + currentHP);
-
-        if (currentHP <= 0)
-        {
-            currentHP = 0;
-
-            Destroyed();
-        }
-    }
-
-    void Destroyed()
-    {
-        Debug.Log("DESTROYED!");
-
-    }
 
     private void OnDrawGizmosSelected()
     {

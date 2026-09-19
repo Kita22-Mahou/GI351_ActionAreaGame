@@ -41,8 +41,7 @@ public class EnemyBullet : MonoBehaviour
 
         else if (collision.CompareTag("Car"))
         {
-            Car car =
-                collision.GetComponent<Car>();
+            CarHealthPoint car = collision.GetComponent<CarHealthPoint>();
 
             if (car != null)
             {
