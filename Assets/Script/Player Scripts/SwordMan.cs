@@ -264,24 +264,47 @@ public class SwordMan : MonoBehaviour
         float horizontal = rb.linearVelocityX;
         float vertical = rb.linearVelocityY;
 
-        if (Keyboard.current.wKey.isPressed)
+        switch (faceDirection)
         {
-            vertical = 1f;
-        }
+            case 1: // up
+                horizontal = 0;
+                vertical = 1;
+                break;
 
-        if (Keyboard.current.sKey.isPressed)
-        {
-            vertical = -1f;
-        }
+            case 2: // right up
+                horizontal = 1;
+                vertical = 1;
+                break;
 
-        if (Keyboard.current.aKey.isPressed)
-        {
-            horizontal = -1f;
-        }
+            case 3: // right
+                horizontal = 1;
+                vertical = 0;
+                break;
 
-        if (Keyboard.current.dKey.isPressed)
-        {
-            horizontal = 1f;
+            case 4: // right down
+                horizontal = 1;
+                vertical = -1;
+                break;
+
+            case 5: // down
+                horizontal = 0;
+                vertical = -1;
+                break;
+
+            case 6: // left down
+                horizontal = -1;
+                vertical = -1;
+                break;
+
+            case 7: // left
+                horizontal = -1;
+                vertical = 0;
+                break;
+
+            case 8: // left up
+                horizontal = -1;
+                vertical = 1;
+                break;
         }
 
         Vector2 movement = new Vector2(horizontal, vertical);

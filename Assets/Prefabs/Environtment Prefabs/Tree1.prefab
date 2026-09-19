@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2935661833720611869}
   - component: {fileID: 1615690954998520674}
+  - component: {fileID: 3960433948267745857}
+  - component: {fileID: 3325911563881307106}
+  - component: {fileID: 4159747043953448773}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -92,6 +95,133 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!70 &3960433948267745857
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5837092620866835734}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.21272089, y: -3.483031}
+  m_Size: {x: 0.9053875, y: 0.37218833}
+  m_Direction: 1
+--- !u!60 &3325911563881307106
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5837092620866835734}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -3.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4.29, y: 7.5}
+    newSize: {x: 4.29, y: 7.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.31490946, y: 1.0626979}
+      - {x: 1.6541678, y: 1.5469424}
+      - {x: 2.323832, y: 2.6747193}
+      - {x: 0.7106203, y: 4.6351357}
+      - {x: 0.72044325, y: 6.1427517}
+      - {x: -0.11766432, y: 6.869949}
+      - {x: 0.047474466, y: 7.1398277}
+      - {x: -0.058608234, y: 7.31016}
+      - {x: -0.8275617, y: 6.9109783}
+      - {x: -0.76085514, y: 6.368676}
+      - {x: -1.6041209, y: 5.508531}
+      - {x: -1.6656772, y: 3.671878}
+      - {x: -2.2013671, y: 2.5752048}
+      - {x: -1.5213511, y: 1.6208944}
+      - {x: -0.3197978, y: 1.1743829}
+      - {x: -0.32421806, y: 1.1260788}
+      - {x: -0.26386762, y: 0.86241937}
+      - {x: -0.39422587, y: 0.6156659}
+      - {x: -0.6389484, y: 0.4329641}
+      - {x: -0.725778, y: 0.096395016}
+      - {x: -0.56774956, y: -0.119152546}
+      - {x: -0.19748667, y: -0.23525143}
+      - {x: 0.10978589, y: -0.15216088}
+      - {x: 0.30325705, y: -0.011187792}
+      - {x: 0.47983864, y: 0.45814872}
+      - {x: 0.4608304, y: 0.6963022}
+      - {x: 0.4330335, y: 0.7983444}
+  m_UseDelaunayMesh: 1
+--- !u!114 &4159747043953448773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5837092620866835734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d861914fcdaf26944aa88a814fd31755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TreeFade
+  treeSprite: {fileID: 1615690954998520674}
+  fadeAlpha: 0.3
+  fadeSpeed: 5
+  fadeZoneScale: 1.5
 --- !u!1 &7829823259287942790
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,10 +231,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7265257893994334199}
-  - component: {fileID: 7014909063031909067}
+  - component: {fileID: 6216741682309125890}
   - component: {fileID: 3319054420293157217}
-  - component: {fileID: 8694831602615018287}
-  - component: {fileID: 3117245374796764154}
+  - component: {fileID: 5339846323985096285}
   m_Layer: 0
   m_Name: Tree1
   m_TagString: Tree
@@ -128,8 +257,8 @@ Transform:
   - {fileID: 2935661833720611869}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &7014909063031909067
-CapsuleCollider2D:
+--- !u!61 &6216741682309125890
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -162,9 +291,18 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.19626005, y: 0.055465102}
-  m_Size: {x: 0.94502234, y: 0.4165312}
-  m_Direction: 1
+  m_Offset: {x: -0.08717656, y: 0.5735295}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.97247064, y: 1.4312935}
+  m_EdgeRadius: 0
 --- !u!114 &3319054420293157217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
---- !u!114 &8694831602615018287
+--- !u!114 &5339846323985096285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -186,76 +324,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7829823259287942790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d861914fcdaf26944aa88a814fd31755, type: 3}
+  m_Script: {fileID: 11500000, guid: a86b4c88d57b2d24fb457d001cceb990, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TreeFade
-  treeSprite: {fileID: 1615690954998520674}
-  fadeAlpha: 0.3
-  fadeSpeed: 5
---- !u!60 &3117245374796764154
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7829823259287942790}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.31490946, y: 1.062698}
-      - {x: 1.6541678, y: 1.5469424}
-      - {x: 2.323832, y: 2.6747193}
-      - {x: 0.7106203, y: 4.6351357}
-      - {x: 0.72044325, y: 6.1427517}
-      - {x: -0.11766432, y: 6.869949}
-      - {x: 0.047474466, y: 7.1398277}
-      - {x: -0.058608234, y: 7.31016}
-      - {x: -0.8275617, y: 6.9109783}
-      - {x: -0.76085514, y: 6.368676}
-      - {x: -1.6041209, y: 5.508531}
-      - {x: -1.6656772, y: 3.671878}
-      - {x: -2.2013671, y: 2.5752048}
-      - {x: -1.5213511, y: 1.6208944}
-      - {x: -0.3197978, y: 1.1743829}
-      - {x: -0.32421806, y: 1.1260788}
-      - {x: -0.2699838, y: 1.0153232}
-      - {x: -0.045604914, y: 0.9520547}
-      - {x: 0.30181035, y: 0.7391151}
-      - {x: 0.4330335, y: 0.79834443}
-  m_UseDelaunayMesh: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Tree
+  maxHp: 150
+  currentHp: 0
+  woodPrefab: {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
+  minWoodDrop: 1
+  maxWoodDrop: 5
+  dropRadius: 1

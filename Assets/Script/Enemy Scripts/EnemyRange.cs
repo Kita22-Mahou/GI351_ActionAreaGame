@@ -63,7 +63,7 @@ public class EnemyRange : MonoBehaviour
             return;
         }
 
-        Filp(target);
+        Flip(target);
 
         AimAtTarget(target);
 
@@ -113,7 +113,7 @@ public class EnemyRange : MonoBehaviour
     }
     #endregion
 
-    void Filp(Transform target)
+    void Flip(Transform target)
     {
         if (target == null)
             return;
@@ -203,8 +203,7 @@ public class EnemyRange : MonoBehaviour
         if (attackTimer > 0)
             return;
 
-        attackTimer =
-            attackCooldown;
+        attackTimer = attackCooldown;
 
         Shoot(target);
     }
@@ -241,24 +240,6 @@ public class EnemyRange : MonoBehaviour
 
     void Shoot(Transform target)
     {
-        if (BulletPrefab == null)
-        {
-            Debug.LogWarning(
-                "Projectile Prefab ยังไม่ได้ใส่!"
-            );
-
-            return;
-        }
-
-        if (firePoint == null)
-        {
-            Debug.LogWarning(
-                "Fire Point ยังไม่ได้ใส่!"
-            );
-
-            return;
-        }
-
         GameObject projectile =
             Instantiate(
                 BulletPrefab,
@@ -268,7 +249,7 @@ public class EnemyRange : MonoBehaviour
 
         EnemyBullet projectileScript = projectile.GetComponent<EnemyBullet>();
 
-        if (projectileScript != null)
+        if (projectileScript != null) // Set target and damage then send to EnemyBullet
         {
             Vector2 direction =
                 (
