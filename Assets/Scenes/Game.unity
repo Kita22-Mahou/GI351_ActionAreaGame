@@ -404320,6 +404320,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Melee
       objectReference: {fileID: 0}
+    - target: {fileID: 2559229383934123816, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.61
@@ -407017,6 +407021,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Range
       objectReference: {fileID: 0}
+    - target: {fileID: 1218229870778524528, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3886106962128653844, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.12
@@ -407502,6 +407510,10 @@ PrefabInstance:
     - target: {fileID: 3348858995144509124, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
       propertyPath: m_Name
       value: Enemy Tank
+      objectReference: {fileID: 0}
+    - target: {fileID: 3348858995144509124, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

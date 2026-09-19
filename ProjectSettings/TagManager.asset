@@ -9,6 +9,7 @@ TagManager:
   - Tree
   - Dog
   - Item
+  - Wall
   layers:
   - Default
   - TransparentFX

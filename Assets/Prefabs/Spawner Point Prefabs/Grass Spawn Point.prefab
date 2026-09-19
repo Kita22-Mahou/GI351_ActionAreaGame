@@ -46,3 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   objects:
   - {fileID: 830042448778262429, guid: 668414d0964fa0643b480965a93c9aa3, type: 3}
+  isPointSpawn: 1
+  isAreaSpawn: 0
+  areaX: 0
+  areaY: 0
+  objectAmount: 0
+  gapBTWObject: 0
