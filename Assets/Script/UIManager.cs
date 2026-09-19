@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [Header("Player")]
-    public SwordMan player;
+    public PlayerHealthPoint playerHP;
 
     [Header("Car")]
     public CarHealthPoint carHP;
-    public Car car;
+    private Car car;
 
     [Header("UI")]
     public Slider playerHPBar;
@@ -24,10 +24,10 @@ public class UIManager : MonoBehaviour
 
     void UpdatePlayerHP()
     {
-        if (player == null)
+        if (playerHP == null)
             return;
 
-        playerHPBar.value = player.currentHP / player.maxHP;
+        playerHPBar.value = playerHP.currentHP / playerHP.maxHP;
     }
 
     void UpdateCarHP()
