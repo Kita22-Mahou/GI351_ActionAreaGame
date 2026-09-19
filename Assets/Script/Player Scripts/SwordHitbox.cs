@@ -11,7 +11,7 @@ public class SwordHitBox : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            EnemyHealthPoint target = collision.GetComponent<EnemyHealthPoint>();
+            EnemyHealthPoint target = collision.GetComponentInParent<EnemyHealthPoint>();
 
             if (target == null)
             {
@@ -30,7 +30,7 @@ public class SwordHitBox : MonoBehaviour
 
         if (collision.CompareTag("Tree"))
         {
-            Tree target = collision.GetComponent<Tree>();
+            Tree target = collision.GetComponentInParent<Tree>();
 
             if (target == null)
             {

@@ -95,6 +95,8 @@ public class EnemyMelee : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
         }
+
+        //FlipToTarget(target);
     }
     #endregion
 
@@ -146,12 +148,25 @@ public class EnemyMelee : MonoBehaviour
 
         rb.linearVelocity = direction * moveSpeed;
     }
+
+    //void FlipToTarget(Transform target)
+    //{
+    //    if (target.position.x > transform.position.x)
+    //    {
+    //        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x)
+    //            ,transform.localScale.y,transform.localScale.z);
+    //    }
+    //    else if (target.position.x < transform.position.x)
+    //    {
+    //        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x)
+    //            ,transform.localScale.y,transform.localScale.z);
+    //    }
+    //}
     #endregion
 
     void AttackDirection(Transform target) // คำนวณทิศทางการโจมตี และหมุนไปทางที่โจมตี
     {
         Vector2 direction = (target.position - transform.position).normalized;
-        float attackRange = 1.25f;
 
         Vector2 attackPosition = direction * attackRange;
 

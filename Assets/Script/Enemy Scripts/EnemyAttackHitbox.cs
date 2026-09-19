@@ -11,7 +11,7 @@ public class EnemyAttackHitbox : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            PlayerHealthPoint target = collision.GetComponent<PlayerHealthPoint>();
+            PlayerHealthPoint target = collision.GetComponentInParent<PlayerHealthPoint>();
 
             if (target == null)
             {
@@ -30,7 +30,7 @@ public class EnemyAttackHitbox : MonoBehaviour
 
         if (collision.CompareTag("Car"))
         {
-            CarHealthPoint target = collision.GetComponent<CarHealthPoint>();
+            CarHealthPoint target = collision.GetComponentInParent<CarHealthPoint>();
 
             if (target == null)
             {

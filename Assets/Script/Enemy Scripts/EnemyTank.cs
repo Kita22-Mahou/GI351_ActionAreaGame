@@ -1,31 +1,40 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class EnemyTank : MonoBehaviour
 {
-    [Header("Attack")]
-
-    [SerializeField] private float attackDamage = 30f;
-    [SerializeField] private float attackCooldown = 2f;
-    [SerializeField] private float attackTimer = 0f;
+    [Header("Target")]
+    [SerializeField] private float detectRange;
+    [SerializeField] private float attackRange;
+    private Transform player;
+    private Transform car;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private int faceDirection = 2;
     private Rigidbody2D rb;
 
-    [Header("Target")]
-    [SerializeField] private float detectRange = 12f;
-    [SerializeField] private float attackRange = 1.5f;
-    private Transform player;
-    private Transform car;
+    [Header("Attack")]
+    [SerializeField] private GameObject attackHitbox;
+    [SerializeField] private float attackDamage = 30f;
+    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float attackTime = 0f;
+
+    [SerializeField] private bool isAttacking = false;
+
+    [Header("Referent")]
+    private FaceDetector faceDetector;
 
     #region Event System
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        faceDetector = GetComponent<FaceDetector>();
     }
 
     void Start()
     {
+        faceDirection = faceDetector.faceDetectDirection;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
@@ -45,9 +54,9 @@ public class EnemyTank : MonoBehaviour
 
     void Update()
     {
-        if (attackTimer > 0)
+        if (attackTime > 0)
         {
-            attackTimer -= Time.deltaTime;
+            attackTime -= Time.deltaTime;
         }
 
     }
@@ -72,7 +81,10 @@ public class EnemyTank : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
 
-            Attack(target);
+            if (attackTime <= 0)
+            {
+                AttackDirection(target);
+            }
 
             return;
         }
@@ -86,24 +98,24 @@ public class EnemyTank : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
         }
 
-        FlipToTarget(target);
+        //FlipToTarget(target);
     }
     #endregion
 
     #region Movement
-    void FlipToTarget(Transform target)
-    {
-        if (target.position.x > transform.position.x)
-        {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x)
-                ,transform.localScale.y,transform.localScale.z);
-        }
-        else if (target.position.x < transform.position.x)
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x)
-                ,transform.localScale.y,transform.localScale.z);
-        }
-    }
+    //void FlipToTarget(Transform target)
+    //{
+    //    if (target.position.x > transform.position.x)
+    //    {
+    //        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x)
+    //            ,transform.localScale.y,transform.localScale.z);
+    //    }
+    //    else if (target.position.x < transform.position.x)
+    //    {
+    //        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x)
+    //            ,transform.localScale.y,transform.localScale.z);
+    //    }
+    //}
 
     Transform FindClosestTarget()
     {
@@ -161,37 +173,37 @@ public class EnemyTank : MonoBehaviour
     }
     #endregion
 
-    void Attack(Transform target)
+    void AttackDirection(Transform target) // คำนวณทิศทางการโจมตี และหมุนไปทางที่โจมตี
     {
-        if (attackTimer > 0)
-            return;
+        Vector2 direction = (target.position - transform.position).normalized;
 
+        Vector2 attackPosition = direction * attackRange;
 
-        attackTimer = attackCooldown;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
-        if (target.CompareTag("Player"))
-        {
-            PlayerHealthPoint playerScript = target.GetComponent<PlayerHealthPoint>();
+        Attack(attackPosition, rotation);
+    }
 
-            if (playerScript != null)
-            {
-                playerScript.TakeDamage(attackDamage);
+    void Attack(Vector2 pos, Quaternion rot)
+    {
+        isAttacking = true;
+        attackHitbox.transform.position = (Vector2)transform.position + pos;
+        attackHitbox.transform.rotation = rot;
+        attackHitbox.SetActive(true);
+        attackHitbox.GetComponent<CircleCollider2D>().enabled = true;
+        StartCoroutine(DisableHitbox());
+    }
 
-                Debug.Log("Tank Attack Player");
-            }
-        }
+    IEnumerator DisableHitbox()
+    {
+        yield return new WaitForSeconds(0.2f);
 
-        else if (target.CompareTag("Car"))
-        {
-            CarHealthPoint carScript = target.GetComponent<CarHealthPoint>();
-
-            if (carScript != null)
-            {
-                carScript.TakeDamage(attackDamage);
-
-                Debug.Log("Tank Attack Car");
-            }
-        }
+        isAttacking = false;
+        attackHitbox.SetActive(false);
+        attackHitbox.GetComponent<CircleCollider2D>().enabled = false;
+        attackHitbox.GetComponent<EnemyAttackHitbox>().HashSetClear();
+        attackTime = attackCooldown;
     }
 
     private void OnDrawGizmosSelected()
