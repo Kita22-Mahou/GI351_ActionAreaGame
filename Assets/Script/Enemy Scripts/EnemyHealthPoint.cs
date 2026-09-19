@@ -37,8 +37,6 @@ public class EnemyHealthPoint : MonoBehaviour
 
     void Die()
     {
-        rb.linearVelocity = Vector2.zero;
-
         Debug.Log("Enemy Dead");
 
         Destroy(gameObject);

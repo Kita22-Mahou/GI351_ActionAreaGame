@@ -8,7 +8,7 @@ public class SwordMan : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private GameObject characterSprite;
     [SerializeField] private float speed = 5;
-    [SerializeField] private int faceDirection = 1;
+    [SerializeField] private int faceDirection = 2;
     private Rigidbody2D rb;
 
     [Header("HP")]
@@ -46,6 +46,7 @@ public class SwordMan : MonoBehaviour
     [Header("Referent")]
     public static SwordMan instance;
     public GameObject sword;
+    private FaceDetector faceDetector;
 
     #region Event System
     private void Awake()
@@ -57,7 +58,7 @@ public class SwordMan : MonoBehaviour
         sword.SetActive(false);
 
         skillRadius = skillHitbox.GetComponent<CircleCollider2D>().radius;
-
+        faceDetector = GetComponent<FaceDetector>();
     }
 
     private void Update()
@@ -68,7 +69,7 @@ public class SwordMan : MonoBehaviour
             Keyboard.current.sKey.isPressed ||
             Keyboard.current.dKey.isPressed)  // make FaceDetect not return 0
         {
-            faceDirection = FaceDetect();
+            faceDirection = faceDetector.faceDetectDirection;
         }
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
@@ -168,47 +169,6 @@ public class SwordMan : MonoBehaviour
             spriteTransform.localScale = new Vector3(spriteTransform.localScale.x * -1, spriteTransform.localScale.y, spriteTransform.localScale.z);
         }
     }
-
-    public int FaceDetect()
-    {
-        float horizontal = rb.linearVelocityX;
-        float vertical = rb.linearVelocityY;
-
-        if (horizontal == 0 && vertical > 0) // Face Up
-        {
-            return 1;
-        }
-        if (horizontal > 0 && vertical > 0) // Face Right Up
-        {
-            return 2;
-        }
-        if (horizontal > 0 && vertical == 0) // Face Right
-        {
-            return 3;
-        }
-        if (horizontal > 0 && vertical < 0) // Face Right Down
-        {
-            return 4;
-        }
-        if (horizontal == 0 && vertical < 0) // Face Down
-        {
-            return 5;
-        }
-        if (horizontal < 0 && vertical < 0) // Face Left Down
-        {
-            return 6;
-        }
-        if (horizontal < 0 && vertical == 0) // Face Left 
-        {
-            return 7;
-        }
-        if (horizontal < 0 && vertical > 0) // Face Left Up
-        {
-            return 8;
-        }
-
-        return 0;
-    }
     #endregion
 
     #region Abilities
@@ -279,15 +239,18 @@ public class SwordMan : MonoBehaviour
         swordHitbox.transform.position = (Vector2)transform.position + pos;
         swordHitbox.transform.rotation = rot;
         swordHitbox.SetActive(true);
-        StartCoroutine(DisableHitbox(0));
+        swordHitbox.GetComponent<CapsuleCollider2D>().enabled = true;
+        StartCoroutine(DisableHitbox());
     }
 
-    IEnumerator DisableHitbox(int hitboxNumber)
+    IEnumerator DisableHitbox()
     {
         yield return new WaitForSeconds(0.2f);
 
         isAttacking = false;
         swordHitbox.SetActive(false);
+        swordHitbox.GetComponent<CapsuleCollider2D>().enabled = false;
+        swordHitbox.GetComponent<SwordHitBox>().HashSetClear();
     }
 
     public void Dash()

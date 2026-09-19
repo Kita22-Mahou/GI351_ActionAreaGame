@@ -1,17 +1,13 @@
 using UnityEngine;
 
-public class PlayerHealthPoint : MonoBehaviour
+public class CarHealthPoint : MonoBehaviour
 {
-    private Rigidbody rb;
-
     [Header("HP")]
     public float maxHP = 100f;
     public float currentHP = 0f;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
         currentHP = maxHP;
     }
 
@@ -19,23 +15,19 @@ public class PlayerHealthPoint : MonoBehaviour
     {
         currentHP -= damage;
 
-        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
-
-        Debug.Log("PlayerHP: " + currentHP);
+        Debug.Log("HP: " + currentHP);
 
         if (currentHP <= 0)
         {
             currentHP = 0;
 
-            PlayerDead();
+            Destroyed();
         }
     }
 
-    void PlayerDead()
+    void Destroyed()
     {
-        Debug.Log("Player Dead");
-
         Destroy(gameObject);
-
+        Debug.Log("DESTROYED!");
     }
 }
