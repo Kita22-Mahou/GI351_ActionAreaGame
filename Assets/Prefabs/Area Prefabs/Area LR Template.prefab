@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 375677959903331390}
   m_Layer: 0
   m_Name: Area LR Template
-  m_TagString: Untagged
+  m_TagString: No Count
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -49,3 +49,8 @@ MonoBehaviour:
   - {fileID: 620194627354003208, guid: d9ca5dbe289e8c944ba81e848f6edadd, type: 3}
   - {fileID: 620194627354003208, guid: 91b1cdb1c26bdaf4fa39fd638414c70e, type: 3}
   - {fileID: 620194627354003208, guid: c78f17630a9f9c242a80900c52137dc9, type: 3}
+  isPointSpawn: 1
+  isAreaSpawn: 0
+  objectAmount: 0
+  gapBTWObject: 0
+  delaySpawnBTWObject: 0

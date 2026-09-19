@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1289356213141116349}
   - component: {fileID: 1835506449640686250}
   - component: {fileID: 3271563203329426937}
+  - component: {fileID: 7796251413513672831}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -214,6 +215,22 @@ MonoBehaviour:
   fadeAlpha: 0.3
   fadeSpeed: 5
   fadeZoneScale: 1.5
+--- !u!114 &7796251413513672831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3809255986234366619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c03d1cb53813a468eb371b5b0c8c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverlabDelete
+  collider: {fileID: 1289356213141116349}
+  isOverlab: 0
+  selectParent: 1
+  selectThis: 0
 --- !u!1 &8369295572167807362
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,9 +240,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3607095738151092363}
+  - component: {fileID: 2584922827040126367}
   - component: {fileID: 8276252349432883041}
   - component: {fileID: -3720234601793808858}
-  - component: {fileID: 2584922827040126367}
   m_Layer: 0
   m_Name: Tree2
   m_TagString: Tree
@@ -249,36 +266,6 @@ Transform:
   - {fileID: 3839899901887324730}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8276252349432883041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8369295572167807362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
---- !u!114 &-3720234601793808858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8369295572167807362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a86b4c88d57b2d24fb457d001cceb990, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tree
-  maxHp: 150
-  currentHp: 0
-  woodPrefab: {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
-  minWoodDrop: 1
-  maxWoodDrop: 5
-  dropRadius: 1
 --- !u!61 &2584922827040126367
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -325,3 +312,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.4407449, y: 1.8055614}
   m_EdgeRadius: 0
+--- !u!114 &8276252349432883041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8369295572167807362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
+--- !u!114 &-3720234601793808858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8369295572167807362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86b4c88d57b2d24fb457d001cceb990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tree
+  maxHp: 150
+  currentHp: 0
+  woodPrefab: {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
+  minWoodDrop: 1
+  maxWoodDrop: 5
+  dropRadius: 1

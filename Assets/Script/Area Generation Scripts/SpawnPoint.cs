@@ -14,14 +14,28 @@ public class SpawnPoint : MonoBehaviour
     [SerializeField] float delaySpawnBTWObject;
     private float delayAttempt = 0.05f;
 
+    [Header("Spawn Chance")]
+    [SerializeField] bool isSpawnChance;
+    [SerializeField] float spawnChance = 100;
+    private float num = 0;
+
     private PolygonCollider2D spawnArea;
     private List<Vector2> ObjectSpawnedPositions = new List<Vector2>();
 
     private void Start()
     {
         spawnArea = GetComponent<PolygonCollider2D>();
-        PointSpawn();
-        StartCoroutine(AreaSpawn());
+
+        if (isSpawnChance)
+        {
+            num = Random.Range(0, 101);
+        }
+
+        if (num <= spawnChance)
+        {
+            PointSpawn();
+            StartCoroutine(AreaSpawn());
+        }
     }
 
     void PointSpawn()

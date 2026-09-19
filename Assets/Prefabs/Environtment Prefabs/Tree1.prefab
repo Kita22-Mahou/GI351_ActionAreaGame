@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3960433948267745857}
   - component: {fileID: 3325911563881307106}
   - component: {fileID: 4159747043953448773}
+  - component: {fileID: 5453597984573561759}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -222,6 +223,22 @@ MonoBehaviour:
   fadeAlpha: 0.3
   fadeSpeed: 5
   fadeZoneScale: 1.5
+--- !u!114 &5453597984573561759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5837092620866835734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c03d1cb53813a468eb371b5b0c8c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverlabDelete
+  collider: {fileID: 3960433948267745857}
+  isOverlab: 0
+  selectParent: 1
+  selectThis: 0
 --- !u!1 &7829823259287942790
 GameObject:
   m_ObjectHideFlags: 0
