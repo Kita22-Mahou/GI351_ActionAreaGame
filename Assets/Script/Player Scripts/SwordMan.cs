@@ -46,7 +46,7 @@ public class SwordMan : MonoBehaviour
     [Header("Referent")]
     public static SwordMan instance;
     public GameObject sword;
-    private FaceDetector faceDetector;
+    private PlayerFaceDetector playerfaceDetector;
 
     #region Event System
     private void Awake()
@@ -58,7 +58,7 @@ public class SwordMan : MonoBehaviour
         sword.SetActive(false);
 
         skillRadius = skillHitbox.GetComponent<CircleCollider2D>().radius;
-        faceDetector = GetComponent<FaceDetector>();
+        playerfaceDetector = GetComponent<PlayerFaceDetector>();
     }
 
     private void Update()
@@ -69,7 +69,7 @@ public class SwordMan : MonoBehaviour
             Keyboard.current.sKey.isPressed ||
             Keyboard.current.dKey.isPressed)  // make FaceDetect not return 0
         {
-            faceDirection = faceDetector.faceDetectDirection;
+            faceDirection = playerfaceDetector.faceDetectDirection;
         }
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
