@@ -4,7 +4,7 @@ using System.Collections;
 public class TreeFade : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer treeSprite;
-    [SerializeField] private float fadeAlpha = 0.3f;
+    [SerializeField] private float fadeAlpha = 0.15f;
     [SerializeField] private float fadeSpeed = 5f;
     //[SerializeField] private float fadeRadius = 2.5f;
     [SerializeField] private float fadeZoneScale = 1.5f;

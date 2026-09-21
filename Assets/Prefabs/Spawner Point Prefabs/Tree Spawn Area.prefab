@@ -50,10 +50,13 @@ MonoBehaviour:
   - {fileID: 8369295572167807362, guid: 3c78cf41e4e866845bb9e9e09701f946, type: 3}
   - {fileID: 3486511641951316536, guid: ceec464330a4c3d43a0e6a33a2fbaddb, type: 3}
   isPointSpawn: 0
+  spawnDelay: 0
   isAreaSpawn: 1
   objectAmount: 35
-  gapBTWObject: 1
+  gapBTWObject: 3
   delaySpawnBTWObject: 0
+  isSpawnChance: 0
+  spawnChance: 100
 --- !u!60 &5117054903025484369
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -100,9 +103,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.05003977, y: 1.4003172}
-      - {x: -23.951057, y: 1.309017}
-      - {x: -24.587786, y: -1.8090171}
-      - {x: 24.587786, y: -1.809017}
-      - {x: 23.951057, y: 1.3090172}
+    - - {x: -1.9349799, y: 1.4003172}
+      - {x: -5.4751015, y: 1.4617107}
+      - {x: -5.1956654, y: -1.7326707}
+      - {x: 1.0729313, y: -1.5036294}
+      - {x: 0.97063446, y: 1.3090172}
   m_UseDelaunayMesh: 1

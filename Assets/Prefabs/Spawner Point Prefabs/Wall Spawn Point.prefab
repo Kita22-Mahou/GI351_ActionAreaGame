@@ -47,8 +47,10 @@ MonoBehaviour:
   objects:
   - {fileID: 1126965228360536380, guid: 9450fc5cd0d33164b9bc49bef74392f7, type: 3}
   isPointSpawn: 0
-  isAreaSpawn: 0
-  areaX: 0
-  areaY: 0
-  objectAmount: 0
+  spawnDelay: 0
+  isAreaSpawn: 1
+  objectAmount: 1
   gapBTWObject: 0
+  delaySpawnBTWObject: 0
+  isSpawnChance: 0
+  spawnChance: 100

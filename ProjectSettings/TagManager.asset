@@ -11,6 +11,7 @@ TagManager:
   - Item
   - Wall
   - No Count
+  - Overlab
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - Enemy
   - Room
   - Item
-  - 
-  - 
+  - Player
+  - Nothing
   - 
   - 
   - 

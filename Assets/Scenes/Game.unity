@@ -404318,6 +404318,7 @@ GameObject:
   - component: {fileID: 978729260}
   - component: {fileID: 978729261}
   - component: {fileID: 978729262}
+  - component: {fileID: 978729263}
   m_Layer: 0
   m_Name: Character Sprite
   m_TagString: Player
@@ -404413,6 +404414,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerOrderLayerUpdate
   order: 0
+--- !u!70 &978729263
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978729259}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.089079745, y: -0.6339049}
+  m_Size: {x: 0.4080703, y: 0.20146659}
+  m_Direction: 1
 --- !u!1001 &983868665
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -405881,6 +405919,62 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   areaGeneration: {fileID: 1908750996}
+--- !u!1 &1609865342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1609865344}
+  - component: {fileID: 1609865343}
+  m_Layer: 0
+  m_Name: Enemy Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1609865343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609865342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10a74cb4bf11e9448c59b7b4bfc61b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  player: {fileID: 3141907583721212116, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
+  enemies:
+  - EnemyPrefab: {fileID: 2559229383934123816, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
+    spawnChance: 100
+  - EnemyPrefab: {fileID: 1218229870778524528, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
+    spawnChance: 0
+  - EnemyPrefab: {fileID: 3348858995144509124, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
+    spawnChance: 0
+  minSpawnRadius: 4
+  spawnRadius: 8
+  spawnInterval: 1
+  maxMonsters: 20
+--- !u!4 &1609865344
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609865342}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 29.39863, y: -6.66588, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1628324637
 GameObject:
   m_ObjectHideFlags: 0
@@ -406895,7 +406989,7 @@ GameObject:
   - component: {fileID: 1894542725}
   - component: {fileID: 1894542719}
   - component: {fileID: 1894542726}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SwordMan
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -406998,7 +407092,7 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -407086,10 +407180,10 @@ MonoBehaviour:
   - {fileID: 4261025}
   - {fileID: 1361126516}
   areas:
-  - {fileID: 703738040720923793, guid: bfe8320f4e3760e4e85d6c92f024e998, type: 3}
-  - {fileID: 620194627354003208, guid: c8e2957a9a21827469dbc72c231836b1, type: 3}
-  - {fileID: 620194627354003208, guid: 1056704c13d21f24b996f53ee058e2bb, type: 3}
-  - {fileID: 620194627354003208, guid: 9ec63ee15dfe40a44864d6debea9b4a8, type: 3}
+  - {fileID: 620194627354003208, guid: ae5b3fba26b6ce74f9e54654ea5aacfe, type: 3}
+  - {fileID: 620194627354003208, guid: 0afc5e17e75faa14c8e87e1d4a7f6cab, type: 3}
+  - {fileID: 620194627354003208, guid: d116c987b7b90ac46aa3910b333ec0c5, type: 3}
+  - {fileID: 620194627354003208, guid: 39caa869c45a790418a7e84de4340e40, type: 3}
   moveAmount: 50
   startTimeBtwArea: 1
   area:
@@ -407644,3 +407738,4 @@ SceneRoots:
   - {fileID: 1528047268}
   - {fileID: 214290656}
   - {fileID: 678526960}
+  - {fileID: 1609865344}

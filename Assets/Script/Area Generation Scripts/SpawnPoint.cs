@@ -6,13 +6,14 @@ public class SpawnPoint : MonoBehaviour
 {
     public GameObject[] objects;
     [SerializeField] bool isPointSpawn;
+    [SerializeField] float spawnDelay = 0;
 
     [Header("Area Spawn")]
     [SerializeField] bool isAreaSpawn;
-    [SerializeField] int objectAmount;
+    [SerializeField] int objectAmount = 1;
     [SerializeField] float gapBTWObject;
     [SerializeField] float delaySpawnBTWObject;
-    private float delayAttempt = 0.05f;
+    private float delayAttempt = 0.005f;
 
     [Header("Spawn Chance")]
     [SerializeField] bool isSpawnChance;
@@ -33,15 +34,17 @@ public class SpawnPoint : MonoBehaviour
 
         if (num <= spawnChance)
         {
-            PointSpawn();
+            StartCoroutine(PointSpawn());
             StartCoroutine(AreaSpawn());
         }
     }
 
-    void PointSpawn()
+    IEnumerator PointSpawn()
     {
+        yield return new WaitForSeconds(spawnDelay);
+
         if (!isPointSpawn)
-            return;
+            yield break;
 
         int rand = Random.Range(0, objects.Length);
         GameObject instance = Instantiate(objects[rand], transform.position, Quaternion.identity);
@@ -51,6 +54,8 @@ public class SpawnPoint : MonoBehaviour
 
     IEnumerator AreaSpawn()
     {
+        yield return new WaitForSeconds(spawnDelay);
+
         if (!isAreaSpawn)
             yield break;
 
