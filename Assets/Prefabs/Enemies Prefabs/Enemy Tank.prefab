@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 963cebb08a8ba0343aedbe7ae3328015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  detectRange: 7
+  detectRange: 13
   attackRange: 2
   moveSpeed: 1
   faceDirection: 2
