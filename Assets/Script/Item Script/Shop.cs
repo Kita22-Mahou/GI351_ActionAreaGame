@@ -1,69 +1,219 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
-public class ShopManager : MonoBehaviour
+public enum UpgradeType
 {
+    Damage,
+    Speed,
+    MaxHP,
+    Heal
+}
+
+public enum ResourceType
+{
+    Wood,
+    Bone,
+    Hide,
+    Blood
+}
+
+[System.Serializable]
+public class ShopUpgrade
+{
+    public string upgradeName;
+    public string description;
+
+    public UpgradeType upgradeType;
+    public ResourceType resourceType;
+
+    public int price;
+    public float amount;
+}
+
+public class Shop : MonoBehaviour
+{
+    public static Shop Instance;
+
+    [Header("Player")]
     [SerializeField] private SwordMan player;
+    [SerializeField] private SwordHitBox HitBox;
 
-    public void BuyDamageUpgrade()
+
+    [Header("Shop UI")]
+    [SerializeField] private GameObject shopPanel;
+    [SerializeField] private Button[] upgradeButtons;
+    [SerializeField] private TMP_Text[] nameTexts;
+    [SerializeField] private TMP_Text[] descriptionTexts;
+    [SerializeField] private TMP_Text[] priceTexts;
+
+    [Header("Kill Settings")]
+    [SerializeField] private int KillOpenShop = 10;
+
+    [Header("Upgrade Pool")]
+    [SerializeField] private List<ShopUpgrade> upgradePool = new();
+
+    private readonly List<ShopUpgrade> currentOffers = new();
+
+    public int killCount = 0;
+    private bool shopOpen = false;
+
+    private void Awake()
     {
-        if (Inventory.Instance == null || player == null)
+        Instance = this;
+
+        if (shopPanel != null)
+            shopPanel.SetActive(false);
+    }
+
+    public void KillCountEnemy()
+    {
+        if (shopOpen)
             return;
 
-        if (Inventory.Instance.SpendWood(3))
+        killCount++;
+
+        if (killCount >= KillOpenShop)
         {
-            player.UpgradeDamage(5f);
-        }
-        else
-        {
-            Debug.Log("Wood ไม่พอ");
+            killCount = 0;
+            OpenShop();
         }
     }
 
-
-    public void BuySpeedUpgrade()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Inventory.Instance == null || player == null)
+        if (collision == null) return;
+    }
+
+    private void OpenShop()
+    {
+        if (shopPanel == null)
             return;
 
-        if (Inventory.Instance.SpendHide(2))
+        shopOpen = true;
+        Time.timeScale = 0f;
+
+        GenerateOffers();
+        shopPanel.SetActive(true);
+    }
+
+
+    private void GenerateOffers()
+    {
+        currentOffers.Clear();
+
+        List<ShopUpgrade> available = new List<ShopUpgrade>(upgradePool);
+
+        for (int i = 0; i < 3 && available.Count > 0; i++)
         {
-            player.UpgradeSpeed(1f);
+            int randomIndex = Random.Range(0, available.Count);
+
+            currentOffers.Add(available[randomIndex]);
+            available.RemoveAt(randomIndex);
         }
-        else
+
+        for (int i = 0; i < upgradeButtons.Length; i++)
         {
-            Debug.Log("Hide ไม่พ");
+            if (i < currentOffers.Count)
+            {
+                ShopUpgrade offer = currentOffers[i];
+
+                nameTexts[i].text = offer.upgradeName;
+                descriptionTexts[i].text = offer.description;
+                priceTexts[i].text =
+                    offer.price + " " + offer.resourceType;
+
+                upgradeButtons[i].gameObject.SetActive(true);
+
+                int index = i;
+                upgradeButtons[i].onClick.RemoveAllListeners();
+                upgradeButtons[i].onClick.AddListener(
+                    () => BuyUpgrade(index)
+                );
+            }
+            else
+            {
+                upgradeButtons[i].gameObject.SetActive(false);
+            }
         }
     }
 
-    public void BuyMaxHPUpgrade()
+    private void BuyUpgrade(int index)
     {
-        if (Inventory.Instance == null || player == null)
+        if (index < 0 || index >= currentOffers.Count)
             return;
 
-        if (Inventory.Instance.SpendBone(2))
+        ShopUpgrade offer = currentOffers[index];
+
+        if (!SpendResource(offer.resourceType, offer.price))
         {
-            player.UpgradeMaxHP(20f);
+            return;
         }
-        else
+
+        ApplyUpgrade(offer);
+
+        Debug.Log("ซื้อ " + offer.upgradeName + " สำเร็จ!");
+
+        CloseShop();
+    }
+
+    private bool SpendResource(ResourceType type, int price)
+    {
+        if (Inventory.Instance == null)
+            return false;
+
+        switch (type)
         {
-            Debug.Log("Bone ไม่พอ");
+            case ResourceType.Wood:
+                return Inventory.Instance.SpendWood(price);
+
+            case ResourceType.Bone:
+                return Inventory.Instance.SpendBone(price);
+
+            case ResourceType.Hide:
+                return Inventory.Instance.SpendHide(price);
+
+            case ResourceType.Blood:
+                return Inventory.Instance.SpendBlood(price);
+        }
+
+        return false;
+    }
+
+    private void ApplyUpgrade(ShopUpgrade offer)
+    {
+        if (player == null)
+            return;
+
+        switch (offer.upgradeType)
+        {
+            case UpgradeType.Damage:
+                HitBox.UpgradeDamage(offer.amount);
+                break;
+
+            case UpgradeType.Speed:
+                player.UpgradeSpeed(offer.amount);
+                break;
+
+            case UpgradeType.MaxHP:
+                player.UpgradeMaxHP(offer.amount);
+                break;
+
+            case UpgradeType.Heal:
+                player.Heal(offer.amount);
+                break;
         }
     }
 
-    public void BuyHeal()
+    public void CloseShop()
     {
-        if (Inventory.Instance == null || player == null)
-            return;
+        shopOpen = false;
 
-        if (Inventory.Instance.SpendBlood(1))
-        {
-            player.Heal(30f);
-        }
-        else
-        {
-            Debug.Log("Blood ไม่พอ");
-        }
+        if (shopPanel != null)
+            shopPanel.SetActive(false);
+
+        Time.timeScale = 1f;
     }
-
 
 }

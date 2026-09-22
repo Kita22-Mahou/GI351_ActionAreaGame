@@ -402,11 +402,11 @@ public class SwordMan : MonoBehaviour
         return baseAttackDamage + damageBonus;
     }
 
-    public void UpgradeDamage(float amount)
-    {
-        damageBonus += amount;
-        Debug.Log("Attack Damage: " + GetAttackDamage());
-    }
+    //public void UpgradeDamage(float amount)
+    //{
+        //damageBonus += amount;
+        //Debug.Log("Attack Damage: " + GetAttackDamage());
+    //}
 
     public void UpgradeSpeed(float amount)
     {
