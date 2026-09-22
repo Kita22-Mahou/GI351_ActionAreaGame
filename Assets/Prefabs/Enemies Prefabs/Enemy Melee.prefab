@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3333009a82971945aac7e1c1b4c51d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMelee
-  detectRange: 15
+  detectRange: 8
   attackRange: 1.5
   moveSpeed: 2
   faceDirection: 2
