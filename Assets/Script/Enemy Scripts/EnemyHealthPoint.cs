@@ -39,6 +39,8 @@ public class EnemyHealthPoint : MonoBehaviour
     {
         Debug.Log("Enemy Dead");
 
+        Shop.Instance.KillCountEnemy();
+        
         Destroy(gameObject);
 
         DropItems();

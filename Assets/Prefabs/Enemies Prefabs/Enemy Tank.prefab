@@ -118,7 +118,7 @@ MonoBehaviour:
   currentHP: 0
   dropItems: []
   dropChance: 10
-  dropRadius: 0.5
+  dropRadius: 2
 --- !u!114 &6926719188410467260
 MonoBehaviour:
   m_ObjectHideFlags: 0

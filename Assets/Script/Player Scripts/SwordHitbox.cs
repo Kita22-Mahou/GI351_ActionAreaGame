@@ -55,4 +55,9 @@ public class SwordHitBox : MonoBehaviour
         hitTargets.Clear();
     }
 
+    public void UpgradeDamage(float amount)
+    {
+        damage += amount;
+    }
+
 }
