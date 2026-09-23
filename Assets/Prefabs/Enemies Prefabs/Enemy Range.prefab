@@ -115,9 +115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthPoint
   maxHP: 100
   currentHP: 0
-  dropItems: []
-  dropChance: 10
-  dropRadius: 0.5
+  dropItems:
+  - {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
+  - {fileID: 4505955664246430292, guid: 5a0118079b51491479a28551f5df972a, type: 3}
+  dropChance: 50
+  dropRadius: 2
 --- !u!114 &1010507381671341520
 MonoBehaviour:
   m_ObjectHideFlags: 0
