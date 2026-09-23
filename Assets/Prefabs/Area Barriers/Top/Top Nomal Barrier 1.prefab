@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8524901149311606446}
   - component: {fileID: 8044040895352764945}
   - component: {fileID: 5838686949282286109}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: Closed Sprite Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
