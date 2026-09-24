@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6705449949821219218}
   - component: {fileID: 8267820950127149883}
   - component: {fileID: 7724558677374757266}
+  - component: {fileID: 1673799538994817236}
   m_Layer: 6
   m_Name: Enemy Melee
   m_TagString: Untagged
@@ -114,11 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb98a11bad7f6f4c8fb4f38fd440a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthPoint
-  maxHP: 100
+  maxHP: 60
   currentHP: 0
-  dropItems:
-  - {fileID: 2856258702912086859, guid: 6fd35c3cf544c3142b6d928ac6989e40, type: 3}
-  - {fileID: 4505955664246430292, guid: 5a0118079b51491479a28551f5df972a, type: 3}
+  dropItems: []
   dropChance: 50
   dropRadius: 2
 --- !u!114 &8267820950127149883
@@ -133,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3333009a82971945aac7e1c1b4c51d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMelee
-  detectRange: 8
+  detectRange: 50
   attackRange: 1.5
   moveSpeed: 2
   faceDirection: 2
@@ -155,6 +154,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FaceDetector
   faceDetectDirection: 0
+--- !u!195 &1673799538994817236
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2559229383934123816}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &3769193370016504036
 GameObject:
   m_ObjectHideFlags: 0

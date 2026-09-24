@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyHealthPoint : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class EnemyHealthPoint : MonoBehaviour
     {
         Debug.Log("Enemy Dead");
 
-        Shop.Instance.KillCountEnemy();
+        //Shop.Instance.KillCountEnemy();
         
         Destroy(gameObject);
 

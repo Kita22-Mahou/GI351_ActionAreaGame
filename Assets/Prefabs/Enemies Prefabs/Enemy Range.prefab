@@ -113,11 +113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb98a11bad7f6f4c8fb4f38fd440a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthPoint
-  maxHP: 100
+  maxHP: 40
   currentHP: 0
-  dropItems:
-  - {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
-  - {fileID: 4505955664246430292, guid: 5a0118079b51491479a28551f5df972a, type: 3}
+  dropItems: []
   dropChance: 50
   dropRadius: 2
 --- !u!114 &1010507381671341520
@@ -132,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b7b53ae7b509164ab427289674d153b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRange
-  detectRange: 10
+  detectRange: 50
   attackRange: 8
   keepDistance: 6
   moveSpeed: 1.5

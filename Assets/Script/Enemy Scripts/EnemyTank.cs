@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyTank : MonoBehaviour
 {
@@ -24,6 +26,7 @@ public class EnemyTank : MonoBehaviour
 
     [Header("Referent")]
     private FaceDetector faceDetector;
+    private NavMeshAgent navMeshAgent;
 
     #region Event System
     private void Awake()
@@ -34,7 +37,9 @@ public class EnemyTank : MonoBehaviour
 
     void Start()
     {
-        faceDirection = faceDetector.faceDetectDirection;
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateUpAxis = false;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
@@ -54,6 +59,8 @@ public class EnemyTank : MonoBehaviour
 
     void Update()
     {
+        faceDirection = faceDetector.faceDetectDirection;
+
         if (attackTime > 0)
         {
             attackTime -= Time.deltaTime;
@@ -91,6 +98,7 @@ public class EnemyTank : MonoBehaviour
 
         if (distance <= detectRange)
         {
+            //NavMeshMove(target);
             MoveToTarget(target);
         }
         else
@@ -163,6 +171,18 @@ public class EnemyTank : MonoBehaviour
 
         return closestTarget;
     }
+
+    //void NavMeshMove(Transform target)
+    //{
+    //    if (isAttacking)
+    //    {
+    //        rb.linearVelocity = Vector2.zero;
+    //        return;
+
+    //    }
+
+    //    navMeshAgent.SetDestination(target.position);
+    //}
 
     void MoveToTarget(Transform target)
     {

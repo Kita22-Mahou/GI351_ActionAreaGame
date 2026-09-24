@@ -53,6 +53,8 @@ MonoBehaviour:
   objectAmount: 100
   gapBTWObject: 0.3
   delaySpawnBTWObject: 0.01
+  delayAttempt: 0.005
+  repeatAttemp: 50
   isSpawnChance: 0
   spawnChance: 100
 --- !u!60 &2051584773852689643
@@ -85,7 +87,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

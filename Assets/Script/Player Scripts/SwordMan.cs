@@ -11,10 +11,6 @@ public class SwordMan : MonoBehaviour
     [SerializeField] private int faceDirection = 2;
     private Rigidbody2D rb;
 
-    [Header("HP")]
-    public float maxHP = 100f;
-    public float currentHP = 0f;
-
     [Header("Attack")]
     [SerializeField] private GameObject swordHitbox;
     [SerializeField] private LayerMask enemyLayer;
@@ -53,8 +49,7 @@ public class SwordMan : MonoBehaviour
     {
         instance = this;
         rb = GetComponent<Rigidbody2D>();
-
-        currentHP = maxHP;
+        
         sword.SetActive(false);
 
         skillRadius = skillHitbox.GetComponent<CircleCollider2D>().radius;
@@ -414,23 +409,23 @@ public class SwordMan : MonoBehaviour
         Debug.Log("Speed: " + speed);
     }
 
-    public void UpgradeMaxHP(float amount)
-    {
-        maxHP += amount;
-        currentHP += amount;
+    //public void UpgradeMaxHP(float amount)
+    //{
+    //    maxHP += amount;
+    //    currentHP += amount;
 
-        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+    //    currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
-        Debug.Log("MaxHP: " + maxHP);
-    }
+    //    Debug.Log("MaxHP: " + maxHP);
+    //}
 
-    public void Heal(float amount)
-    {
-        currentHP += amount;
-        currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
+    //public void Heal(float amount)
+    //{
+    //    currentHP += amount;
+    //    currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
-        Debug.Log("Player HP: " + currentHP);
-    }
+    //    Debug.Log("Player HP: " + currentHP);
+    //}
     #endregion
     private void OnDrawGizmosSelected()
     {

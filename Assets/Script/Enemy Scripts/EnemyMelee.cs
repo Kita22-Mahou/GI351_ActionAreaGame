@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMelee : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class EnemyMelee : MonoBehaviour
 
     [Header("Referent")]
     private FaceDetector faceDetector;
+    private NavMeshAgent navMeshAgent;
 
     #region Event System
     private void Awake()
@@ -33,6 +35,9 @@ public class EnemyMelee : MonoBehaviour
     }
     void Start()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateUpAxis = false;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
@@ -89,6 +94,7 @@ public class EnemyMelee : MonoBehaviour
 
         if (distance <= detectRange) // Movement
         {
+            //NavMeshMove(target);
             MoveToTarget(target);
         }
         else
@@ -141,6 +147,18 @@ public class EnemyMelee : MonoBehaviour
 
         return target;
     }
+
+    //void NavMeshMove(Transform target)
+    //{
+    //    if (isAttacking)
+    //    {
+    //        rb.linearVelocity = Vector2.zero;
+    //        return;
+
+    //    }
+
+    //    navMeshAgent.SetDestination(target.position);
+    //}
 
     void MoveToTarget(Transform target)
     {

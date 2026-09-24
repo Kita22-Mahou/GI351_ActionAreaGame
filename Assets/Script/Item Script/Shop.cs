@@ -196,13 +196,13 @@ public class Shop : MonoBehaviour
                 player.UpgradeSpeed(offer.amount);
                 break;
 
-            case UpgradeType.MaxHP:
-                player.UpgradeMaxHP(offer.amount);
-                break;
+            //case UpgradeType.MaxHP:
+            //    player.UpgradeMaxHP(offer.amount);
+            //    break;
 
-            case UpgradeType.Heal:
-                player.Heal(offer.amount);
-                break;
+            //case UpgradeType.Heal:
+            //    player.Heal(offer.amount);
+            //    break;
         }
     }
 
