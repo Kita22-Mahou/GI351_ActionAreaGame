@@ -167,7 +167,7 @@ public class SwordMan : MonoBehaviour
     #endregion
 
     #region Abilities
-    void AttackDirection()
+    public void AttackDirection()
     {
         if (isDashing)
             return;
