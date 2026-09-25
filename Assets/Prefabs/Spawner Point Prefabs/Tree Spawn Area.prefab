@@ -46,9 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   objects:
-  - {fileID: 7829823259287942790, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-  - {fileID: 8369295572167807362, guid: 3c78cf41e4e866845bb9e9e09701f946, type: 3}
-  - {fileID: 3486511641951316536, guid: ceec464330a4c3d43a0e6a33a2fbaddb, type: 3}
+  - {fileID: 7403716052391696506, guid: ebffc291c46bd7d41a6f70e4d3551e80, type: 3}
+  - {fileID: 6055029483229008406, guid: 4b8c2326c9f2e9c4285672b4167bf52b, type: 3}
+  - {fileID: 6131926990286002520, guid: d02ddbd3b2cff6c45979f07df88255d4, type: 3}
+  - {fileID: 6824309034438022207, guid: c78747f5a4d6e534dac23dfd33f964c2, type: 3}
+  - {fileID: 1187630812974344703, guid: 25f348c5f8f7e2f4494d0c0354b4400a, type: 3}
+  - {fileID: 7215880155072405775, guid: d71a09b79a75cf644aa8165c15d420eb, type: 3}
   isPointSpawn: 0
   spawnDelay: 0
   isAreaSpawn: 1

@@ -31,7 +31,7 @@ public class Tree : MonoBehaviour
         { 
             currentHp = 0;
            Destroy(gameObject);
-            DropWood();
+           //DropWood();
         }
     }
 

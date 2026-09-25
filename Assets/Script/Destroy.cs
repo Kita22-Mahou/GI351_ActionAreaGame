@@ -6,7 +6,7 @@ public class Destroy : MonoBehaviour
 
     [Header("Destryo Chance")]
     [SerializeField] bool isDestroyChance = false;
-    [SerializeField] float spawnChance = 100;
+    [SerializeField] float destroyChance = 100;
     private float num = 0;
 
     private void Start()
@@ -16,11 +16,11 @@ public class Destroy : MonoBehaviour
             num = Random.Range(0, 101);
         }
 
-        if (num <= spawnChance)
+        if (num <= destroyChance)
         {
             Destroy(gameObject, delay);
         }
-        else if (num >= spawnChance)
+        else if (num >= destroyChance)
         {
             Destroy(this);
         }
