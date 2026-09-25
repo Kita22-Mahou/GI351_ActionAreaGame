@@ -1,26 +1,28 @@
-﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyMelee : MonoBehaviour
+public class EnemyRange2 : MonoBehaviour
 {
     [Header("Target")]
-    [SerializeField] private float detectRange = 8f;
-    [SerializeField] private float attackRange = 1.2f;
+    [SerializeField] private float detectRange = 10f;
+    [SerializeField] private float attackRange = 8f;
     private Transform player;
     private Transform car;
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float moveSpeed = 1.5f;
     [SerializeField] private int faceDirection = 2;
 
     [Header("Attack")]
-    [SerializeField] private GameObject attackHitbox;
-    [SerializeField] private float attackDamage = 10f;
-    [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float attackDamage = 5f;
+    [SerializeField] private float attackCooldown = 1.5f;
     [SerializeField] private float attackTime = 0f;
 
     [SerializeField] private bool isAttacking = false;
+
+    [Header("Projectile")]
+    [SerializeField] private GameObject BulletPrefab;
+    [SerializeField] private Transform firePoint;
 
     [Header("Referent")]
     private FaceDetector faceDetector;
@@ -36,6 +38,7 @@ public class EnemyMelee : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
+        navMeshAgent.speed = moveSpeed;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
@@ -54,8 +57,6 @@ public class EnemyMelee : MonoBehaviour
 
     void Update()
     {
-        faceDirection = faceDetector.faceDetectDirection;
-
         if (attackTime > 0)
         {
             attackTime -= Time.deltaTime;
@@ -66,12 +67,16 @@ public class EnemyMelee : MonoBehaviour
     {
         Transform target = FindClosestTarget();
 
-        if (target == null) // if no target = stand still
+        if (target == null)
         {
             navMeshAgent.isStopped = true;
             navMeshAgent.velocity = Vector3.zero;
             return;
         }
+
+        //Flip(target);
+
+        AimAtTarget(target);
 
         float distance =
             Vector2.Distance(
@@ -84,26 +89,53 @@ public class EnemyMelee : MonoBehaviour
             navMeshAgent.isStopped = true;
             navMeshAgent.velocity = Vector3.zero;
 
-            if (!isAttacking && attackTime <= 0f)
+            if (/*!isAttacking &&*/ attackTime <= 0f)
             {
-                GetAttackDirection(target);
+                Attack(target);
             }
 
             return;
         }
 
         NavMeshMovement(target, distance);
-
-        //FlipToTarget(target);
     }
     #endregion
+
+    //void Flip(Transform target)
+    //{
+    //    if (target == null)
+    //        return;
+
+    //    Vector3 direction =
+    //        target.position - transform.position;
+
+    //    if (direction.x > 0)
+    //    {
+    //        transform.localScale =
+    //            new Vector3(
+    //                Mathf.Abs(transform.localScale.x),
+    //                transform.localScale.y,
+    //                transform.localScale.z
+    //            );
+    //    }
+    //    else if (direction.x < 0)
+    //    {
+    //        transform.localScale =
+    //            new Vector3(
+    //                -Mathf.Abs(transform.localScale.x),
+    //                transform.localScale.y,
+    //                transform.localScale.z
+    //            );
+    //    }
+    //}
 
     #region Movement
     Transform FindClosestTarget()
     {
-        Transform target = null;
+        Transform closestTarget = null;
 
-        float closestDistance = Mathf.Infinity;
+        float closestDistance =
+            Mathf.Infinity;
 
         if (player != null)
         {
@@ -116,7 +148,7 @@ public class EnemyMelee : MonoBehaviour
             if (playerDistance <= detectRange &&
                 playerDistance < closestDistance)
             {
-                target = player;
+                closestTarget = player;
                 closestDistance = playerDistance;
             }
         }
@@ -132,17 +164,17 @@ public class EnemyMelee : MonoBehaviour
             if (carDistance <= detectRange &&
                 carDistance < closestDistance)
             {
-                target = car;
+                closestTarget = car;
                 closestDistance = carDistance;
             }
         }
 
-        return target;
+        return closestTarget;
     }
 
     void NavMeshMovement(Transform target, float distance)
     {
-        if (isAttacking || distance <= attackRange)
+        if (/*isAttacking || */distance <= attackRange)
         {
             navMeshAgent.isStopped = true;
             navMeshAgent.velocity = Vector3.zero;
@@ -161,54 +193,68 @@ public class EnemyMelee : MonoBehaviour
             navMeshAgent.velocity = Vector3.zero;
         }
     }
-
-    //void FlipToTarget(Transform target)
-    //{
-    //    if (target.position.x > transform.position.x)
-    //    {
-    //        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x)
-    //            ,transform.localScale.y,transform.localScale.z);
-    //    }
-    //    else if (target.position.x < transform.position.x)
-    //    {
-    //        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x)
-    //            ,transform.localScale.y,transform.localScale.z);
-    //    }
-    //}
     #endregion
 
-    void GetAttackDirection(Transform target) // คำนวณทิศทางการโจมตี และหมุนไปทางที่โจมตี
+    #region Abilities
+    void Attack(Transform target)
     {
-        Vector2 direction = (target.position - transform.position).normalized;
+        if (attackTime > 0)
+            return;
 
-        Vector2 attackPosition = direction * attackRange;
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
-
-        EnableHitbox(attackPosition, rotation);
-    }
-
-    void EnableHitbox(Vector2 pos, Quaternion rot)
-    {
-        isAttacking = true;
-        attackHitbox.transform.position = (Vector2)transform.position + pos;
-        attackHitbox.transform.rotation = rot;
-        attackHitbox.SetActive(true);
-        attackHitbox.GetComponent<CircleCollider2D>().enabled = true;
-        StartCoroutine(DisableHitbox());
-    }
-
-    IEnumerator DisableHitbox()
-    {
-        yield return new WaitForSeconds(0.2f);
-
-        isAttacking = false;
-        attackHitbox.SetActive(false);
-        attackHitbox.GetComponent<CircleCollider2D>().enabled = false;
-        attackHitbox.GetComponent<EnemyAttackHitbox>().HashSetClear();
         attackTime = attackCooldown;
+
+        Shoot(target);
     }
+
+    void AimAtTarget(Transform target)
+    {
+        if (target == null)
+            return;
+
+        Vector2 direction =
+            (Vector2)target.position -
+            (Vector2)firePoint.position;
+
+        float angle =
+            Mathf.Atan2(
+                direction.y,
+                direction.x
+            ) * Mathf.Rad2Deg;
+
+        firePoint.rotation =
+            Quaternion.Euler(
+                0f,
+                0f,
+                angle
+            );
+    }
+
+    void Shoot(Transform target)
+    {
+        GameObject projectile =
+            Instantiate(
+                BulletPrefab,
+                firePoint.position,
+                Quaternion.identity
+            );
+
+        EnemyBullet projectileScript = projectile.GetComponent<EnemyBullet>();
+
+        if (projectileScript != null) // Set target and damage then send to EnemyBullet
+        {
+            Vector2 direction =
+                (
+                    (Vector2)target.position -
+                    (Vector2)firePoint.position
+                ).normalized;
+
+            projectileScript.SetDirection(
+                direction,
+                attackDamage
+            );
+        }
+    }
+    #endregion
 
     private void OnDrawGizmosSelected()
     {
@@ -216,5 +262,4 @@ public class EnemyMelee : MonoBehaviour
 
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
-
 }

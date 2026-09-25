@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 533766496841860698}
   - component: {fileID: 2714693884585325670}
   - component: {fileID: 1090021824747828231}
-  - component: {fileID: 1010507381671341520}
+  - component: {fileID: 3572756899965674036}
+  - component: {fileID: 2436954103177097585}
+  - component: {fileID: 5419468571772035591}
   m_Layer: 6
   m_Name: Enemy Range
   m_TagString: Untagged
@@ -45,7 +47,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218229870778524528}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -118,7 +120,7 @@ MonoBehaviour:
   dropItems: []
   dropChance: 50
   dropRadius: 2
---- !u!114 &1010507381671341520
+--- !u!114 &3572756899965674036
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,18 +129,54 @@ MonoBehaviour:
   m_GameObject: {fileID: 1218229870778524528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b7b53ae7b509164ab427289674d153b, type: 3}
+  m_Script: {fileID: 11500000, guid: ef0ddfec0acbbfe4886c711b7448c6dd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyRange
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyRange2
   detectRange: 50
-  attackRange: 8
-  keepDistance: 6
+  attackRange: 6
   moveSpeed: 1.5
+  faceDirection: 2
   attackDamage: 5
   attackCooldown: 1.5
-  attackTimer: 0
+  attackTime: 0
+  isAttacking: 0
   BulletPrefab: {fileID: 8919160750724397162, guid: f8980f11a26b4da40968a9b0b1dde08b, type: 3}
   firePoint: {fileID: 8041529212634394808}
+--- !u!114 &2436954103177097585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218229870778524528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f9e053c534adc14abef2671f6ea383f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FaceDetector
+  faceDetectDirection: 0
+--- !u!195 &5419468571772035591
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218229870778524528}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &3770934925238857726
 GameObject:
   m_ObjectHideFlags: 0

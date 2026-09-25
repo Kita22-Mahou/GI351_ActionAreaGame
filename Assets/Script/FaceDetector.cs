@@ -1,13 +1,15 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FaceDetector : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    private NavMeshAgent navMeshAgent;
+
     public int faceDetectDirection;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
@@ -17,38 +19,53 @@ public class FaceDetector : MonoBehaviour
 
     public int FaceDetect()
     {
-        float horizontal = rb.linearVelocityX;
-        float vertical = rb.linearVelocityY;
+        float horizontal = navMeshAgent.velocity.x;
+        float vertical = navMeshAgent.velocity.y;
 
-        if (horizontal == 0 && vertical > 0) // Face Up
+        // Face Up
+        if (horizontal > -0.5f && horizontal < 0.5f && vertical > 0)
         {
             return faceDetectDirection = 1;
         }
-        if (horizontal > 0 && vertical > 0) // Face Right Up
+
+        // Face Right Up
+        if (horizontal > 0.5f && vertical > 0.5f)
         {
             return faceDetectDirection = 2;
         }
-        if (horizontal > 0 && vertical == 0) // Face Right
+
+        // Face Right
+        if (horizontal > 0 && vertical > -0.5f && vertical < 0.5f)
         {
             return faceDetectDirection = 3;
         }
-        if (horizontal > 0 && vertical < 0) // Face Right Down
+
+        // Face Right Down
+        if (horizontal > 0.5f && vertical < -0.5f)
         {
             return faceDetectDirection = 4;
         }
-        if (horizontal == 0 && vertical < 0) // Face Down
+
+        // Face Down
+        if (horizontal > -0.5f && horizontal < 0.5f && vertical < 0)
         {
             return faceDetectDirection = 5;
         }
-        if (horizontal < 0 && vertical < 0) // Face Left Down
+
+        // Face Left Down
+        if (horizontal < -0.5f && vertical < -0.5f)
         {
             return faceDetectDirection = 6;
         }
-        if (horizontal < 0 && vertical == 0) // Face Left 
+
+        // Face Left
+        if (horizontal < 0 && vertical > -0.5f && vertical < 0.5f)
         {
             return faceDetectDirection = 7;
         }
-        if (horizontal < 0 && vertical > 0) // Face Left Up
+
+        // Face Left Up
+        if (horizontal < -0.5f && vertical > 0.5f)
         {
             return faceDetectDirection = 8;
         }
