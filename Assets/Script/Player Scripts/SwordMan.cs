@@ -42,6 +42,7 @@ public class SwordMan : MonoBehaviour
     [SerializeField] private bool canSkill = true;
     [SerializeField] private bool isSkilling = false;
     [HideInInspector] public bool isInShop = false;
+    public bool isInWheel = false;
 
     [Header("Referent")]
     public static SwordMan instance;
@@ -74,6 +75,9 @@ public class SwordMan : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
+            if (isInWheel)
+                return;
+
             AttackDirection();
         }
 
@@ -172,7 +176,7 @@ public class SwordMan : MonoBehaviour
     #endregion
 
     #region Abilities
-    void AttackDirection()
+    public void AttackDirection()
     {
         if (isDashing)
             return;
