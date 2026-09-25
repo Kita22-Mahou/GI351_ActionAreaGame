@@ -43,6 +43,7 @@ public class SwordMan : MonoBehaviour
     public static SwordMan instance;
     public GameObject sword;
     private PlayerFaceDetector playerfaceDetector;
+    public bool isInWheel = false;
 
     #region Event System
     private void Awake()
