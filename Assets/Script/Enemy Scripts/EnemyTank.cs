@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.GraphicsBuffer;
 
 public class EnemyTank : MonoBehaviour
 {
@@ -14,7 +13,6 @@ public class EnemyTank : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private int faceDirection = 2;
-    private Rigidbody2D rb;
 
     [Header("Attack")]
     [SerializeField] private GameObject attackHitbox;
@@ -31,7 +29,6 @@ public class EnemyTank : MonoBehaviour
     #region Event System
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         faceDetector = GetComponent<FaceDetector>();
     }
 
@@ -40,6 +37,7 @@ public class EnemyTank : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
+        navMeshAgent.speed = moveSpeed;
 
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
@@ -74,7 +72,8 @@ public class EnemyTank : MonoBehaviour
 
         if (target == null)
         {
-            rb.linearVelocity = Vector2.zero;
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
             return;
         }
 
@@ -84,27 +83,20 @@ public class EnemyTank : MonoBehaviour
                 target.position
             );
 
-        if (distance <= attackRange)
+        if (distance <= attackRange) // Attack
         {
-            rb.linearVelocity = Vector2.zero;
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
 
-            if (attackTime <= 0)
+            if (!isAttacking && attackTime <= 0f)
             {
-                AttackDirection(target);
+                GetAttackDirection(target);
             }
 
             return;
         }
 
-        if (distance <= detectRange)
-        {
-            //NavMeshMove(target);
-            MoveToTarget(target);
-        }
-        else
-        {
-            rb.linearVelocity = Vector2.zero;
-        }
+        NavMeshMovement(target, distance);
 
         //FlipToTarget(target);
     }
@@ -172,28 +164,30 @@ public class EnemyTank : MonoBehaviour
         return closestTarget;
     }
 
-    //void NavMeshMove(Transform target)
-    //{
-    //    if (isAttacking)
-    //    {
-    //        rb.linearVelocity = Vector2.zero;
-    //        return;
-
-    //    }
-
-    //    navMeshAgent.SetDestination(target.position);
-    //}
-
-    void MoveToTarget(Transform target)
+    void NavMeshMovement(Transform target, float distance)
     {
-        Vector2 direction = ((Vector2)target.position - (Vector2)transform.position).normalized;
+        if (isAttacking || distance <= attackRange)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+            return;
 
+        }
 
-        rb.linearVelocity = direction * moveSpeed;
+        if (distance <= detectRange)
+        {
+            navMeshAgent.isStopped = false;
+            navMeshAgent.SetDestination(target.position);
+        }
+        else
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+        }
     }
     #endregion
 
-    void AttackDirection(Transform target) // คำนวณทิศทางการโจมตี และหมุนไปทางที่โจมตี
+    void GetAttackDirection(Transform target) // คำนวณทิศทางการโจมตี และหมุนไปทางที่โจมตี
     {
         Vector2 direction = (target.position - transform.position).normalized;
 
@@ -202,10 +196,10 @@ public class EnemyTank : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
-        Attack(attackPosition, rotation);
+        EnableHitbox(attackPosition, rotation);
     }
 
-    void Attack(Vector2 pos, Quaternion rot)
+    void EnableHitbox(Vector2 pos, Quaternion rot)
     {
         isAttacking = true;
         attackHitbox.transform.position = (Vector2)transform.position + pos;
