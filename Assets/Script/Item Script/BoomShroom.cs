@@ -40,8 +40,7 @@ public class BoomShroom : MonoBehaviour
         if (exploded)
             return;
 
-        EnemyHealthPoint enemy =
-            collision.GetComponentInParent<EnemyHealthPoint>();
+        EnemyHealthPoint enemy = collision.GetComponentInParent<EnemyHealthPoint>();
 
         if (enemy == null || !enemy.CompareTag("Enemy"))
             return;
@@ -58,15 +57,11 @@ public class BoomShroom : MonoBehaviour
         exploded = true;
 
         Collider2D[] enemies =
-            Physics2D.OverlapCircleAll(
-                transform.position,
-                explosionRadius
-            );
+            Physics2D.OverlapCircleAll(transform.position,explosionRadius);
 
         foreach (Collider2D col in enemies)
         {
-            EnemyHealthPoint enemy =
-                col.GetComponentInParent<EnemyHealthPoint>();
+            EnemyHealthPoint enemy = col.GetComponentInParent<EnemyHealthPoint>();
 
             if (enemy == null || !enemy.CompareTag("Enemy"))
                 continue;
@@ -77,12 +72,7 @@ public class BoomShroom : MonoBehaviour
 
         if (poisonGasPrefab != null)
         {
-            GameObject gas =
-                Instantiate(
-                    poisonGasPrefab,
-                    transform.position,
-                    Quaternion.identity
-                );
+            GameObject gas = Instantiate(poisonGasPrefab,transform.position,Quaternion.identity);
 
             Destroy(gas, gasDuration);
         }

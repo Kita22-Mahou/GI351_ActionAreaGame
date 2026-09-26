@@ -17,8 +17,7 @@ public class PoisonGas : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        EnemyHealthPoint enemy =
-            collision.GetComponentInParent<EnemyHealthPoint>();
+        EnemyHealthPoint enemy = collision.GetComponentInParent<EnemyHealthPoint>();
 
         if (enemy == null || !enemy.CompareTag("Enemy"))
             return;
