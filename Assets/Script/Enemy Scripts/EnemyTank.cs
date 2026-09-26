@@ -12,7 +12,7 @@ public class EnemyTank : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 1f;
-    [SerializeField] private int faceDirection = 2;
+    //[SerializeField] private int faceDirection = 2;
 
     [Header("Attack")]
     [SerializeField] private GameObject attackHitbox;
@@ -23,13 +23,13 @@ public class EnemyTank : MonoBehaviour
     [SerializeField] private bool isAttacking = false;
 
     [Header("Referent")]
-    private FaceDetector faceDetector;
+    //private FaceDetector faceDetector;
     private NavMeshAgent navMeshAgent;
 
     #region Event System
     private void Awake()
     {
-        faceDetector = GetComponent<FaceDetector>();
+        //faceDetector = GetComponent<FaceDetector>();
     }
 
     void Start()
@@ -57,7 +57,7 @@ public class EnemyTank : MonoBehaviour
 
     void Update()
     {
-        faceDirection = faceDetector.faceDetectDirection;
+        //faceDirection = faceDetector.faceDetectDirection;
 
         if (attackTime > 0)
         {
