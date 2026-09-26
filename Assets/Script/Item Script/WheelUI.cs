@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class WheelUI : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class WheelUI : MonoBehaviour
     public class WheelSlot
     {
         public RectTransform slot;
+        public Image image;
         public GameObject highlight;
         public string command;
     }
@@ -21,18 +23,20 @@ public class WheelUI : MonoBehaviour
     [SerializeField] private WheelSlot[] slots;
 
     [Header("Settings")]
-    [SerializeField] private float holdTime = 0.2f;
     [SerializeField] private float selectDistance = 15f;
+
+    [Header("Colors")]
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color lockedColor = Color.gray;
+    [SerializeField] private Color selectedColor = Color.green;
 
     private Canvas canvas;
     private RectTransform canvasRect;
     private RectTransform wheelRect;
 
-    private bool holdingMouse;
     private bool wheelOpen;
-
-    private float holdTimer;
     private int selectedSlot = -1;
+
     private Vector2 callPosition;
 
 
@@ -41,96 +45,57 @@ public class WheelUI : MonoBehaviour
         canvas = GetComponentInParent<Canvas>();
 
         if (canvas != null)
-        {
             canvasRect = canvas.GetComponent<RectTransform>();
-        }
 
         if (wheel != null)
-        {
             wheelRect = wheel.GetComponent<RectTransform>();
-        }
     }
 
 
     private void Start()
     {
-        if (wheel != null)
-        {
-            wheel.SetActive(false);
-        }
+        if (wheel == null)
+            return;
+
+        wheel.SetActive(false);
 
         ClearHighlight();
+        UpdateSlotColors();
     }
-
 
     private void Update()
     {
-        if (Mouse.current == null)
+        if (Keyboard.current == null ||
+            Mouse.current == null ||
+            wheel == null)
+        {
             return;
-
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            holdingMouse = true;
-            holdTimer = 0f;
         }
 
-
-        if (holdingMouse &&
-            Mouse.current.leftButton.isPressed)
+        if (Keyboard.current.qKey.wasPressedThisFrame)
         {
-            holdTimer += Time.unscaledDeltaTime;
-
-            if (!wheelOpen &&
-                holdTimer >= holdTime)
-            {
-                OpenWheel();
-            }
-
-            if (wheelOpen)
-            {
-                UpdateSelection();
-            }
+            OpenWheel();
         }
 
-
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        if (wheelOpen)
         {
-            if (wheelOpen)
-            {
-                ConfirmSelection();
-            }
-            else
-            {
-                Attack();
-            }
+            UpdateSelection();
+        }
 
-            holdingMouse = false;
-            holdTimer = 0f;
+        if (Keyboard.current.qKey.wasReleasedThisFrame)
+        {
+            ConfirmSelection();
         }
     }
 
-    private void Attack()
-    {
-        if (SwordMan.instance == null)
-            return;
-
-        SwordMan.instance.AttackDirection();
-    }
-
+    // Wheel
     private void OpenWheel()
     {
-        if (wheel == null ||
-            wheelRect == null ||
-            canvasRect == null)
-        {
+        if (canvasRect == null || wheelRect == null)
             return;
-        }
-
 
         Vector2 mousePosition =
             Mouse.current.position.ReadValue();
-
-        callPosition = GetMouseWorldPosition();
 
         Vector2 localPosition;
 
@@ -143,19 +108,18 @@ public class WheelUI : MonoBehaviour
 
         wheelRect.localPosition = localPosition;
 
+        callPosition = GetMouseWorldPosition();
 
-        wheelOpen = true;
         selectedSlot = -1;
+        wheelOpen = true;
 
         ClearHighlight();
+        UpdateSlotColors();
 
         wheel.SetActive(true);
 
-
         if (SwordMan.instance != null)
-        {
             SwordMan.instance.isInWheel = true;
-        }
     }
 
     private void UpdateSelection()
@@ -163,13 +127,11 @@ public class WheelUI : MonoBehaviour
         Vector2 mousePosition =
             Mouse.current.position.ReadValue();
 
-
         Vector2 wheelCenter =
             RectTransformUtility.WorldToScreenPoint(
                 null,
                 wheelRect.position
             );
-
 
         Vector2 direction =
             mousePosition - wheelCenter;
@@ -179,107 +141,124 @@ public class WheelUI : MonoBehaviour
             selectedSlot = -1;
 
             ClearHighlight();
+            UpdateSlotColors();
 
             return;
         }
 
-
         float angle =
-            Mathf.Atan2(
-                direction.y,
-                direction.x
-            ) * Mathf.Rad2Deg;
-
+            Mathf.Atan2(direction.y, direction.x)
+            * Mathf.Rad2Deg;
 
         if (angle < 0f)
-        {
             angle += 360f;
-        }
-
 
         int slot = GetSlot(angle);
 
+        if (!IsSlotAvailable(slot))
+        {
+            selectedSlot = -1;
+
+            ClearHighlight();
+            UpdateSlotColors();
+
+            return;
+        }
 
         if (slot != selectedSlot)
         {
             selectedSlot = slot;
 
-            ShowHighlight();
+            ClearHighlight();
+
+            if (slots[selectedSlot].highlight != null)
+            {
+                slots[selectedSlot]
+                    .highlight
+                    .SetActive(true);
+            }
+
+            UpdateSlotColors();
         }
     }
 
     private int GetSlot(float angle)
     {
-        // Top Right
-        if (angle >= 0f &&
-            angle < 90f)
-        {
+        if (angle >= 0f && angle < 90f)
             return 1;
-        }
 
-
-        // Top Left
-        if (angle >= 90f &&
-            angle < 180f)
-        {
+        if (angle >= 90f && angle < 180f)
             return 0;
-        }
 
-
-        // Bottom Left
-        if (angle >= 180f &&
-            angle < 270f)
-        {
+        if (angle >= 180f && angle < 270f)
             return 3;
-        }
 
-
-        // Bottom Right
         return 2;
     }
-    private void ShowHighlight()
+
+    // Slot
+    private bool IsSlotAvailable(int index)
     {
-        ClearHighlight();
+        if (index < 0 || index >= slots.Length)
+            return false;
 
-        if (selectedSlot < 0 ||
-            selectedSlot >= slots.Length)
-        {
-            return;
-        }
-
-
-        if (slots[selectedSlot].highlight != null)
-        {
-            slots[selectedSlot]
-                .highlight
-                .SetActive(true);
-        }
+        return slots[index].command != "None";
     }
 
+    private void UpdateSlotColors()
+    {
+        if (slots == null)
+            return;
+
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].image == null)
+                continue;
+
+            if (!IsSlotAvailable(i))
+            {
+                slots[i].image.color = lockedColor;
+                continue;
+            }
+
+            if (i == selectedSlot)
+            {
+                slots[i].image.color = selectedColor;
+            }
+            else
+            {
+                slots[i].image.color = normalColor;
+            }
+        }
+    }
 
     private void ClearHighlight()
     {
         if (slots == null)
             return;
 
-
         foreach (WheelSlot slot in slots)
         {
             if (slot.highlight != null)
-            {
                 slot.highlight.SetActive(false);
-            }
         }
     }
 
+    // Command
     private void ConfirmSelection()
     {
+        if (!wheelOpen)
+            return;
+
         if (selectedSlot >= 0 &&
             selectedSlot < slots.Length)
         {
-            ExecuteCommand(
-                slots[selectedSlot].command
-            );
+            if (IsSlotAvailable(selectedSlot))
+            {
+                ExecuteCommand(
+                    slots[selectedSlot].command
+                );
+            }
         }
 
         CloseWheel();
@@ -288,10 +267,7 @@ public class WheelUI : MonoBehaviour
     private void ExecuteCommand(string command)
     {
         if (poko == null)
-        {
             return;
-        }
-
 
         switch (command)
         {
@@ -299,33 +275,26 @@ public class WheelUI : MonoBehaviour
                 poko.CallToPosition(callPosition);
                 break;
 
-
             case "Follow":
                 poko.ToggleFollow();
                 break;
 
-
             case "Attack":
                 poko.ToggleAttackMonster();
-                break;
-
-
-            case "None":
-
                 break;
         }
     }
 
+    // Position
     private Vector2 GetMouseWorldPosition()
     {
         if (Camera.main == null)
             return Vector2.zero;
 
-
         Vector2 mousePosition =
             Mouse.current.position.ReadValue();
 
-        Vector3 mouseWorld =
+        Vector3 worldPosition =
             Camera.main.ScreenToWorldPoint(
                 new Vector3(
                     mousePosition.x,
@@ -333,26 +302,25 @@ public class WheelUI : MonoBehaviour
                     -Camera.main.transform.position.z
                 )
             );
-        return new Vector2(mouseWorld.x, mouseWorld.y);
+
+        return new Vector2(
+            worldPosition.x,
+            worldPosition.y
+        );
     }
 
+    // Close
     private void CloseWheel()
     {
         wheelOpen = false;
         selectedSlot = -1;
 
         ClearHighlight();
+        UpdateSlotColors();
 
-
-        if (wheel != null)
-        {
-            wheel.SetActive(false);
-        }
-
+        wheel.SetActive(false);
 
         if (SwordMan.instance != null)
-        {
             SwordMan.instance.isInWheel = false;
-        }
     }
 }

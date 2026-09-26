@@ -5,16 +5,13 @@ public class Poko : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private Transform player;
     [SerializeField] private GameObject characterSprite;
-    [SerializeField] private GameObject skillEffect;
 
     private Rigidbody2D rb;
-
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float followDistance = 2f;
-    [SerializeField] private float callStopDistance = 0.05f;
-
+    [SerializeField] private float stopDistance = 0.05f;
 
     [Header("Follow")]
     [SerializeField] private bool followMode;
@@ -23,8 +20,7 @@ public class Poko : MonoBehaviour
     private float followTimer;
     private Vector2 followTarget;
 
-
-    [Header("Attack Monster")]
+    [Header("Attack")]
     [SerializeField] private bool attackMonsterMode;
     [SerializeField] private float detectRange = 6f;
     [SerializeField] private float attackRange = 1.2f;
@@ -33,16 +29,25 @@ public class Poko : MonoBehaviour
 
     private float attackTimer;
 
-
-    [Header("Skill")]
+    [Header("Skill 1 - Area Attack")]
     [SerializeField] private float skillRadius = 2f;
     [SerializeField] private float skillDamage = 40f;
     [SerializeField] private float skillCooldown = 5f;
-    [SerializeField] private float skillDuration = 0.1f;
 
     private float skillTimer;
 
+    [Header("Skill 2 - Boom Shroom")]
+    [SerializeField] private GameObject boomShroomPrefab;
+    [SerializeField] private bool boomShroomUnlocked;
+    [SerializeField] private float boomShroomCooldown = 8f;
+    [SerializeField] private float boomPlantDistance = 1f;
+    [SerializeField] private float boomPlantOffset = 0.5f;
 
+    private float boomShroomTimer;
+    private bool hasBoomTarget;
+    private EnemyHealthPoint boomTarget;
+
+    [Header("Call")]
     private bool hasCallTarget;
     private Vector2 callPosition;
 
@@ -50,64 +55,54 @@ public class Poko : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        if (skillEffect != null)
-        {
-            skillEffect.SetActive(false);
-        }
     }
-
 
     private void Start()
     {
         if (player == null)
         {
-            GameObject obj =
-                GameObject.FindGameObjectWithTag("Player");
+            GameObject obj = GameObject.FindGameObjectWithTag("Player");
 
             if (obj != null)
-            {
                 player = obj.transform;
-            }
         }
 
         if (player != null)
-        {
             followTarget = player.position;
-        }
 
         followTimer = followDelay;
     }
 
-
     private void Update()
     {
-        if (attackTimer > 0f)
-        {
-            attackTimer -= Time.deltaTime;
-        }
-
-        if (skillTimer > 0f)
-        {
-            skillTimer -= Time.deltaTime;
-        }
+        attackTimer = CountDown(attackTimer);
+        skillTimer = CountDown(skillTimer);
+        boomShroomTimer = CountDown(boomShroomTimer);
 
         UpdateFollow();
         CheckAttack();
         CheckSkill();
+        CheckBoomShroom();
     }
-
 
     private void FixedUpdate()
     {
         Move();
     }
 
+
+    // Movement
     private void Move()
     {
         if (hasCallTarget)
         {
-            MoveToCall();
+            MoveToPosition(callPosition);
+            return;
+        }
+
+        if (hasBoomTarget)
+        {
+            MoveToBoomShroom();
             return;
         }
 
@@ -126,90 +121,80 @@ public class Poko : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
     }
 
-
-    private void MoveToCall()
+    private bool MoveTo(Vector2 target, float stopDistance)
     {
-        Vector2 direction =
-            callPosition - rb.position;
+        Vector2 direction = target - rb.position;
 
-        float distance =
-            direction.magnitude;
-
-        if (distance <= callStopDistance)
+        if (direction.magnitude <= stopDistance)
         {
             rb.linearVelocity = Vector2.zero;
+            return true;
+        }
 
-            rb.position = callPosition;
+        direction.Normalize();
+        rb.linearVelocity = direction * moveSpeed;
+        Flip(direction.x);
 
+        return false;
+    }
+
+    private void MoveToPosition(Vector2 target)
+    {
+        if (MoveTo(target, stopDistance))
+        {
+            rb.position = target;
             hasCallTarget = false;
-
-            return;
         }
-
-        direction.Normalize();
-
-        rb.linearVelocity =
-            direction * moveSpeed;
-
-        Flip(direction.x);
     }
 
-
-    private void MoveToPlayer()
+    // Boom Shroom
+    private void MoveToBoomShroom()
     {
-        if (player == null)
+        if (boomTarget == null)
         {
-            rb.linearVelocity = Vector2.zero;
+            hasBoomTarget = false;
             return;
         }
 
-        Vector2 direction =
-            followTarget - rb.position;
+        Vector2 target = boomTarget.transform.position;
+        Vector2 direction = target - rb.position;
 
-        if (direction.magnitude <= followDistance)
+        if (direction.magnitude <= boomPlantDistance)
         {
             rb.linearVelocity = Vector2.zero;
+
+            PlaceBoomShroom(direction);
+
+            hasBoomTarget = false;
+            boomTarget = null;
             return;
         }
 
         direction.Normalize();
-
-        rb.linearVelocity =
-            direction * moveSpeed;
+        rb.linearVelocity = direction * moveSpeed;
 
         Flip(direction.x);
     }
 
-
-    private void MoveToEnemy()
+    private void PlaceBoomShroom(Vector2 direction)
     {
-        EnemyHealthPoint enemy =
-            FindNearestEnemy();
-
-        if (enemy == null)
-        {
-            rb.linearVelocity = Vector2.zero;
+        if (boomShroomPrefab == null)
             return;
-        }
 
-        Vector2 direction =
-            (Vector2)enemy.transform.position -
-            rb.position;
-
-        if (direction.magnitude <= attackRange)
-        {
-            rb.linearVelocity = Vector2.zero;
-            return;
-        }
+        if (direction.sqrMagnitude < 0.01f)
+            direction = Vector2.up;
 
         direction.Normalize();
 
-        rb.linearVelocity =
-            direction * moveSpeed;
+        Vector2 position =
+            rb.position + direction * boomPlantOffset;
 
-        Flip(direction.x);
+        Instantiate(boomShroomPrefab,position,Quaternion.identity);
+
+        boomShroomTimer = boomShroomCooldown;
     }
 
+    // Follow
     private void UpdateFollow()
     {
         if (!followMode || player == null)
@@ -224,64 +209,60 @@ public class Poko : MonoBehaviour
         }
     }
 
+    private void MoveToPlayer()
+    {
+        MoveTo(followTarget, followDistance);
+    }
+
+    // Attack
     private void CheckAttack()
     {
-        if (!attackMonsterMode)
+        if (!attackMonsterMode || attackTimer > 0f)
             return;
 
-        if (attackTimer > 0f)
-            return;
-
-        EnemyHealthPoint enemy =
-            FindNearestEnemy();
+        EnemyHealthPoint enemy = FindNearestEnemy();
 
         if (enemy == null)
             return;
 
-        float distance =
-            Vector2.Distance(
-                rb.position,
-                enemy.transform.position
-            );
+        float distance = Vector2.Distance(rb.position,enemy.transform.position);
 
         if (distance > attackRange)
             return;
 
         enemy.TakeDamage(attackDamage);
-
         attackTimer = attackCooldown;
     }
 
+    private void MoveToEnemy()
+    {
+        EnemyHealthPoint enemy = FindNearestEnemy();
+
+        if (enemy == null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        MoveTo(enemy.transform.position,attackRange);
+    }
 
     private EnemyHealthPoint FindNearestEnemy()
     {
-        Collider2D[] colliders =
-            Physics2D.OverlapCircleAll(
-                rb.position,
-                detectRange
-            );
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(rb.position,detectRange);
 
         EnemyHealthPoint nearest = null;
-
-        float nearestDistance =
-            Mathf.Infinity;
+        float nearestDistance = Mathf.Infinity;
 
         foreach (Collider2D col in colliders)
         {
-            EnemyHealthPoint enemy =
-                col.GetComponentInParent<EnemyHealthPoint>();
+            EnemyHealthPoint enemy = col.GetComponentInParent<EnemyHealthPoint>();
 
-            if (enemy == null)
+            if (enemy == null ||
+                !enemy.CompareTag("Enemy"))
                 continue;
 
-            if (!enemy.CompareTag("Enemy"))
-                continue;
-
-            float distance =
-                Vector2.Distance(
-                    rb.position,
-                    enemy.transform.position
-                );
+            float distance = Vector2.Distance(rb.position,enemy.transform.position);
 
             if (distance < nearestDistance)
             {
@@ -293,66 +274,35 @@ public class Poko : MonoBehaviour
         return nearest;
     }
 
+    // Skill 1
     private void CheckSkill()
     {
-        if (!attackMonsterMode)
+        if (!attackMonsterMode || skillTimer > 0f)
             return;
 
-        if (skillTimer > 0f)
+        EnemyHealthPoint enemy = FindNearestEnemy();
+
+        if (enemy == null)
             return;
 
-        Collider2D[] colliders =
-            Physics2D.OverlapCircleAll(
-                rb.position,
-                skillRadius
-            );
+        float distance = Vector2.Distance(
+            rb.position,
+            enemy.transform.position
+        );
 
-        foreach (Collider2D col in colliders)
-        {
-            EnemyHealthPoint enemy =
-                col.GetComponentInParent<EnemyHealthPoint>();
-
-            if (enemy == null)
-                continue;
-
-            if (!enemy.CompareTag("Enemy"))
-                continue;
-
-            UseSkill();
-            return;
-        }
+        if (distance <= skillRadius)
+            UseAreaSkill();
     }
 
-
-    private void UseSkill()
+    private void UseAreaSkill()
     {
-        Debug.Log("Poko Skill");
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(rb.position,skillRadius);
 
-        if (skillEffect != null)
+        foreach (Collider2D col in enemies)
         {
-            skillEffect.SetActive(true);
+            EnemyHealthPoint enemy = col.GetComponentInParent<EnemyHealthPoint>();
 
-            Invoke(
-                nameof(HideSkill),
-                skillDuration
-            );
-        }
-
-        Collider2D[] colliders =
-            Physics2D.OverlapCircleAll(
-                rb.position,
-                skillRadius
-            );
-
-        foreach (Collider2D col in colliders)
-        {
-            EnemyHealthPoint enemy =
-                col.GetComponentInParent<EnemyHealthPoint>();
-
-            if (enemy == null)
-                continue;
-
-            if (!enemy.CompareTag("Enemy"))
+            if (enemy == null || !enemy.CompareTag("Enemy"))
                 continue;
 
             enemy.TakeDamage(skillDamage);
@@ -361,106 +311,116 @@ public class Poko : MonoBehaviour
         skillTimer = skillCooldown;
     }
 
-
-    private void HideSkill()
+    // Skill 2 - Boom Shroom
+    private void CheckBoomShroom()
     {
-        if (skillEffect != null)
+        if (!boomShroomUnlocked ||
+            boomShroomPrefab == null ||
+            boomShroomTimer > 0f ||
+            hasBoomTarget)
         {
-            skillEffect.SetActive(false);
+            return;
         }
+
+        boomTarget = FindNearestEnemy();
+
+        if (boomTarget != null)
+            hasBoomTarget = true;
     }
 
+    public void UnlockBoomShroom()
+    {
+        boomShroomUnlocked = true;
+    }
+
+    public bool IsBoomShroomUnlocked()
+    {
+        return boomShroomUnlocked;
+    }
+
+    public float GetBoomShroomCooldown()
+    {
+        return boomShroomCooldown;
+    }
+
+    // Call
     public void CallToPosition(Vector2 position)
     {
-        callPosition = position;
+        hasBoomTarget = false;
+        boomTarget = null;
+
         hasCallTarget = true;
+        callPosition = position;
     }
 
+    // Follow
     public void ToggleFollow()
     {
         followMode = !followMode;
 
-        if (followMode)
-        {
-            attackMonsterMode = false;
+        if (!followMode)
+            return;
 
-            if (player != null)
-            {
-                followTarget = player.position;
-            }
+        attackMonsterMode = false;
 
-            followTimer = followDelay;
+        if (player != null)
+            followTarget = player.position;
 
-            Debug.Log("[Follow ON");
-        }
-        else
-        {
-            Debug.Log("Follow OFF");
-        }
+        followTimer = followDelay;
     }
-
 
     public bool IsFollowing()
     {
         return followMode;
     }
 
-
-    // ========================================
     // Attack Mode
-    // ========================================
-
     public void ToggleAttackMonster()
     {
-        attackMonsterMode =
-            !attackMonsterMode;
+        attackMonsterMode = !attackMonsterMode;
 
         if (attackMonsterMode)
-        {
             followMode = false;
-        }
-        else
-        {
-            Debug.Log("Attack OFF");
-        }
     }
-
 
     public bool IsAttackMonsterMode()
     {
         return attackMonsterMode;
     }
 
+    private float CountDown(float timer)
+    {
+        return Mathf.Max(0f, timer - Time.deltaTime);
+    }
+
+    // Sprite
     private void Flip(float x)
     {
         if (characterSprite == null)
             return;
 
-        Vector3 scale =
-            characterSprite.transform.localScale;
+        Vector3 scale = characterSprite.transform.localScale;
 
         if (x > 0f)
-        {
             scale.x = Mathf.Abs(scale.x);
-        }
         else if (x < 0f)
-        {
             scale.x = -Mathf.Abs(scale.x);
-        }
 
         characterSprite.transform.localScale = scale;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        if (!hasCallTarget)
-            return;
+        Gizmos.color = Color.yellow;
 
-        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position,detectRange);
 
-        Gizmos.DrawSphere(
-            callPosition,
-            0.15f
-        );
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(transform.position,attackRange);
+
+        Gizmos.color = Color.cyan;
+
+        Gizmos.DrawWireSphere(transform.position,skillRadius);
     }
 }
