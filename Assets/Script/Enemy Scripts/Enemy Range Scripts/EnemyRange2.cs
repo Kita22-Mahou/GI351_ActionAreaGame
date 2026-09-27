@@ -25,13 +25,13 @@ public class EnemyRange2 : MonoBehaviour
     [SerializeField] private Transform firePoint;
 
     [Header("Referent")]
-    private FaceDetector faceDetector;
+    //private FaceDetector faceDetector;
     private NavMeshAgent navMeshAgent;
 
     #region Event System
     private void Awake()
     {
-        faceDetector = GetComponent<FaceDetector>();
+        //faceDetector = GetComponent<FaceDetector>();
     }
     void Start()
     {
@@ -101,36 +101,8 @@ public class EnemyRange2 : MonoBehaviour
     }
     #endregion
 
-    //void Flip(Transform target)
-    //{
-    //    if (target == null)
-    //        return;
-
-    //    Vector3 direction =
-    //        target.position - transform.position;
-
-    //    if (direction.x > 0)
-    //    {
-    //        transform.localScale =
-    //            new Vector3(
-    //                Mathf.Abs(transform.localScale.x),
-    //                transform.localScale.y,
-    //                transform.localScale.z
-    //            );
-    //    }
-    //    else if (direction.x < 0)
-    //    {
-    //        transform.localScale =
-    //            new Vector3(
-    //                -Mathf.Abs(transform.localScale.x),
-    //                transform.localScale.y,
-    //                transform.localScale.z
-    //            );
-    //    }
-    //}
-
     #region Movement
-    Transform FindClosestTarget()
+    public Transform FindClosestTarget()
     {
         Transform closestTarget = null;
 

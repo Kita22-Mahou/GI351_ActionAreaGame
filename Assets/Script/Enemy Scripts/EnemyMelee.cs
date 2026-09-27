@@ -23,13 +23,13 @@ public class EnemyMelee : MonoBehaviour
     [SerializeField] private bool isAttacking = false;
 
     [Header("Referent")]
-    private FaceDetector faceDetector;
+    //private FaceDetector faceDetector;
     private NavMeshAgent navMeshAgent;
 
     #region Event System
     private void Awake()
     {
-        faceDetector = GetComponent<FaceDetector>();
+        //faceDetector = GetComponent<FaceDetector>();
     }
     void Start()
     {
@@ -54,7 +54,7 @@ public class EnemyMelee : MonoBehaviour
 
     void Update()
     {
-        faceDirection = faceDetector.faceDetectDirection;
+        //faceDirection = faceDetector.faceDetectDirection;
 
         if (attackTime > 0)
         {
