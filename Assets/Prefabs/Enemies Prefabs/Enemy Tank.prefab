@@ -136,10 +136,14 @@ MonoBehaviour:
   detectRange: 50
   attackRange: 2
   moveSpeed: 1
+  attackFX:
+  - {fileID: 8399444621018091100, guid: 5bd905040250a0d43ae9572a9f1f003c, type: 3}
+  - {fileID: 4771998958611211012, guid: ba31cd654091def4289e06cb66433d82, type: 3}
   attackHitbox: {fileID: 4772850248516107483}
   attackDamage: 20
   attackCooldown: 4
   attackTime: 0
+  chargeTime: 0.5
   isAttacking: 0
 --- !u!114 &3574753807648879489
 MonoBehaviour:
@@ -187,6 +191,7 @@ GameObject:
   - component: {fileID: 6098936084689508832}
   - component: {fileID: 5318736298595804528}
   - component: {fileID: 1846012613458064826}
+  - component: {fileID: 9098338245403174566}
   m_Layer: 0
   m_Name: Animations
   m_TagString: Untagged
@@ -244,6 +249,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a82c7193ec6454f83db501e2cf2cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlipSprite
+--- !u!114 &9098338245403174566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3501921230065499198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b86dd8dfbb1474290458e5aaf8a101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChangeState
+  animations:
+  - {fileID: 3943174346989104010}
+  - {fileID: 2248014606180108381}
+  - {fileID: 7620183889173974010}
+  - {fileID: 8965487646318182044}
+  - {fileID: 8743857601609139868}
 --- !u!1 &4772850248516107483
 GameObject:
   m_ObjectHideFlags: 0

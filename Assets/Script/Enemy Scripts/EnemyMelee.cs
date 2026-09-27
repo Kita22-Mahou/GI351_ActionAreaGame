@@ -12,13 +12,15 @@ public class EnemyMelee : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private int faceDirection = 2;
+    //[SerializeField] private int faceDirection = 2;
 
     [Header("Attack")]
+    [SerializeField] private GameObject[] attackFX;
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private float attackDamage = 10f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float attackTime = 0f;
+    [SerializeField] private float chargeTime = 0.5f;
 
     [SerializeField] private bool isAttacking = false;
 
@@ -185,26 +187,32 @@ public class EnemyMelee : MonoBehaviour
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
-
-        EnableHitbox(attackPosition, rotation);
+        StartCoroutine(EnableHitbox(attackPosition, rotation));
     }
 
-    void EnableHitbox(Vector2 pos, Quaternion rot)
+    IEnumerator EnableHitbox(Vector2 pos, Quaternion rot)
     {
+        int rand = Random.Range(0, attackFX.Length);
+        int randRotation = Random.Range(0, 360);
+        Quaternion rotation = Quaternion.Euler(0, 0, randRotation);
         isAttacking = true;
         attackHitbox.transform.position = (Vector2)transform.position + pos;
         attackHitbox.transform.rotation = rot;
         attackHitbox.SetActive(true);
+        attackHitbox.GetComponent<SpriteRenderer>().enabled = true;
+        yield return new WaitForSeconds(chargeTime);
+        Instantiate(attackFX[rand], (Vector2)transform.position + pos, rotation);
         attackHitbox.GetComponent<CircleCollider2D>().enabled = true;
         StartCoroutine(DisableHitbox());
     }
 
     IEnumerator DisableHitbox()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.15f);
 
         isAttacking = false;
         attackHitbox.SetActive(false);
+        attackHitbox.GetComponent<SpriteRenderer>().enabled = false;
         attackHitbox.GetComponent<CircleCollider2D>().enabled = false;
         attackHitbox.GetComponent<EnemyAttackHitbox>().HashSetClear();
         attackTime = attackCooldown;

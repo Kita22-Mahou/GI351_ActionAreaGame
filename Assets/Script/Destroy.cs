@@ -25,4 +25,10 @@ public class Destroy : MonoBehaviour
             Destroy(this);
         }
     }
+    
+    void AnimationDestroy()
+    {
+        Destroy(gameObject);
+        Destroy(gameObject);
+    }
 }

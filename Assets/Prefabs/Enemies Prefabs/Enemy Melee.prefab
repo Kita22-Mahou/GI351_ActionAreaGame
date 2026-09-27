@@ -137,10 +137,15 @@ MonoBehaviour:
   attackRange: 1.5
   moveSpeed: 2
   faceDirection: 2
+  attackFX:
+  - {fileID: 6440627715445756814, guid: 0749d9b2347d250489485890616f425e, type: 3}
+  - {fileID: 6313766512245863649, guid: 226044cc3bf0d364fa288ffc380cca64, type: 3}
+  - {fileID: 8100090828736540661, guid: 3ec32011cbb5c7d448a191185279648f, type: 3}
   attackHitbox: {fileID: 3769193370016504036}
   attackDamage: 10
-  attackCooldown: 3
+  attackCooldown: 1
   attackTime: 0
+  chargeTime: 0.5
   isAttacking: 0
 --- !u!114 &1340384509484775140
 MonoBehaviour:
@@ -206,7 +211,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3141907583721212116}
@@ -506,6 +511,7 @@ GameObject:
   - component: {fileID: 5426135759799414595}
   - component: {fileID: 7703968172072941982}
   - component: {fileID: 1600385648126483126}
+  - component: {fileID: 4985655711616455442}
   m_Layer: 0
   m_Name: Animations
   m_TagString: Untagged
@@ -563,6 +569,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a82c7193ec6454f83db501e2cf2cdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlipSprite
+--- !u!114 &4985655711616455442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503129074340069973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b86dd8dfbb1474290458e5aaf8a101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChangeState
+  animations:
+  - {fileID: 8714997148425287605}
+  - {fileID: 4080965113306033327}
+  - {fileID: 2694360874253567226}
+  - {fileID: 7101858646279666380}
+  - {fileID: 2767125490075294790}
 --- !u!1001 &2575924901604963369
 PrefabInstance:
   m_ObjectHideFlags: 0

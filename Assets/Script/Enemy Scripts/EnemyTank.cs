@@ -15,10 +15,12 @@ public class EnemyTank : MonoBehaviour
     //[SerializeField] private int faceDirection = 2;
 
     [Header("Attack")]
+    [SerializeField] private GameObject[] attackFX;
     [SerializeField] private GameObject attackHitbox;
     [SerializeField] private float attackDamage = 30f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float attackTime = 0f;
+    [SerializeField] private float chargeTime = 0.5f;
 
     [SerializeField] private bool isAttacking = false;
 
@@ -103,20 +105,6 @@ public class EnemyTank : MonoBehaviour
     #endregion
 
     #region Movement
-    //void FlipToTarget(Transform target)
-    //{
-    //    if (target.position.x > transform.position.x)
-    //    {
-    //        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x)
-    //            ,transform.localScale.y,transform.localScale.z);
-    //    }
-    //    else if (target.position.x < transform.position.x)
-    //    {
-    //        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x)
-    //            ,transform.localScale.y,transform.localScale.z);
-    //    }
-    //}
-
     Transform FindClosestTarget()
     {
         Transform closestTarget = null;
@@ -196,15 +184,21 @@ public class EnemyTank : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
-        EnableHitbox(attackPosition, rotation);
+        StartCoroutine(EnableHitbox(attackPosition, rotation));
     }
 
-    void EnableHitbox(Vector2 pos, Quaternion rot)
+    IEnumerator EnableHitbox(Vector2 pos, Quaternion rot)
     {
+        int rand = Random.Range(0, attackFX.Length);
+        int randRotation = Random.Range(0, 360);
+        Quaternion rotation = Quaternion.Euler(0, 0, randRotation);
         isAttacking = true;
         attackHitbox.transform.position = (Vector2)transform.position + pos;
         attackHitbox.transform.rotation = rot;
         attackHitbox.SetActive(true);
+        attackHitbox.GetComponent<SpriteRenderer>().enabled = true;
+        yield return new WaitForSeconds(chargeTime);
+        Instantiate(attackFX[rand], (Vector2)transform.position + pos, rotation);
         attackHitbox.GetComponent<CircleCollider2D>().enabled = true;
         StartCoroutine(DisableHitbox());
     }
@@ -215,6 +209,7 @@ public class EnemyTank : MonoBehaviour
 
         isAttacking = false;
         attackHitbox.SetActive(false);
+        attackHitbox.GetComponent<SpriteRenderer>().enabled = false;
         attackHitbox.GetComponent<CircleCollider2D>().enabled = false;
         attackHitbox.GetComponent<EnemyAttackHitbox>().HashSetClear();
         attackTime = attackCooldown;

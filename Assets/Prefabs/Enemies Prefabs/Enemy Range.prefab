@@ -234,6 +234,7 @@ GameObject:
   - component: {fileID: 7423914517182598770}
   - component: {fileID: 2165346343668394182}
   - component: {fileID: 18569932312223442}
+  - component: {fileID: 9193689790212023656}
   m_Layer: 0
   m_Name: Animations
   m_TagString: Untagged
@@ -291,6 +292,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a468eebc3bf57314b8f0252be26875b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRangeFlipSprite
+--- !u!114 &9193689790212023656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5447358352205369178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b86dd8dfbb1474290458e5aaf8a101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyChangeState
+  animations:
+  - {fileID: 6258518619980470563}
+  - {fileID: 2580836882711283981}
+  - {fileID: 8855889446537699624}
+  - {fileID: 1379868315193659851}
+  - {fileID: 7679620094780120314}
 --- !u!1 &8394668924313991375
 GameObject:
   m_ObjectHideFlags: 0

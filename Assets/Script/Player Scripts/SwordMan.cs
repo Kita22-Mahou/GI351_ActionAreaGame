@@ -12,12 +12,16 @@ public class SwordMan : MonoBehaviour
     private Rigidbody2D rb;
 
     [Header("Attack")]
+    [SerializeField] private GameObject attackAnimation;
     [SerializeField] private GameObject swordHitbox;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float baseAttackDamage = 20f;
     [SerializeField] private float damageBonus = 0f;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private bool isAttacking = false;
+
+    [SerializeField] private float attackCooldown = 0.1f;
+    [SerializeField] private float attackTime;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 12f;
@@ -59,6 +63,8 @@ public class SwordMan : MonoBehaviour
 
     private void Update()
     {
+        attackTime = Mathf.Max(0, attackTime - Time.deltaTime);
+
         //Debug.Log(faceDirection);
         if (Keyboard.current.wKey.isPressed ||
             Keyboard.current.aKey.isPressed ||
@@ -68,9 +74,10 @@ public class SwordMan : MonoBehaviour
             faceDirection = playerfaceDetector.faceDetectDirection;
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.leftButton.wasPressedThisFrame && attackTime <= 0)
         {
             AttackDirection();
+            attackTime = attackCooldown;
         }
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)
@@ -182,25 +189,25 @@ public class SwordMan : MonoBehaviour
         {
             Attack(
                 new Vector2(0, 1.25f),
-                Quaternion.Euler(0, 0, 90));
+                Quaternion.Euler(0, 0, 270));
         }
         else if (direction == 2) // Right Up
         {
             Attack(
                 new Vector2(0.85f, 0.85f),
-                Quaternion.Euler(0, 0, 45));
+                Quaternion.Euler(0, 0, 225));
         }
         else if (direction == 3) // Right
         {
             Attack(
                 new Vector2(1.25f, 0),
-                Quaternion.Euler(0, 0, 0));
+                Quaternion.Euler(0, 0, 180));
         }
         else if (direction == 4) // Right Down
         {
             Attack(
                 new Vector2(0.85f, -0.85f),
-                Quaternion.Euler(0, 0, -45));
+                Quaternion.Euler(0, 0, 135));
         }
         else if (direction == 5) // Down
         {
@@ -231,9 +238,11 @@ public class SwordMan : MonoBehaviour
 
     void Attack( Vector2 pos, Quaternion rot) // ให้ Hitbox ย้ายจุดไปรอบๆ
     {
+        Quaternion rotation = rot * Quaternion.Euler(0, 0, 90);
         isAttacking = true;
         swordHitbox.transform.position = (Vector2)transform.position + pos;
         swordHitbox.transform.rotation = rot;
+        Instantiate(attackAnimation, swordHitbox.transform.position, rotation);
         swordHitbox.SetActive(true);
         swordHitbox.GetComponent<CapsuleCollider2D>().enabled = true;
         StartCoroutine(DisableHitbox());
