@@ -23,7 +23,7 @@ public class GemInventory : MonoBehaviour
                 if (GreenGemAmount > 0)
                 {
                     GreenGemAmount += addAmount;
-                    gate.currentPool[index].neededAmount += addAmount;
+                    gate.Pool[index].neededAmount += addAmount;
                 }
                 break;
 
@@ -31,7 +31,7 @@ public class GemInventory : MonoBehaviour
                 if (BlueGemAmount > 0)
                 {
                     BlueGemAmount += addAmount;
-                    gate.currentPool[index].neededAmount += addAmount;
+                    gate.Pool[index].neededAmount += addAmount;
                 }
                 break;
 
@@ -39,7 +39,7 @@ public class GemInventory : MonoBehaviour
                 if (YellowGemAmount > 0)
                 {
                     YellowGemAmount += addAmount;
-                    gate.currentPool[index].neededAmount += addAmount;
+                    gate.Pool[index].neededAmount += addAmount;
                 }
                 break;
 
