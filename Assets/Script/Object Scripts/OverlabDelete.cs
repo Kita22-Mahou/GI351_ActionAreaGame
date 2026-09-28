@@ -26,7 +26,7 @@ public class OverlabDelete : MonoBehaviour
         if (!isOverlab)
             yield break;
 
-        Debug.Log($"Destroy {transform.parent.gameObject.name} at {transform.position}");
+        //Debug.Log($"Destroy {transform.parent.gameObject.name} at {transform.position}");
         if (selectParent && transform.parent != null)
         {
             Destroy(transform.parent.gameObject);

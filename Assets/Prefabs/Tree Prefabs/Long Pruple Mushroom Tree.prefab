@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3255256346442410202}
   - component: {fileID: 238147189193855967}
-  - component: {fileID: 1314287423422557207}
   - component: {fileID: 5687044667099604055}
   - component: {fileID: 3192701891870305598}
   m_Layer: 10
@@ -95,43 +94,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!70 &1314287423422557207
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467662788729241538}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.14814332, y: -3.8536484}
-  m_Size: {x: 2.2123086, y: 1.113423}
-  m_Direction: 1
 --- !u!58 &5687044667099604055
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -184,6 +146,92 @@ MonoBehaviour:
   fadeAlpha: 0.15
   fadeSpeed: 5
   fadeZoneScale: 1.5
+--- !u!1 &2800857972774533287
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 68799149343832802}
+  - component: {fileID: 282197808392421404}
+  - component: {fileID: 1877877358757223587}
+  m_Layer: 10
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &68799149343832802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2800857972774533287}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.43, y: 3.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 444776482577642350}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &282197808392421404
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2800857972774533287}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.14814332, y: -3.8536484}
+  m_Size: {x: 2.2123086, y: 1.113423}
+  m_Direction: 1
+--- !u!114 &1877877358757223587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2800857972774533287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &7151032844720839693
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +348,6 @@ GameObject:
   - component: {fileID: 444776482577642350}
   - component: {fileID: 4864658873936418270}
   - component: {fileID: 2408042825449170672}
-  - component: {fileID: 2912823110218468761}
   m_Layer: 0
   m_Name: Long Pruple Mushroom Tree
   m_TagString: Tree
@@ -323,6 +370,7 @@ Transform:
   m_Children:
   - {fileID: 5616706579554169538}
   - {fileID: 3255256346442410202}
+  - {fileID: 68799149343832802}
   - {fileID: 9136276846324371128}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -384,24 +432,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
---- !u!114 &2912823110218468761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7215880155072405775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a86b4c88d57b2d24fb457d001cceb990, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tree
-  maxHp: 150
-  currentHp: 0
-  woodPrefab: {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
-  minWoodDrop: 1
-  maxWoodDrop: 5
-  dropRadius: 1
 --- !u!1001 &8698896251778036331
 PrefabInstance:
   m_ObjectHideFlags: 0

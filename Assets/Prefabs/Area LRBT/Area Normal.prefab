@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4769155113277005761}
   - component: {fileID: 2657667698725010729}
   m_Layer: 7
-  m_Name: Area LRBT Test 1
+  m_Name: Area Normal
   m_TagString: No Count
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c9c0687b3681747ad6b3356fcd51ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AreaType
-  type: 0
+  type: 3
 --- !u!61 &2657667698725010729
 BoxCollider2D:
   m_ObjectHideFlags: 0

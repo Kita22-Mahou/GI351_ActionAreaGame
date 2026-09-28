@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 2267891731411349030}
   - component: {fileID: 4672407699137710937}
   - component: {fileID: 6202685897213114767}
-  m_Layer: 0
+  - component: {fileID: 3397656144894535814}
+  - component: {fileID: 6839788439415391691}
+  m_Layer: 14
   m_Name: Fence 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,6 +133,34 @@ CapsuleCollider2D:
   m_Offset: {x: -0.00000005981813, y: -0.5017909}
   m_Size: {x: 2.5100005, y: 0.43142098}
   m_Direction: 1
+--- !u!114 &3397656144894535814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2462814357620959574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
+--- !u!114 &6839788439415391691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2462814357620959574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1001 &8392480500791520503
 PrefabInstance:
   m_ObjectHideFlags: 0

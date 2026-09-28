@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7411890528905989646}
   - component: {fileID: 4884194406940264056}
   - component: {fileID: 8889700641531828409}
-  - component: {fileID: 4646768446268313913}
   m_Layer: 0
   m_Name: Long Light Mushroom Tree
   m_TagString: Tree
@@ -34,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 2386975626082986091}
   - {fileID: 2391086633986246027}
+  - {fileID: 2243253312740194099}
   - {fileID: 844910692481612457}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -95,24 +95,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
---- !u!114 &4646768446268313913
+--- !u!1 &1374379666614446804
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2243253312740194099}
+  - component: {fileID: 5235633621915759171}
+  - component: {fileID: 5732079050655549574}
+  m_Layer: 13
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2243253312740194099
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374379666614446804}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.4, y: 3.66, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7411890528905989646}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &5235633621915759171
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374379666614446804}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.4304598, y: -3.4680746}
+  m_Size: {x: 2.7900622, y: 1.239736}
+  m_Direction: 1
+--- !u!114 &5732079050655549574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187630812974344703}
+  m_GameObject: {fileID: 1374379666614446804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a86b4c88d57b2d24fb457d001cceb990, type: 3}
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tree
-  maxHp: 150
-  currentHp: 0
-  woodPrefab: {fileID: 7037380801239571168, guid: 65943d7de4ff51a4db245a00426189c7, type: 3}
-  minWoodDrop: 1
-  maxWoodDrop: 5
-  dropRadius: 1
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &5655858326255413384
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +296,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2391086633986246027}
   - component: {fileID: 4074635810793958675}
-  - component: {fileID: 3227270060048730634}
   - component: {fileID: 845729749207059432}
   - component: {fileID: 4419835508411744320}
   m_Layer: 10
@@ -313,43 +380,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!70 &3227270060048730634
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7897651836678040511}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0.4304598, y: -3.4680746}
-  m_Size: {x: 2.7900622, y: 1.239736}
-  m_Direction: 1
 --- !u!58 &845729749207059432
 CircleCollider2D:
   m_ObjectHideFlags: 0
