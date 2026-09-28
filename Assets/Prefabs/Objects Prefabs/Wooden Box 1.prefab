@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 5869185207315005521}
   - component: {fileID: 978349657193574972}
   - component: {fileID: 3088778034094860739}
-  m_Layer: 0
+  - component: {fileID: 7794936435428110851}
+  - component: {fileID: 7101690123367499456}
+  m_Layer: 14
   m_Name: Wooden Box 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,6 +142,34 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.4266666, y: 0.41261983}
   m_EdgeRadius: 0
+--- !u!114 &7794936435428110851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203300478893229102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c28d9fb9f0773444b1bc31dc75ff1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MakeOrderLayerAsPositionY
+--- !u!114 &7101690123367499456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203300478893229102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1001 &4606557245856822194
 PrefabInstance:
   m_ObjectHideFlags: 0

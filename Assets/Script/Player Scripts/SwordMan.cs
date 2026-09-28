@@ -384,7 +384,7 @@ public class SwordMan : MonoBehaviour
     void Call() // Call cart
     {
         Debug.Log("Call");
-        Car.Instance.MakeCall(this.transform);
+        //Car.Instance.MakeCall(this.transform);
     }
 
     void CallToMouse()

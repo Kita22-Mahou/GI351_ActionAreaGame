@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3184305683048856168
+--- !u!1 &783034424215676570
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,53 +8,54 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 195647076187222899}
-  - component: {fileID: 434942869790106031}
-  m_Layer: 0
-  m_Name: 'Tree Spawn Point '
+  - component: {fileID: 7703514200908623623}
+  - component: {fileID: 3332843360891446212}
+  m_Layer: 7
+  m_Name: Fog Spawn Point
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &195647076187222899
+--- !u!4 &7703514200908623623
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3184305683048856168}
+  m_GameObject: {fileID: 783034424215676570}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 76.47, y: -26.93, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &434942869790106031
+--- !u!114 &3332843360891446212
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3184305683048856168}
+  m_GameObject: {fileID: 783034424215676570}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fc6a069acd083143b48f3ab77b3219b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   objects:
-  - {fileID: 7829823259287942790, guid: 1e31d437767ec214db65bdffb2600358, type: 3}
-  - {fileID: 8369295572167807362, guid: 3c78cf41e4e866845bb9e9e09701f946, type: 3}
-  - {fileID: 3486511641951316536, guid: ceec464330a4c3d43a0e6a33a2fbaddb, type: 3}
+  - {fileID: 7065458383851293982, guid: b5555dc231acc0247b52e25970610da7, type: 3}
+  - {fileID: 2946865313685431272, guid: 55067ae45bb8b084cb55c3ed22aa083d, type: 3}
+  - {fileID: 7418316144365718305, guid: 69256d1fac1c2ec4bba632e87ea86002, type: 3}
+  - {fileID: 7302865395302022837, guid: 8e6a75415366ff7429015fd3bdfbfb75, type: 3}
   isPointSpawn: 1
   spawnDelay: 0
   isAreaSpawn: 0
-  objectAmount: 1
+  objectAmount: 0
   gapBTWObject: 0
   delaySpawnBTWObject: 0
-  delayAttempt: 0
+  delayAttempt: 0.005
   repeatAttemp: 50
   isSpawnChance: 0
   spawnChance: 100

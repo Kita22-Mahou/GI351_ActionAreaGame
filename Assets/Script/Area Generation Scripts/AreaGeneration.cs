@@ -35,19 +35,21 @@ public class AreaGeneration : MonoBehaviour
         Instantiate(areas[0], transform.position, Quaternion.identity);
 
         direction = Random.Range(1, 6);
+
+        stopGeneration = true;
     }
 
     private void Update()
     {
-        if (timeBtwArea <= 0 && stopGeneration == false)
-        {
-            Move();
-            timeBtwArea = startTimeBtwArea;
-        }
-        else
-        {
-            timeBtwArea -= Time.deltaTime;
-        }
+        //if (timeBtwArea <= 0 && stopGeneration == false)
+        //{
+        //    Move();
+        //    timeBtwArea = startTimeBtwArea;
+        //}
+        //else
+        //{
+        //    timeBtwArea -= Time.deltaTime;
+        //}
 
     }
 
