@@ -26,7 +26,7 @@ public class OverlabDelete : MonoBehaviour
         if (!isOverlab)
             yield break;
 
-        //Debug.Log($"Destroy {this.name} at {transform.position}");
+        Debug.Log($"Destroy {transform.parent.gameObject.name} at {transform.position}");
         if (selectParent && transform.parent != null)
         {
             Destroy(transform.parent.gameObject);
@@ -40,6 +40,10 @@ public class OverlabDelete : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Overlab"))
+        {
+            isOverlab = true;
+        }
+        if (collision.CompareTag("Wall"))
         {
             isOverlab = true;
         }

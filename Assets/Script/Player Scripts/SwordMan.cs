@@ -54,8 +54,6 @@ public class SwordMan : MonoBehaviour
     {
         instance = this;
         rb = GetComponent<Rigidbody2D>();
-        
-        sword.SetActive(false);
 
         skillRadius = skillHitbox.GetComponent<CircleCollider2D>().radius;
         playerfaceDetector = GetComponent<PlayerFaceDetector>();
