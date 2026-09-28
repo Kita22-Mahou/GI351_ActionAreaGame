@@ -87,14 +87,14 @@ public class SwordMan : MonoBehaviour
         {
             Skill();
         }
-        if (Keyboard.current.qKey.wasPressedThisFrame)
-        {
-            Call();
-        }
-        if (Keyboard.current.fKey.wasPressedThisFrame)
-        {
-            CallToMouse();
-        }
+        //if (Keyboard.current.qKey.wasPressedThisFrame)
+        //{
+        //    Call();
+        //}
+        //if (Keyboard.current.fKey.wasPressedThisFrame)
+        //{
+        //    CallToMouse();
+        //}
     }
 
     void FixedUpdate()

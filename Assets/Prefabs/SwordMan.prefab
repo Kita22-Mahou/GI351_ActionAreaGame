@@ -662,7 +662,7 @@ GameObject:
   - component: {fileID: 6552884578286387070}
   - component: {fileID: 2318527283757511362}
   - component: {fileID: 7233108074792033432}
-  - component: {fileID: 1218997981412000664}
+  - component: {fileID: 9114498786327299510}
   m_Layer: 9
   m_Name: SwordMan
   m_TagString: Player
@@ -780,7 +780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwordMan
   characterSprite: {fileID: 600123689131058177}
-  speed: 5
+  speed: 6.5
   faceDirection: 0
   attackAnimation: {fileID: 2941006920185072864, guid: dd2c7aad78929b64d8f0362c403c555c, type: 3}
   swordHitbox: {fileID: 407047642277383163}
@@ -834,7 +834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimFaceDetector
   faceDetectDirection: 2
---- !u!114 &1218997981412000664
+--- !u!114 &9114498786327299510
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -843,13 +843,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7532165417054723578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d15eee01f444d804c881001f7217dc6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 03c48cf40853f414786c263b9f5c69d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemInventory
-  RedGemAmount: 10
-  GreenGemAmount: 10
-  BlueGemAmount: 10
-  YellowGemAmount: 10
+  GreenGemAmount: 0
+  BlueGemAmount: 0
+  YellowGemAmount: 0
 --- !u!1001 &1911766317282538085
 PrefabInstance:
   m_ObjectHideFlags: 0

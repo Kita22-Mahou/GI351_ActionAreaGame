@@ -404735,20 +404735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c35ec6e19d96c949b3c3e71023e5242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gate
-  pool:
-  - name: Red Gem
-    gemtype: 0
-    neededAmount: 1
-  - name: Green Gem
-    gemtype: 1
-    neededAmount: 1
-  - name: Blue Gem
-    gemtype: 2
-    neededAmount: 1
-  - name: Yellow Gem
-    gemtype: 3
-    neededAmount: 1
-  currentPool: []
+  Pool: []
   submitButtons:
   - {fileID: 466366233}
   - {fileID: 1251971809}
@@ -404761,6 +404748,7 @@ MonoBehaviour:
   - {fileID: 759843655}
   - {fileID: 1148702656}
   - {fileID: 1525772829}
+  GatePanel: {fileID: 0}
 --- !u!4 &1877540830
 Transform:
   m_ObjectHideFlags: 0
