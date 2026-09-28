@@ -14,6 +14,8 @@ public class EnemyHealthPoint : MonoBehaviour
     [SerializeField] private float dropChance = 10f;
     [SerializeField] private float dropRadius = 0.5f;
 
+    private bool hasDroppedItem = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,8 +42,6 @@ public class EnemyHealthPoint : MonoBehaviour
     {
         Debug.Log("Enemy Dead");
 
-        //Shop.Instance.KillCountEnemy();
-        
         Destroy(gameObject);
 
         DropItems();
@@ -52,36 +52,36 @@ public class EnemyHealthPoint : MonoBehaviour
         foreach (GameObject item in dropItems)
         {
             DropChance(item);
-
-            Debug.Log("Skill Hit Enemy!");
         }
     }
 
     void DropChance(GameObject item)
     {
-        if (item == null)
+        if (hasDroppedItem || item == null)
             return;
 
         float randomChance = Random.Range(0f, 100f);
 
-        if (randomChance <= dropChance)
-        {
-            Vector2 randomPosition =
-                Random.insideUnitCircle * dropRadius;
+        if (randomChance > dropChance)
+            return;
 
-            Vector3 spawnPosition =
-                transform.position +
-                new Vector3(
-                    randomPosition.x,
-                    randomPosition.y,
-                    0f
-                );
+        Vector2 randomPosition =
+            Random.insideUnitCircle * dropRadius;
 
-            Instantiate(
-                item,
-                spawnPosition,
-                Quaternion.identity
+        Vector3 spawnPosition =
+            transform.position +
+            new Vector3(
+                randomPosition.x,
+                randomPosition.y,
+                0f
             );
-        }
+
+        Instantiate(
+            item,
+            spawnPosition,
+            Quaternion.identity
+        );
+
+        hasDroppedItem = true;
     }
 }

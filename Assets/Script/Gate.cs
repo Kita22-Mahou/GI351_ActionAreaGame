@@ -8,7 +8,6 @@ public class Gate : MonoBehaviour
 {
     public enum GemType
     {
-        Red,
         Green,
         Blue,
         Yellow
@@ -26,7 +25,7 @@ public class Gate : MonoBehaviour
     [Header("Gem Pool")]
     [SerializeField] private List<GemSummsion> pool = new();
     private int maxGemAmount = 3;
-    [SerializeField ] public List<GemSummsion> currentPool = new();
+    [SerializeField] public List<GemSummsion> currentPool = new();
 
     [Header("UI")]
     [SerializeField] private Button[] submitButtons;
@@ -60,7 +59,7 @@ public class Gate : MonoBehaviour
 
             submitButtons[index].onClick.RemoveAllListeners();
             submitButtons[index].onClick.AddListener(
-                () => GemSubmission(currentPool[index].gemtype , index)
+                () => GemSubmission(currentPool[index].gemtype, index)
             );
         }
     }

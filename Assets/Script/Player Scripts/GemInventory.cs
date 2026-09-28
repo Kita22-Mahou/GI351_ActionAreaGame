@@ -6,7 +6,6 @@ public class GemInventory : MonoBehaviour
     private Gate gate;
 
     [Header("Gem Amount")]
-    [SerializeField] private int RedGemAmount = 0;
     [SerializeField] private int GreenGemAmount = 0;
     [SerializeField] private int BlueGemAmount = 0;
     [SerializeField] private int YellowGemAmount = 0;
@@ -20,14 +19,6 @@ public class GemInventory : MonoBehaviour
     {
         switch (gemType)
         {
-            case GemType.Red:
-                if (RedGemAmount > 0)
-                {
-                    RedGemAmount += addAmount;
-                    gate.currentPool[index].neededAmount += addAmount;
-                }
-                break;
-
             case GemType.Green:
                 if (GreenGemAmount > 0)
                 {
@@ -54,6 +45,24 @@ public class GemInventory : MonoBehaviour
 
             default:
                 Debug.Log("Gem not found");
+                break;
+        }
+    }
+
+    public void GetGem(Gate.GemType gemType, int amount)
+    {
+        switch (gemType)
+        {
+            case Gate.GemType.Green:
+                GreenGemAmount += amount;
+                break;
+
+            case Gate.GemType.Blue:
+                BlueGemAmount += amount;
+                break;
+
+            case Gate.GemType.Yellow:
+                YellowGemAmount += amount;
                 break;
         }
     }
