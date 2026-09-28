@@ -109,11 +109,7 @@ public class EnemyMelee : MonoBehaviour
 
         if (player != null)
         {
-            float playerDistance =
-                Vector2.Distance(
-                    transform.position,
-                    player.position
-                );
+            float playerDistance = Vector2.Distance(transform.position,player.position);
 
             if (playerDistance <= detectRange &&
                 playerDistance < closestDistance)
@@ -125,11 +121,7 @@ public class EnemyMelee : MonoBehaviour
 
         if (car != null)
         {
-            float carDistance =
-                Vector2.Distance(
-                    transform.position,
-                    car.position
-                );
+            float carDistance = Vector2.Distance(transform.position,car.position);
 
             if (carDistance <= detectRange &&
                 carDistance < closestDistance)
@@ -163,20 +155,6 @@ public class EnemyMelee : MonoBehaviour
             navMeshAgent.velocity = Vector3.zero;
         }
     }
-
-    //void FlipToTarget(Transform target)
-    //{
-    //    if (target.position.x > transform.position.x)
-    //    {
-    //        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x)
-    //            ,transform.localScale.y,transform.localScale.z);
-    //    }
-    //    else if (target.position.x < transform.position.x)
-    //    {
-    //        transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x)
-    //            ,transform.localScale.y,transform.localScale.z);
-    //    }
-    //}
     #endregion
 
     void GetAttackDirection(Transform target) // คำนวณทิศทางการโจมตี และหมุนไปทางที่โจมตี

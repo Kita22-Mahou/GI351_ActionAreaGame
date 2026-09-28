@@ -121,6 +121,9 @@ MonoBehaviour:
   dropItems: []
   dropChance: 10
   dropRadius: 2
+  minSeparation: 1.2
+  maxSeparation: 2
+  separationStrength: 2
 --- !u!114 &6926719188410467260
 MonoBehaviour:
   m_ObjectHideFlags: 0

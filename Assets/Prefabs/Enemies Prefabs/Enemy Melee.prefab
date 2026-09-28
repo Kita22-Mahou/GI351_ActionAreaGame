@@ -122,6 +122,9 @@ MonoBehaviour:
   - {fileID: 1119242369590687341, guid: 9a6c5369473b4f2419bcb20d468d3e53, type: 3}
   dropChance: 100
   dropRadius: 2
+  minSeparation: 1.2
+  maxSeparation: 2
+  separationStrength: 2
 --- !u!114 &8267820950127149883
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Gate : MonoBehaviour
@@ -31,10 +32,17 @@ public class Gate : MonoBehaviour
     [SerializeField] private Button[] submitButtons;
     [SerializeField] private TMP_Text[] nameTexts;
     [SerializeField] private GameObject[] donePanel;
+    [SerializeField] private GameObject GatePanel;
 
 
     [Header("Referent")]
     private GemInventory gemInventory;
+
+    private void Awake()
+    {
+        if (GatePanel != null)
+            GatePanel.SetActive(false);
+    }
 
     void Start()
     {
@@ -61,7 +69,21 @@ public class Gate : MonoBehaviour
             submitButtons[index].onClick.AddListener(
                 () => GemSubmission(currentPool[index].gemtype, index)
             );
+        }          
+    }
+
+    private void Update()
+    {
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if(GatePanel == true)
+            {
+                Close();
+            }
         }
+
+
     }
 
     void GemSubmission(GemType gemType, int index)
@@ -77,6 +99,23 @@ public class Gate : MonoBehaviour
 
             CheckWin();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            GatePanel.SetActive(true);
+
+            Time.timeScale = 0f;
+
+        }
+    }
+
+    public void Close()
+    {
+        GatePanel.SetActive(false);
+        Time.timeScale = 1f;
     }
 
     void CheckWin()
