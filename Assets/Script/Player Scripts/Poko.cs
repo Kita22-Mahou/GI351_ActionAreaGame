@@ -29,6 +29,16 @@ public class Poko : MonoBehaviour
 
     private float attackTimer;
 
+    [Header("Dash")]
+    [SerializeField] private float dashSpeed = 12f;
+    [SerializeField] private float dashTime = 0.15f;
+    [SerializeField] private float dashCooldown = 1f;
+
+    private float dashTimer;
+    private float dashDuration;
+    private Vector2 dashDir;
+    public bool IsInvincible => dashDuration > 0f;
+
     [Header("Skill 1 - Area Attack")]
     [SerializeField] private float skillRadius = 2f;
     [SerializeField] private float skillDamage = 40f;
@@ -50,7 +60,6 @@ public class Poko : MonoBehaviour
     [Header("Call")]
     private bool hasCallTarget;
     private Vector2 callPosition;
-
 
     private void Awake()
     {
@@ -79,6 +88,14 @@ public class Poko : MonoBehaviour
         skillTimer = CountDown(skillTimer);
         boomShroomTimer = CountDown(boomShroomTimer);
 
+        if (dashTimer > 0f)
+            dashTimer -= Time.deltaTime;
+
+        if (dashDuration > 0f)
+            dashDuration -= Time.deltaTime;
+        else if (dashTimer <= 0f)
+            CheckDash();
+
         UpdateFollow();
         CheckAttack();
         CheckSkill();
@@ -90,10 +107,18 @@ public class Poko : MonoBehaviour
         Move();
     }
 
-
     // Movement
     private void Move()
     {
+        if (dashDuration > 0f)
+        {
+            float t = 1f - dashDuration / dashTime;
+            float speed = Mathf.Lerp(dashSpeed, 0f, t);
+
+            rb.linearVelocity = dashDir * speed;
+            return;
+        }
+
         if (hasCallTarget)
         {
             MoveToPosition(callPosition);
@@ -121,11 +146,11 @@ public class Poko : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
     }
 
-    private bool MoveTo(Vector2 target, float stopDistance)
+    private bool MoveTo(Vector2 target, float targetStopDistance)
     {
         Vector2 direction = target - rb.position;
 
-        if (direction.magnitude <= stopDistance)
+        if (direction.magnitude <= targetStopDistance)
         {
             rb.linearVelocity = Vector2.zero;
             return true;
@@ -144,6 +169,64 @@ public class Poko : MonoBehaviour
         {
             rb.position = target;
             hasCallTarget = false;
+        }
+    }
+
+    private void CheckDash()
+    {
+        Collider2D[] hits =
+            Physics2D.OverlapCircleAll(rb.position, 1.5f);
+
+        foreach (Collider2D hit in hits)
+        {
+            EnemyAttackHitbox attackHitbox =
+                hit.GetComponentInParent<EnemyAttackHitbox>();
+
+            if (attackHitbox == null || !attackHitbox.isActiveAndEnabled)
+                continue;
+
+            Vector2[] directions =
+            {
+                Vector2.up,
+                Vector2.down,
+                Vector2.left,
+                Vector2.right
+            };
+
+            int start = Random.Range(0, directions.Length);
+
+            for (int i = 0; i < directions.Length; i++)
+            {
+                Vector2 dir = directions[(start + i) % directions.Length];
+                Vector2 target = rb.position + dir * 1.5f;
+
+                Collider2D[] targetHits =
+                    Physics2D.OverlapCircleAll(target, 0.3f);
+
+                bool dangerous = false;
+
+                foreach (Collider2D targetHit in targetHits)
+                {
+                    EnemyAttackHitbox targetAttack =
+                        targetHit.GetComponentInParent<EnemyAttackHitbox>();
+
+                    if (targetAttack != null && targetAttack.isActiveAndEnabled)
+                    {
+                        dangerous = true;
+                        break;
+                    }
+                }
+
+                if (dangerous)
+                    continue;
+
+                dashDir = dir;
+                dashDuration = dashTime;
+                dashTimer = dashCooldown;
+
+                Flip(dir.x);
+                return;
+            }
         }
     }
 
@@ -189,7 +272,11 @@ public class Poko : MonoBehaviour
         Vector2 position =
             rb.position + direction * boomPlantOffset;
 
-        Instantiate(boomShroomPrefab,position,Quaternion.identity);
+        Instantiate(
+            boomShroomPrefab,
+            position,
+            Quaternion.identity
+        );
 
         boomShroomTimer = boomShroomCooldown;
     }
@@ -225,7 +312,8 @@ public class Poko : MonoBehaviour
         if (enemy == null)
             return;
 
-        float distance = Vector2.Distance(rb.position,enemy.transform.position);
+        float distance =
+            Vector2.Distance(rb.position, enemy.transform.position);
 
         if (distance > attackRange)
             return;
@@ -244,25 +332,27 @@ public class Poko : MonoBehaviour
             return;
         }
 
-        MoveTo(enemy.transform.position,attackRange);
+        MoveTo(enemy.transform.position, attackRange);
     }
 
     private EnemyHealthPoint FindNearestEnemy()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(rb.position,detectRange);
+        Collider2D[] colliders =
+            Physics2D.OverlapCircleAll(rb.position, detectRange);
 
         EnemyHealthPoint nearest = null;
         float nearestDistance = Mathf.Infinity;
 
         foreach (Collider2D col in colliders)
         {
-            EnemyHealthPoint enemy = col.GetComponentInParent<EnemyHealthPoint>();
+            EnemyHealthPoint enemy =
+                col.GetComponentInParent<EnemyHealthPoint>();
 
-            if (enemy == null ||
-                !enemy.CompareTag("Enemy"))
+            if (enemy == null || !enemy.CompareTag("Enemy"))
                 continue;
 
-            float distance = Vector2.Distance(rb.position,enemy.transform.position);
+            float distance =
+                Vector2.Distance(rb.position, enemy.transform.position);
 
             if (distance < nearestDistance)
             {
@@ -285,10 +375,8 @@ public class Poko : MonoBehaviour
         if (enemy == null)
             return;
 
-        float distance = Vector2.Distance(
-            rb.position,
-            enemy.transform.position
-        );
+        float distance =
+            Vector2.Distance(rb.position, enemy.transform.position);
 
         if (distance <= skillRadius)
             UseAreaSkill();
@@ -296,11 +384,13 @@ public class Poko : MonoBehaviour
 
     private void UseAreaSkill()
     {
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(rb.position,skillRadius);
+        Collider2D[] enemies =
+            Physics2D.OverlapCircleAll(rb.position, skillRadius);
 
         foreach (Collider2D col in enemies)
         {
-            EnemyHealthPoint enemy = col.GetComponentInParent<EnemyHealthPoint>();
+            EnemyHealthPoint enemy =
+                col.GetComponentInParent<EnemyHealthPoint>();
 
             if (enemy == null || !enemy.CompareTag("Enemy"))
                 continue;
@@ -412,15 +502,15 @@ public class Poko : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-
-        Gizmos.DrawWireSphere(transform.position,detectRange);
+        Gizmos.DrawWireSphere(transform.position, detectRange);
 
         Gizmos.color = Color.red;
-
-        Gizmos.DrawWireSphere(transform.position,attackRange);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
 
         Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, skillRadius);
 
-        Gizmos.DrawWireSphere(transform.position,skillRadius);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(transform.position, 1.5f);
     }
 }
