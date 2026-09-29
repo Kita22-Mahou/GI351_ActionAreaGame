@@ -108,7 +108,7 @@ public class SwordMan : MonoBehaviour
 
     void Move()
     {
-        if(isAttacking)
+        if (isAttacking)
         {
             rb.linearVelocity = Vector2.zero;
             return;
@@ -145,6 +145,11 @@ public class SwordMan : MonoBehaviour
         movement = movement.normalized;
 
         rb.linearVelocity = movement * speed;
+
+        if (movement != Vector2.zero)
+            AudioManager.Instance.StartWalk();
+        else
+            AudioManager.Instance.StopWalk();
     }
 
     void Flip()
@@ -234,7 +239,7 @@ public class SwordMan : MonoBehaviour
 
     }
 
-    void Attack( Vector2 pos, Quaternion rot) // ให้ Hitbox ย้ายจุดไปรอบๆ
+    void Attack(Vector2 pos, Quaternion rot) // ให้ Hitbox ย้ายจุดไปรอบๆ
     {
         Quaternion rotation = rot * Quaternion.Euler(0, 0, 90);
         isAttacking = true;
@@ -243,7 +248,9 @@ public class SwordMan : MonoBehaviour
         Instantiate(attackAnimation, swordHitbox.transform.position, rotation);
         swordHitbox.SetActive(true);
         swordHitbox.GetComponent<CapsuleCollider2D>().enabled = true;
+        AudioManager.Instance.PipAttark();
         StartCoroutine(DisableHitbox());
+        
     }
 
     IEnumerator DisableHitbox()
@@ -316,10 +323,10 @@ public class SwordMan : MonoBehaviour
         rb.linearVelocity = movement * dashSpeed;
         isDashing = true;
         canDash = false;
-
+        AudioManager.Instance.Dash();
         StartCoroutine(DashCoroutine());
 
-        Debug.Log("Player Dash!");
+       
     }
 
     IEnumerator DashCoroutine()
@@ -357,7 +364,7 @@ public class SwordMan : MonoBehaviour
     Physics2D.OverlapCircleAll(
         transform.position,
         skillRadius,
-        enemyLayer );
+        enemyLayer);
 
         foreach (Collider2D enemy in enemies)
         {
@@ -405,35 +412,12 @@ public class SwordMan : MonoBehaviour
         return baseAttackDamage + damageBonus;
     }
 
-    //public void UpgradeDamage(float amount)
-    //{
-        //damageBonus += amount;
-        //Debug.Log("Attack Damage: " + GetAttackDamage());
-    //}
-
     public void UpgradeSpeed(float amount)
     {
         speed += amount;
         Debug.Log("Speed: " + speed);
     }
 
-    //public void UpgradeMaxHP(float amount)
-    //{
-    //    maxHP += amount;
-    //    currentHP += amount;
-
-    //    currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
-
-    //    Debug.Log("MaxHP: " + maxHP);
-    //}
-
-    //public void Heal(float amount)
-    //{
-    //    currentHP += amount;
-    //    currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
-
-    //    Debug.Log("Player HP: " + currentHP);
-    //}
     #endregion
     private void OnDrawGizmosSelected()
     {

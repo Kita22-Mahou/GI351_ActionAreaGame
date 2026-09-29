@@ -100,6 +100,7 @@ public class Poko : MonoBehaviour
         CheckAttack();
         CheckSkill();
         CheckBoomShroom();
+        
     }
 
     private void FixedUpdate()
@@ -122,26 +123,31 @@ public class Poko : MonoBehaviour
         if (hasCallTarget)
         {
             MoveToPosition(callPosition);
+            
+
             return;
         }
 
         if (hasBoomTarget)
         {
-            MoveToBoomShroom();
+            
             return;
         }
 
         if (followMode)
         {
             MoveToPlayer();
+           
             return;
         }
 
         if (attackMonsterMode)
         {
             MoveToEnemy();
+            
             return;
         }
+        
 
         rb.linearVelocity = Vector2.zero;
     }
@@ -294,11 +300,13 @@ public class Poko : MonoBehaviour
             followTarget = player.position;
             followTimer = followDelay;
         }
+
     }
 
     private void MoveToPlayer()
     {
         MoveTo(followTarget, followDistance);
+
     }
 
     // Attack
@@ -436,6 +444,8 @@ public class Poko : MonoBehaviour
     // Call
     public void CallToPosition(Vector2 position)
     {
+        AudioManager.Instance.PokoBark();
+
         hasBoomTarget = false;
         boomTarget = null;
 
@@ -446,6 +456,7 @@ public class Poko : MonoBehaviour
     // Follow
     public void ToggleFollow()
     {
+        AudioManager.Instance.PokoBark();
         followMode = !followMode;
 
         if (!followMode)
@@ -467,6 +478,7 @@ public class Poko : MonoBehaviour
     // Attack Mode
     public void ToggleAttackMonster()
     {
+        AudioManager.Instance.PokoBark();
         attackMonsterMode = !attackMonsterMode;
 
         if (attackMonsterMode)
