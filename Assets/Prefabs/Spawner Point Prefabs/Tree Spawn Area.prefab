@@ -57,8 +57,8 @@ MonoBehaviour:
   isAreaSpawn: 1
   objectAmount: 35
   gapBTWObject: 3
-  delaySpawnBTWObject: 0.0005
-  delayAttempt: 0.0005
+  delaySpawnBTWObject: 0
+  delayAttempt: 0
   repeatAttemp: 50
   isSpawnChance: 0
   spawnChance: 100

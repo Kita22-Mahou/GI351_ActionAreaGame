@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3141907583721212116
 Transform:
   m_ObjectHideFlags: 0
@@ -138,8 +138,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMelee
   detectRange: 50
-  attackRange: 1.5
-  moveSpeed: 2
+  attackRange: 2.5
+  moveSpeed: 3
   attackFX:
   - {fileID: 6440627715445756814, guid: 0749d9b2347d250489485890616f425e, type: 3}
   - {fileID: 6313766512245863649, guid: 226044cc3bf0d364fa288ffc380cca64, type: 3}
@@ -502,7 +502,6 @@ MonoBehaviour:
   - {fileID: 7591331041177389319}
   - {fileID: 6827795020781480748}
   - {fileID: 1529836112760505888}
-  order: 0
 --- !u!1 &7503129074340069973
 GameObject:
   m_ObjectHideFlags: 0

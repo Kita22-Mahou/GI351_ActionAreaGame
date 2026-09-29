@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 7
   m_Name: Grass Spawn Area
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -54,8 +54,8 @@ MonoBehaviour:
   isAreaSpawn: 1
   objectAmount: 100
   gapBTWObject: 0.3
-  delaySpawnBTWObject: 0.005
-  delayAttempt: 0.005
+  delaySpawnBTWObject: 0
+  delayAttempt: 0
   repeatAttemp: 50
   isSpawnChance: 0
   spawnChance: 100
