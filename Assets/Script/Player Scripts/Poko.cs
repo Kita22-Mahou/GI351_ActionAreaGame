@@ -12,12 +12,13 @@ public class Poko : MonoBehaviour
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float followDistance = 2f;
     [SerializeField] private float stopDistance = 0.05f;
+    [SerializeField] private float acceleration = 10f;
+    [SerializeField] private float deceleration = 15f;
 
     [Header("Follow")]
     [SerializeField] private bool followMode;
-    [SerializeField] private float followDelay = 0.15f;
+    [SerializeField] private float followSmooth = 8f;
 
-    private float followTimer;
     private Vector2 followTarget;
 
     [Header("Attack")]
@@ -37,6 +38,7 @@ public class Poko : MonoBehaviour
     private float dashTimer;
     private float dashDuration;
     private Vector2 dashDir;
+
     public bool IsInvincible => dashDuration > 0f;
 
     [Header("Skill 1 - Area Attack")]
@@ -61,6 +63,8 @@ public class Poko : MonoBehaviour
     private bool hasCallTarget;
     private Vector2 callPosition;
 
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -78,8 +82,6 @@ public class Poko : MonoBehaviour
 
         if (player != null)
             followTarget = player.position;
-
-        followTimer = followDelay;
     }
 
     private void Update()
@@ -100,7 +102,6 @@ public class Poko : MonoBehaviour
         CheckAttack();
         CheckSkill();
         CheckBoomShroom();
-        
     }
 
     private void FixedUpdate()
@@ -114,7 +115,7 @@ public class Poko : MonoBehaviour
         if (dashDuration > 0f)
         {
             float t = 1f - dashDuration / dashTime;
-            float speed = Mathf.Lerp(dashSpeed, 0f, t);
+            float speed = dashSpeed * Mathf.SmoothStep(1f, 0f, t);
 
             rb.linearVelocity = dashDir * speed;
             return;
@@ -123,61 +124,77 @@ public class Poko : MonoBehaviour
         if (hasCallTarget)
         {
             MoveToPosition(callPosition);
-            
-
             return;
         }
 
         if (hasBoomTarget)
         {
-            
+            MoveToBoomShroom();
             return;
         }
 
         if (followMode)
         {
             MoveToPlayer();
-           
             return;
         }
 
         if (attackMonsterMode)
         {
             MoveToEnemy();
-            
             return;
         }
-        
 
-        rb.linearVelocity = Vector2.zero;
+        StopMovement();
     }
 
     private bool MoveTo(Vector2 target, float targetStopDistance)
     {
         Vector2 direction = target - rb.position;
+        float distance = direction.magnitude;
 
-        if (direction.magnitude <= targetStopDistance)
+        if (distance <= targetStopDistance)
         {
-            rb.linearVelocity = Vector2.zero;
+            StopMovement();
             return true;
         }
 
         direction.Normalize();
-        rb.linearVelocity = direction * moveSpeed;
+
+        float speed = moveSpeed;
+
+        if (distance < 1f)
+            speed *= distance;
+
+        Vector2 targetVelocity = direction * speed;
+
+        rb.linearVelocity = Vector2.MoveTowards(
+            rb.linearVelocity,
+            targetVelocity,
+            acceleration * Time.fixedDeltaTime
+        );
+
         Flip(direction.x);
 
         return false;
     }
 
+    private void StopMovement()
+    {
+        rb.linearVelocity = Vector2.MoveTowards(
+            rb.linearVelocity,
+            Vector2.zero,
+            deceleration * Time.fixedDeltaTime
+        );
+    }
+
     private void MoveToPosition(Vector2 target)
     {
         if (MoveTo(target, stopDistance))
-        {
-            rb.position = target;
             hasCallTarget = false;
-        }
     }
 
+    // Dash
     private void CheckDash()
     {
         Collider2D[] hits =
@@ -246,23 +263,14 @@ public class Poko : MonoBehaviour
         }
 
         Vector2 target = boomTarget.transform.position;
-        Vector2 direction = target - rb.position;
 
-        if (direction.magnitude <= boomPlantDistance)
+        if (MoveTo(target, boomPlantDistance))
         {
-            rb.linearVelocity = Vector2.zero;
-
-            PlaceBoomShroom(direction);
+            PlaceBoomShroom(target - rb.position);
 
             hasBoomTarget = false;
             boomTarget = null;
-            return;
         }
-
-        direction.Normalize();
-        rb.linearVelocity = direction * moveSpeed;
-
-        Flip(direction.x);
     }
 
     private void PlaceBoomShroom(Vector2 direction)
@@ -293,20 +301,16 @@ public class Poko : MonoBehaviour
         if (!followMode || player == null)
             return;
 
-        followTimer -= Time.deltaTime;
-
-        if (followTimer <= 0f)
-        {
-            followTarget = player.position;
-            followTimer = followDelay;
-        }
-
+        followTarget = Vector2.Lerp(
+            followTarget,
+            player.position,
+            followSmooth * Time.deltaTime
+        );
     }
 
     private void MoveToPlayer()
     {
         MoveTo(followTarget, followDistance);
-
     }
 
     // Attack
@@ -336,7 +340,7 @@ public class Poko : MonoBehaviour
 
         if (enemy == null)
         {
-            rb.linearVelocity = Vector2.zero;
+            StopMovement();
             return;
         }
 
@@ -457,6 +461,7 @@ public class Poko : MonoBehaviour
     public void ToggleFollow()
     {
         AudioManager.Instance.PokoBark();
+
         followMode = !followMode;
 
         if (!followMode)
@@ -466,8 +471,6 @@ public class Poko : MonoBehaviour
 
         if (player != null)
             followTarget = player.position;
-
-        followTimer = followDelay;
     }
 
     public bool IsFollowing()
@@ -479,6 +482,7 @@ public class Poko : MonoBehaviour
     public void ToggleAttackMonster()
     {
         AudioManager.Instance.PokoBark();
+
         attackMonsterMode = !attackMonsterMode;
 
         if (attackMonsterMode)

@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3315926402107003275
 Transform:
   m_ObjectHideFlags: 0
@@ -580,7 +580,6 @@ MonoBehaviour:
   - {fileID: 3810317983293699239}
   - {fileID: 8853738730609299818}
   - {fileID: 5224797446414593222}
-  order: 0
 --- !u!1001 &749099929370516954
 PrefabInstance:
   m_ObjectHideFlags: 0

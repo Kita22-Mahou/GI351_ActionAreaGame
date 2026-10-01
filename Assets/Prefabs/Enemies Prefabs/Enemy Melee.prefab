@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3141907583721212116
 Transform:
   m_ObjectHideFlags: 0
@@ -118,8 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthPoint
   maxHP: 60
   currentHP: 0
-  dropItems:
-  - {fileID: 1119242369590687341, guid: 9a6c5369473b4f2419bcb20d468d3e53, type: 3}
+  dropItems: []
   dropChance: 100
   dropRadius: 2
   minSeparation: 1.2
@@ -502,7 +501,6 @@ MonoBehaviour:
   - {fileID: 7591331041177389319}
   - {fileID: 6827795020781480748}
   - {fileID: 1529836112760505888}
-  order: 0
 --- !u!1 &7503129074340069973
 GameObject:
   m_ObjectHideFlags: 0
