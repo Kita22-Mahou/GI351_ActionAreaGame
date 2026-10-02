@@ -18,7 +18,7 @@ public class PlayerHealthPoint : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHP -= damage;
-
+        AudioManager.Instance.PipHit();
         currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
         Debug.Log("PlayerHP: " + currentHP);

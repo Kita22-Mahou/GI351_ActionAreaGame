@@ -40,7 +40,7 @@ public class EnemyHealthPoint : MonoBehaviour
 
         currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
-        Debug.Log("Enemy HP: " + currentHP);
+        AudioManager.Instance.HitMontsers();
 
 
         if (currentHP <= 0)
@@ -53,6 +53,7 @@ public class EnemyHealthPoint : MonoBehaviour
     {
         Debug.Log("Enemy Dead");
 
+        AudioManager.Instance.PlayDeath();
         Destroy(gameObject);
 
         DropItems();
