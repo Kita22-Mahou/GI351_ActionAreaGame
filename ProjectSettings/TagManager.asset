@@ -12,6 +12,7 @@ TagManager:
   - Wall
   - No Count
   - Overlab
+  - Room
   layers:
   - Default
   - TransparentFX
