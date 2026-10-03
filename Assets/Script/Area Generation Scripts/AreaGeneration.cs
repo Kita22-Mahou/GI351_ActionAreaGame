@@ -4,6 +4,7 @@ public class AreaGeneration : MonoBehaviour
 {
     public Transform[] startPosition;
     public GameObject[] areas;
+    [SerializeField] private GameObject startArea;
     #region Areas index
     /*
     index 0 = LR
@@ -32,7 +33,7 @@ public class AreaGeneration : MonoBehaviour
     {
         int randStartPos = Random.Range(0, startPosition.Length);
         transform.position = startPosition[randStartPos].position;
-        Instantiate(areas[0], transform.position, Quaternion.identity);
+        Instantiate(startArea, transform.position, Quaternion.identity);
 
         direction = Random.Range(1, 6);
 

@@ -13,6 +13,7 @@ TagManager:
   - No Count
   - Overlab
   - Room
+  - Start Room
   layers:
   - Default
   - TransparentFX

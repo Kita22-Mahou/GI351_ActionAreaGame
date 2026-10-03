@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -19,13 +19,12 @@ public class Gate : MonoBehaviour
     {
         public string name;
         public GemType gemtype;
-
         public int neededAmount;
     }
 
     [Header("Gem Pool")]
-    private int maxGemAmount = 3;
     [SerializeField] public List<GemSummsion> Pool = new();
+
 
     [Header("UI")]
     [SerializeField] private Button[] submitButtons;
@@ -37,11 +36,16 @@ public class Gate : MonoBehaviour
     [Header("Referent")]
     private GemInventory gemInventory;
 
+
     private void Awake()
     {
+        // หา UI ที่อยู่ภายใน Gate Prefab
+        FindUI();
+
         if (GatePanel != null)
             GatePanel.SetActive(false);
     }
+
 
     private void Start()
     {
@@ -54,11 +58,16 @@ public class Gate : MonoBehaviour
             nameTexts[index].text = Pool[index].name;
 
             submitButtons[index].onClick.RemoveAllListeners();
+
             submitButtons[index].onClick.AddListener(
-                () => GemSubmission(Pool[index].gemtype, index)
+                () => GemSubmission(
+                    Pool[index].gemtype,
+                    index
+                )
             );
         }
     }
+
 
     private void Update()
     {
@@ -66,20 +75,41 @@ public class Gate : MonoBehaviour
             Close();
     }
 
+
     private void GemSubmission(GemType gemType, int index)
     {
         GemSummsion gemsubmission = Pool[index];
 
-        gemInventory.AddGem(gemType, -1, index);
+        // ลด Gem ที่ผู้เล่นมี
+        gemInventory.AddGem(
+            gemType,
+            -1,
+            index
+        );
 
-        if (gemsubmission.neededAmount == 0)
+        // ลดจำนวน Gem ที่ Gate ต้องการ
+        gemsubmission.neededAmount--;
+
+
+        Debug.Log(
+            gemsubmission.name +
+            " Needed Amount: " +
+            gemsubmission.neededAmount
+        );
+
+
+        if (gemsubmission.neededAmount <= 0)
         {
+            gemsubmission.neededAmount = 0;
+
             donePanel[index].SetActive(true);
+
             submitButtons[index].onClick.RemoveAllListeners();
 
             CheckWin();
         }
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -88,15 +118,17 @@ public class Gate : MonoBehaviour
             GatePanel.SetActive(true);
 
             Time.timeScale = 0f;
-
         }
     }
+
 
     public void Close()
     {
         GatePanel.SetActive(false);
+
         Time.timeScale = 1f;
     }
+
 
     private void CheckWin()
     {
@@ -108,4 +140,105 @@ public class Gate : MonoBehaviour
         }
     }
 
+
+    private void FindUI()
+    {
+        // หา Canvas
+        Canvas canvas = FindAnyObjectByType<Canvas>();
+
+        if (canvas == null)
+        {
+            Debug.LogError("ไม่พบ Canvas");
+            return;
+        }
+
+
+        // หา Gate UI
+        Transform gateUI = null;
+
+        Transform[] allTransforms =
+            canvas.GetComponentsInChildren<Transform>(true);
+
+        foreach (Transform child in allTransforms)
+        {
+            if (child.gameObject.name == "Gate UI")
+            {
+                gateUI = child;
+                break;
+            }
+        }
+
+
+        if (gateUI == null)
+        {
+            Debug.LogError("ไม่พบ Gate UI");
+            return;
+        }
+
+
+        // -------------------------
+        // Gate Panel
+        // -------------------------
+
+        GatePanel = gateUI.gameObject;
+
+
+        // -------------------------
+        // Buttons
+        // -------------------------
+
+        submitButtons =
+            gateUI.GetComponentsInChildren<Button>(true);
+
+
+        // -------------------------
+        // Name Text
+        // -------------------------
+
+        TMP_Text[] allTexts =
+            gateUI.GetComponentsInChildren<TMP_Text>(true);
+
+        List<TMP_Text> foundNameTexts = new();
+
+        foreach (TMP_Text text in allTexts)
+        {
+            if (text.gameObject.name == "Name Text")
+            {
+                foundNameTexts.Add(text);
+            }
+        }
+
+        nameTexts = foundNameTexts.ToArray();
+
+
+        // -------------------------
+        // Done Image
+        // -------------------------
+
+        List<GameObject> foundDonePanels = new();
+
+        foreach (Transform child in allTransforms)
+        {
+            if (child.gameObject.name == "Done Image" &&
+                child.IsChildOf(gateUI))
+            {
+                foundDonePanels.Add(child.gameObject);
+            }
+        }
+
+        donePanel = foundDonePanels.ToArray();
+
+
+        // -------------------------
+        // Debug
+        // -------------------------
+
+        //Debug.Log(
+        //    "Gate UI Found | " +
+        //    "Buttons: " + submitButtons.Length +
+        //    " | Name Texts: " + nameTexts.Length +
+        //    " | Done Panels: " + donePanel.Length +
+        //    " | Gate Panel: " + (GatePanel != null)
+        //);
+    }
 }
