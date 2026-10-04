@@ -32,15 +32,17 @@ public class SwordMan : MonoBehaviour
     [SerializeField] private bool canDash = true;
 
     [Header("Skill")]
-    [SerializeField] private GameObject skillHitbox;
-
+    [SerializeField] private GameObject[] skillHitbox;
     [SerializeField] private float skillRadius = 1.5f;
     [SerializeField] private float skillDamage = 40f;
     [SerializeField] private float skillCooldown = 5f;
-    [SerializeField] private float skillDuration = 0.1f;
+    [SerializeField] private float skillDuration = 1.5f;
+    [SerializeField] private float skillRotationSpeed = 360f;
 
-    [SerializeField] private bool canSkill = true;
-    [SerializeField] private bool isSkilling = false;
+    private float skillTimer;
+    private float skillAngle;
+    private bool canSkill = true;
+    private bool isSkilling;
     [HideInInspector] public bool isInShop = false;
 
     [Header("Referent")]
@@ -54,8 +56,6 @@ public class SwordMan : MonoBehaviour
     {
         instance = this;
         rb = GetComponent<Rigidbody2D>();
-
-        skillRadius = skillHitbox.GetComponent<CircleCollider2D>().radius;
         playerfaceDetector = GetComponent<PlayerFaceDetector>();
     }
 
@@ -87,14 +87,13 @@ public class SwordMan : MonoBehaviour
         {
             Skill();
         }
-        //if (Keyboard.current.qKey.wasPressedThisFrame)
-        //{
-        //    Call();
-        //}
-        //if (Keyboard.current.fKey.wasPressedThisFrame)
-        //{
-        //    CallToMouse();
-        //}
+
+        if (isSkilling) 
+        {
+
+            RotateSkillSword();
+        }
+           
     }
 
     void FixedUpdate()
@@ -181,9 +180,6 @@ public class SwordMan : MonoBehaviour
     public void AttackDirection()
     {
         if (isDashing)
-            return;
-
-        if (isSkilling)
             return;
 
         int direction = faceDirection;
@@ -344,48 +340,61 @@ public class SwordMan : MonoBehaviour
 
     public void Skill()
     {
-        if (!canSkill)
+        if (!canSkill || isAttacking || isDashing)
             return;
-
-        if (isAttacking)
-            return;
-
-        if (isDashing)
-            return;
-
 
         canSkill = false;
+        isSkilling = true;
 
-        Debug.Log("Player Skill!");
+        for (int i = 0; i < skillHitbox.Length; i++)
+            skillHitbox[i].SetActive(true);
 
-        skillHitbox.SetActive(true);
+        AudioManager.Instance.StartSkillSound();
 
-        Collider2D[] enemies =
-    Physics2D.OverlapCircleAll(
-        transform.position,
-        skillRadius,
-        enemyLayer);
-
-        foreach (Collider2D enemy in enemies)
-        {
-            enemy.SendMessage("TakeDamage", skillDamage, SendMessageOptions.DontRequireReceiver);
-
-            Debug.Log("Skill Hit Enemy!");
-        }
-        StartCoroutine(SkillCooldown());
+        StartCoroutine(SkillCoroutine());
     }
 
-    IEnumerator SkillCooldown()
+    private void RotateSkillSword()
     {
-        yield return new WaitForSeconds(skillDuration);
+        skillAngle += skillRotationSpeed * Time.deltaTime;
 
-        skillHitbox.SetActive(true);
+        for (int i = 0; i < skillHitbox.Length; i++)
+        {
+            float angle = skillAngle + i * 120f;
+            float rad = angle * Mathf.Deg2Rad;
+
+            Vector2 direction = new Vector2(Mathf.Cos(rad),Mathf.Sin(rad));
+
+            skillHitbox[i].transform.position = (Vector2)transform.position + direction * skillRadius;
+
+            skillHitbox[i].transform.rotation =Quaternion.Euler(0f, 0f, angle - 90f);
+        }
+    }
+
+    private IEnumerator SkillCoroutine()
+    {
+        skillAngle = 0f;
+
+        float timer = skillDuration;
+
+        while (timer > 0f)
+        {
+            RotateSkillSword();
+
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        for (int i = 0; i < skillHitbox.Length; i++)
+            skillHitbox[i].SetActive(false);
+
+        isSkilling = false;
+
+        AudioManager.Instance.StopSkillSound();
 
         yield return new WaitForSeconds(skillCooldown);
 
         canSkill = true;
-
-        Debug.Log("Skill Ready!");
     }
 
     void Call() // Call cart

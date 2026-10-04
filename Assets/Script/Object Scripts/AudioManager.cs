@@ -21,6 +21,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip PipWalk;
     public AudioClip PipDash;
 
+    [SerializeField] private AudioSource skillSource;
+    [SerializeField] private AudioClip skillSound;
+
     private void Awake()
     {
         Instance = this;
@@ -82,6 +85,20 @@ public class AudioManager : MonoBehaviour
     public void PipHit()
     {
         SFXSource.PlayOneShot(Hitpip);
+    }
+    public void StartSkillSound()
+    {
+        if (skillSource.isPlaying)
+            return;
+
+        skillSource.clip = skillSound;
+        skillSource.loop = true;
+        skillSource.Play();
+    }
+
+    public void StopSkillSound()
+    {
+        skillSource.Stop();
     }
 
 

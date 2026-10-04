@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyHealthPoint : MonoBehaviour
 {
@@ -16,6 +17,13 @@ public class EnemyHealthPoint : MonoBehaviour
 
     private bool hasDroppedItem = false;
 
+    [Header("HP Bar")]
+    [SerializeField] private Scrollbar hpBar;
+    [SerializeField] private float hpBarHideTime = 3f;
+    private float hpBarTimer;
+    private float targetHP;
+    private float hpVelocity;
+
     [SerializeField] private float minSeparation = 0.8f;
     [SerializeField] private float maxSeparation = 1.2f;
     [SerializeField] private float separationStrength = 2f;
@@ -29,29 +37,45 @@ public class EnemyHealthPoint : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
         currentHP = maxHP;
+        targetHP = 1f;
+
+        hpBar.size = 1f;
+        hpBar.gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        hpBar.size = Mathf.SmoothDamp(hpBar.size,targetHP,ref hpVelocity,0.15f);
+
+        if (!hpBar.gameObject.activeSelf)
+            return;
+
+        hpBarTimer -= Time.deltaTime;
+
+        if (hpBarTimer <= 0f)
+            hpBar.gameObject.SetActive(false);
     }
 
     public void TakeDamage(float damage)
     {
         currentHP -= damage;
-
         currentHP = Mathf.Clamp(currentHP, 0f, maxHP);
 
-        AudioManager.Instance.HitMontsers();
+        targetHP = currentHP / maxHP;
 
+        hpBarTimer = hpBarHideTime;
 
-        if (currentHP <= 0)
-        {
+        hpBar.gameObject.SetActive(true);
+
+        if (currentHP <= 0f)
             Die();
-        }
     }
+
+
 
     void Die()
     {
-        Debug.Log("Enemy Dead");
 
         AudioManager.Instance.PlayDeath();
         Destroy(gameObject);
