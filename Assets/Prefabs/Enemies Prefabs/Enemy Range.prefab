@@ -120,10 +120,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthPoint
   maxHP: 40
   currentHP: 0
-  hpBar: {fileID: 5268754380632022498}
   dropItems: []
   dropChance: 50
   dropRadius: 2
+  hpBar: {fileID: 5268754380632022498}
+  hpBarHideTime: 3
   minSeparation: 1.2
   maxSeparation: 2
   separationStrength: 2
@@ -143,7 +144,7 @@ MonoBehaviour:
   attackRange: 5
   moveSpeed: 1.5
   faceDirection: 2
-  attackDamage: 5
+  attackDamage: 10
   attackCooldown: 5
   attackTime: 0
   isAttacking: 0

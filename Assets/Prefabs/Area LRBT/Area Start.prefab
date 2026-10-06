@@ -370,14 +370,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gate
   Pool:
-  - name: Green
-    gemtype: 0
-    neededAmount: 1
   - name: Blue
     gemtype: 1
     neededAmount: 1
   - name: Yellow
     gemtype: 2
+    neededAmount: 1
+  - name: Green
+    gemtype: 0
     neededAmount: 1
   submitButtons:
   - {fileID: 0}

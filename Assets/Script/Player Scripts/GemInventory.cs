@@ -10,43 +10,42 @@ public class GemInventory : MonoBehaviour
     [SerializeField] private int BlueGemAmount = 0;
     [SerializeField] private int YellowGemAmount = 0;
 
-    private void Start()
+    private void LateUpdate()
     {
         gate = FindAnyObjectByType<Gate>();
     }
 
-    public void AddGem(GemType gemType, int addAmount, int index)
+    public bool AddGem(GemType gemType, int addAmount, int index)
     {
         switch (gemType)
         {
             case GemType.Green:
-                if (GreenGemAmount > 0)
-                {
-                    GreenGemAmount += addAmount;
-                    gate.Pool[index].neededAmount += addAmount;
-                }
+                if (GreenGemAmount + addAmount < 0)
+                    return false;
+
+                GreenGemAmount += addAmount;
                 break;
 
             case GemType.Blue:
-                if (BlueGemAmount > 0)
-                {
-                    BlueGemAmount += addAmount;
-                    gate.Pool[index].neededAmount += addAmount;
-                }
+                if (BlueGemAmount + addAmount < 0)
+                    return false;
+
+                BlueGemAmount += addAmount;
                 break;
 
             case GemType.Yellow:
-                if (YellowGemAmount > 0)
-                {
-                    YellowGemAmount += addAmount;
-                    gate.Pool[index].neededAmount += addAmount;
-                }
+                if (YellowGemAmount + addAmount < 0)
+                    return false;
+
+                YellowGemAmount += addAmount;
                 break;
 
             default:
                 Debug.Log("Gem not found");
-                break;
+                return false;
         }
+
+        return true;
     }
 
     public void GetGem(Gate.GemType gemType, int amount)
@@ -64,6 +63,24 @@ public class GemInventory : MonoBehaviour
             case Gate.GemType.Yellow:
                 YellowGemAmount += amount;
                 break;
+        }
+    }
+
+    public int GetGemAmount(GemType gemType)
+    {
+        switch (gemType)
+        {
+            case GemType.Green:
+                return GreenGemAmount;
+
+            case GemType.Blue:
+                return BlueGemAmount;
+
+            case GemType.Yellow:
+                return YellowGemAmount;
+
+            default:
+                return 0;
         }
     }
 }
