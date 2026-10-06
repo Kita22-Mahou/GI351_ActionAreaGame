@@ -520,8 +520,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e1fddf113b57345849aed54f0ffacb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BakeNavMesh
+  delayTime: 0
+  time: 0
   navMeshSurface: {fileID: 87670008}
-  checker: 0
 --- !u!1 &96859637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,8 +1083,6 @@ MonoBehaviour:
   moveSpeed: 3
   followDistance: 2
   stopDistance: 0.05
-  acceleration: 10
-  deceleration: 15
   followMode: 0
   followSmooth: 8
   attackMonsterMode: 1
@@ -403606,6 +403605,8 @@ MonoBehaviour:
   Poko: {fileID: 8300000, guid: 9540ab8643775dd4f9fd258112e7592f, type: 3}
   PipWalk: {fileID: 8300000, guid: fa814d67374ed744ea0b38a8d40b2057, type: 3}
   PipDash: {fileID: 8300000, guid: 8854f32eead647d4c8c9149b60724278, type: 3}
+  skillSource: {fileID: 0}
+  skillSound: {fileID: 0}
 --- !u!4 &1619952403
 Transform:
   m_ObjectHideFlags: 0
@@ -404515,10 +404516,6 @@ MonoBehaviour:
     gemtype: 2
     neededAmount: 1
   submitButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  nameTexts:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
