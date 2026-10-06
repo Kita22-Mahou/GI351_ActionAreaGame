@@ -51,6 +51,10 @@ public class SwordMan : MonoBehaviour
     private PlayerFaceDetector playerfaceDetector;
     public bool isInWheel = false;
 
+    public bool isGateOpen = false;
+
+    [SerializeField] private AudioSource walkAudio;
+
     #region Event System
     private void Awake()
     {
@@ -93,7 +97,6 @@ public class SwordMan : MonoBehaviour
 
             RotateSkillSword();
         }
-           
     }
 
     void FixedUpdate()
@@ -107,6 +110,13 @@ public class SwordMan : MonoBehaviour
 
     void Move()
     {
+        if (isGateOpen)
+        {
+            rb.linearVelocity = Vector2.zero;
+            AudioManager.Instance.StopWalk();
+            return;
+        }
+
         if (isAttacking)
         {
             rb.linearVelocity = Vector2.zero;

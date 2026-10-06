@@ -20,7 +20,7 @@ public class StartScene : MonoBehaviour
     {
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            SceneManager.LoadScene("Co3");
+            SceneManager.LoadScene("Kla4");
         }
     }
 
