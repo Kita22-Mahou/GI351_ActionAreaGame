@@ -3,13 +3,21 @@ using UnityEngine;
 
 public class BakeNavMesh : MonoBehaviour
 {
+    [SerializeField] private float delayTime;
+    [SerializeField] private float time;
     [SerializeField] private NavMeshSurface navMeshSurface;
-    [SerializeField] private bool checker = false;
 
     private void LateUpdate()
     {
-        if (checker)
-        BuildNavMesh();
+        if(time >= delayTime)
+        {
+            BuildNavMesh();
+            Destroy(this);
+        }
+        else
+        {
+            time += Time.deltaTime;
+        }
     }
 
     public void BuildNavMesh()

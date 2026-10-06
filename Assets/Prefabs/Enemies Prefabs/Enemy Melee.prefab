@@ -382,12 +382,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb98a11bad7f6f4c8fb4f38fd440a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthPoint
-  maxHP: 60
+  maxHP: 100
   currentHP: 0
   dropItems: []
   dropChance: 100
   dropRadius: 2
-  hpBar: {fileID: 0}
+  hpBar: {fileID: 8655189307633361980}
   hpBarHideTime: 3
   minSeparation: 1.2
   maxSeparation: 2
@@ -412,7 +412,7 @@ MonoBehaviour:
   - {fileID: 6313766512245863649, guid: 226044cc3bf0d364fa288ffc380cca64, type: 3}
   - {fileID: 8100090828736540661, guid: 3ec32011cbb5c7d448a191185279648f, type: 3}
   attackHitbox: {fileID: 3769193370016504036}
-  attackDamage: 10
+  attackDamage: 0
   attackCooldown: 1
   attackTime: 0
   chargeTime: 0.5

@@ -28,7 +28,6 @@ public class Gate : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Button[] submitButtons;
-    [SerializeField] private TMP_Text[] nameTexts;
     [SerializeField] private GameObject[] donePanel;
     [SerializeField] private GameObject GatePanel;
 
@@ -54,8 +53,6 @@ public class Gate : MonoBehaviour
         {
             int index = i;
 
-            nameTexts[index].text = Pool[index].name;
-
             submitButtons[index].onClick.RemoveAllListeners();
 
             submitButtons[index].onClick.AddListener(
@@ -79,6 +76,13 @@ public class Gate : MonoBehaviour
     {
         GemSummsion gemsubmission = Pool[index];
 
+        // เช็กก่อนว่าผู้เล่นมี Gem หรือไม่
+        if (gemInventory.GetGemAmount(gemType) <= 0)
+        {
+            Debug.Log("Gem ไม่พอ");
+            return;
+        }
+
         // ลด Gem ที่ผู้เล่นมี
         gemInventory.AddGem(
             gemType,
@@ -89,13 +93,11 @@ public class Gate : MonoBehaviour
         // ลดจำนวน Gem ที่ Gate ต้องการ
         gemsubmission.neededAmount--;
 
-
         Debug.Log(
             gemsubmission.name +
             " Needed Amount: " +
             gemsubmission.neededAmount
         );
-
 
         if (gemsubmission.neededAmount <= 0)
         {
@@ -187,26 +189,6 @@ public class Gate : MonoBehaviour
 
 
         // =========================
-        // Name Text
-        // =========================
-
-        TMP_Text[] allTexts =
-            gateUI.GetComponentsInChildren<TMP_Text>(true);
-
-        List<TMP_Text> foundNameTexts = new();
-
-        foreach (TMP_Text text in allTexts)
-        {
-            if (text.gameObject.name == "Name Text")
-            {
-                foundNameTexts.Add(text);
-            }
-        }
-
-        nameTexts = foundNameTexts.ToArray();
-
-
-        // =========================
         // Done Image
         // =========================
 
@@ -224,18 +206,5 @@ public class Gate : MonoBehaviour
         }
 
         donePanel = foundDonePanels.ToArray();
-
-
-        // =========================
-        // Debug
-        // =========================
-
-        //Debug.Log(
-        //    "Gate UI Found | " +
-        //    "Buttons: " + submitButtons.Length +
-        //    " | Name Texts: " + nameTexts.Length +
-        //    " | Done Panels: " + donePanel.Length +
-        //    " | Gate Panel: " + (GatePanel != null)
-        //);
     }
 }

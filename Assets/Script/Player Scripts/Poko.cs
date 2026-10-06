@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class Poko : MonoBehaviour
 {
@@ -6,14 +7,12 @@ public class Poko : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private GameObject characterSprite;
 
-    private Rigidbody2D rb;
+    private NavMeshAgent navMeshAgent;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float followDistance = 2f;
     [SerializeField] private float stopDistance = 0.05f;
-    [SerializeField] private float acceleration = 10f;
-    [SerializeField] private float deceleration = 15f;
 
     [Header("Follow")]
     [SerializeField] private bool followMode;
@@ -64,10 +63,26 @@ public class Poko : MonoBehaviour
     private Vector2 callPosition;
 
 
+    // =========================================================
+    // Unity
+    // =========================================================
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+
+        if (navMeshAgent == null)
+        {
+            Debug.LogError("Poko ไม่มี NavMeshAgent");
+            return;
+        }
+
+        // สำคัญสำหรับ NavMeshPlus 2D
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateUpAxis = false;
+
+        navMeshAgent.speed = moveSpeed;
+        navMeshAgent.stoppingDistance = stopDistance;
     }
 
     private void Start()
@@ -86,17 +101,27 @@ public class Poko : MonoBehaviour
 
     private void Update()
     {
+        if (navMeshAgent == null)
+            return;
+
         attackTimer = CountDown(attackTimer);
         skillTimer = CountDown(skillTimer);
         boomShroomTimer = CountDown(boomShroomTimer);
 
+        // Dash cooldown
         if (dashTimer > 0f)
             dashTimer -= Time.deltaTime;
 
+        // Dash
         if (dashDuration > 0f)
-            dashDuration -= Time.deltaTime;
-        else if (dashTimer <= 0f)
+        {
+            UpdateDash();
+        }
+        else
+        {
             CheckDash();
+            UpdateMovement();
+        }
 
         UpdateFollow();
         CheckAttack();
@@ -104,54 +129,55 @@ public class Poko : MonoBehaviour
         CheckBoomShroom();
     }
 
-    private void FixedUpdate()
-    {
-        Move();
-    }
 
+    // =========================================================
     // Movement
-    private void Move()
+    // =========================================================
+
+    private void UpdateMovement()
     {
-        if (dashDuration > 0f)
-        {
-            float t = 1f - dashDuration / dashTime;
-            float speed = dashSpeed * Mathf.SmoothStep(1f, 0f, t);
-
-            rb.linearVelocity = dashDir * speed;
+        if (!navMeshAgent.isOnNavMesh)
             return;
-        }
 
+        // Call มี priority สูงสุด
         if (hasCallTarget)
         {
             MoveToPosition(callPosition);
             return;
         }
 
+        // Boom Shroom
         if (hasBoomTarget)
         {
             MoveToBoomShroom();
             return;
         }
 
+        // Follow
         if (followMode)
         {
             MoveToPlayer();
             return;
         }
 
+        // Attack Monster
         if (attackMonsterMode)
         {
             MoveToEnemy();
             return;
         }
 
+        // ไม่มีคำสั่งให้เดิน
         StopMovement();
     }
 
     private bool MoveTo(Vector2 target, float targetStopDistance)
     {
-        Vector2 direction = target - rb.position;
-        float distance = direction.magnitude;
+        if (!navMeshAgent.isOnNavMesh)
+            return false;
+
+        float distance =
+            Vector2.Distance(transform.position, target);
 
         if (distance <= targetStopDistance)
         {
@@ -159,143 +185,65 @@ public class Poko : MonoBehaviour
             return true;
         }
 
-        direction.Normalize();
+        navMeshAgent.isStopped = false;
+        navMeshAgent.speed = moveSpeed;
+        navMeshAgent.stoppingDistance = targetStopDistance;
 
-        float speed = moveSpeed;
+        navMeshAgent.SetDestination(target);
 
-        if (distance < 1f)
-            speed *= distance;
+        Vector2 direction =
+            target - (Vector2)transform.position;
 
-        Vector2 targetVelocity = direction * speed;
-
-        rb.linearVelocity = Vector2.MoveTowards(
-            rb.linearVelocity,
-            targetVelocity,
-            acceleration * Time.fixedDeltaTime
-        );
-
-        Flip(direction.x);
+        if (direction.sqrMagnitude > 0.001f)
+            Flip(direction.x);
 
         return false;
     }
 
     private void StopMovement()
     {
-        rb.linearVelocity = Vector2.MoveTowards(
-            rb.linearVelocity,
-            Vector2.zero,
-            deceleration * Time.fixedDeltaTime
-        );
+        if (!navMeshAgent.isOnNavMesh)
+            return;
+
+        navMeshAgent.isStopped = true;
+        navMeshAgent.velocity = Vector3.zero;
     }
+
+
+    // =========================================================
+    // Call
+    // =========================================================
 
     private void MoveToPosition(Vector2 target)
     {
         if (MoveTo(target, stopDistance))
+        {
             hasCallTarget = false;
-    }
-
-    // Dash
-    private void CheckDash()
-    {
-        Collider2D[] hits =
-            Physics2D.OverlapCircleAll(rb.position, 1.5f);
-
-        foreach (Collider2D hit in hits)
-        {
-            EnemyAttackHitbox attackHitbox =
-                hit.GetComponentInParent<EnemyAttackHitbox>();
-
-            if (attackHitbox == null || !attackHitbox.isActiveAndEnabled)
-                continue;
-
-            Vector2[] directions =
-            {
-                Vector2.up,
-                Vector2.down,
-                Vector2.left,
-                Vector2.right
-            };
-
-            int start = Random.Range(0, directions.Length);
-
-            for (int i = 0; i < directions.Length; i++)
-            {
-                Vector2 dir = directions[(start + i) % directions.Length];
-                Vector2 target = rb.position + dir * 1.5f;
-
-                Collider2D[] targetHits =
-                    Physics2D.OverlapCircleAll(target, 0.3f);
-
-                bool dangerous = false;
-
-                foreach (Collider2D targetHit in targetHits)
-                {
-                    EnemyAttackHitbox targetAttack =
-                        targetHit.GetComponentInParent<EnemyAttackHitbox>();
-
-                    if (targetAttack != null && targetAttack.isActiveAndEnabled)
-                    {
-                        dangerous = true;
-                        break;
-                    }
-                }
-
-                if (dangerous)
-                    continue;
-
-                dashDir = dir;
-                dashDuration = dashTime;
-                dashTimer = dashCooldown;
-
-                Flip(dir.x);
-                return;
-            }
         }
     }
 
-    // Boom Shroom
-    private void MoveToBoomShroom()
+    public void CallToPosition(Vector2 position)
     {
-        if (boomTarget == null)
-        {
-            hasBoomTarget = false;
-            return;
-        }
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PokoBark();
 
-        Vector2 target = boomTarget.transform.position;
+        // ยกเลิกคำสั่งอื่น
+        followMode = false;
+        attackMonsterMode = false;
 
-        if (MoveTo(target, boomPlantDistance))
-        {
-            PlaceBoomShroom(target - rb.position);
+        hasBoomTarget = false;
+        boomTarget = null;
 
-            hasBoomTarget = false;
-            boomTarget = null;
-        }
+        // ตั้งตำแหน่งที่จะไป
+        hasCallTarget = true;
+        callPosition = position;
     }
 
-    private void PlaceBoomShroom(Vector2 direction)
-    {
-        if (boomShroomPrefab == null)
-            return;
 
-        if (direction.sqrMagnitude < 0.01f)
-            direction = Vector2.up;
-
-        direction.Normalize();
-
-        Vector2 position =
-            rb.position + direction * boomPlantOffset;
-
-        Instantiate(
-            boomShroomPrefab,
-            position,
-            Quaternion.identity
-        );
-
-        boomShroomTimer = boomShroomCooldown;
-    }
-
+    // =========================================================
     // Follow
+    // =========================================================
+
     private void UpdateFollow()
     {
         if (!followMode || player == null)
@@ -313,26 +261,42 @@ public class Poko : MonoBehaviour
         MoveTo(followTarget, followDistance);
     }
 
-    // Attack
-    private void CheckAttack()
+    public void ToggleFollow()
     {
-        if (!attackMonsterMode || attackTimer > 0f)
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PokoBark();
+
+        followMode = !followMode;
+
+        if (!followMode)
+        {
+            StopMovement();
             return;
+        }
 
-        EnemyHealthPoint enemy = FindNearestEnemy();
+        // เปิด Follow → ปิด Attack
+        attackMonsterMode = false;
 
-        if (enemy == null)
-            return;
+        // ยกเลิก Call
+        hasCallTarget = false;
 
-        float distance =
-            Vector2.Distance(rb.position, enemy.transform.position);
+        // ยกเลิก Boom Shroom target
+        hasBoomTarget = false;
+        boomTarget = null;
 
-        if (distance > attackRange)
-            return;
-
-        enemy.TakeDamage(attackDamage);
-        attackTimer = attackCooldown;
+        if (player != null)
+            followTarget = player.position;
     }
+
+    public bool IsFollowing()
+    {
+        return followMode;
+    }
+
+
+    // =========================================================
+    // Attack Mode
+    // =========================================================
 
     private void MoveToEnemy()
     {
@@ -344,13 +308,46 @@ public class Poko : MonoBehaviour
             return;
         }
 
-        MoveTo(enemy.transform.position, attackRange);
+        MoveTo(
+            enemy.transform.position,
+            attackRange
+        );
+    }
+
+    private void CheckAttack()
+    {
+        if (!attackMonsterMode)
+            return;
+
+        if (attackTimer > 0f)
+            return;
+
+        EnemyHealthPoint enemy = FindNearestEnemy();
+
+        if (enemy == null)
+            return;
+
+        float distance =
+            Vector2.Distance(
+                transform.position,
+                enemy.transform.position
+            );
+
+        if (distance > attackRange)
+            return;
+
+        enemy.TakeDamage(attackDamage);
+
+        attackTimer = attackCooldown;
     }
 
     private EnemyHealthPoint FindNearestEnemy()
     {
         Collider2D[] colliders =
-            Physics2D.OverlapCircleAll(rb.position, detectRange);
+            Physics2D.OverlapCircleAll(
+                transform.position,
+                detectRange
+            );
 
         EnemyHealthPoint nearest = null;
         float nearestDistance = Mathf.Infinity;
@@ -360,11 +357,17 @@ public class Poko : MonoBehaviour
             EnemyHealthPoint enemy =
                 col.GetComponentInParent<EnemyHealthPoint>();
 
-            if (enemy == null || !enemy.CompareTag("Enemy"))
+            if (enemy == null)
+                continue;
+
+            if (!enemy.CompareTag("Enemy"))
                 continue;
 
             float distance =
-                Vector2.Distance(rb.position, enemy.transform.position);
+                Vector2.Distance(
+                    transform.position,
+                    enemy.transform.position
+                );
 
             if (distance < nearestDistance)
             {
@@ -376,19 +379,184 @@ public class Poko : MonoBehaviour
         return nearest;
     }
 
-    // Skill 1
-    private void CheckSkill()
+    public void ToggleAttackMonster()
     {
-        if (!attackMonsterMode || skillTimer > 0f)
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PokoBark();
+
+        attackMonsterMode = !attackMonsterMode;
+
+        if (attackMonsterMode)
+        {
+            // เปิด Attack → ปิด Follow
+            followMode = false;
+
+            // ยกเลิก Call
+            hasCallTarget = false;
+
+            // ยกเลิก Boom Shroom target
+            hasBoomTarget = false;
+            boomTarget = null;
+        }
+        else
+        {
+            StopMovement();
+        }
+    }
+
+    public bool IsAttackMonsterMode()
+    {
+        return attackMonsterMode;
+    }
+
+
+    // =========================================================
+    // Dash
+    // =========================================================
+
+    private void CheckDash()
+    {
+        if (dashTimer > 0f)
             return;
 
-        EnemyHealthPoint enemy = FindNearestEnemy();
+        Collider2D[] hits =
+            Physics2D.OverlapCircleAll(
+                transform.position,
+                1.5f
+            );
+
+        foreach (Collider2D hit in hits)
+        {
+            EnemyAttackHitbox attackHitbox =
+                hit.GetComponentInParent<EnemyAttackHitbox>();
+
+            if (attackHitbox == null)
+                continue;
+
+            if (!attackHitbox.isActiveAndEnabled)
+                continue;
+
+            Vector2[] directions =
+            {
+                Vector2.up,
+                Vector2.down,
+                Vector2.left,
+                Vector2.right
+            };
+
+            int start =
+                Random.Range(
+                    0,
+                    directions.Length
+                );
+
+            for (int i = 0; i < directions.Length; i++)
+            {
+                Vector2 dir =
+                    directions[
+                        (start + i) % directions.Length
+                    ];
+
+                Vector2 target =
+                    (Vector2)transform.position
+                    + dir * 1.5f;
+
+                Collider2D[] targetHits =
+                    Physics2D.OverlapCircleAll(
+                        target,
+                        0.3f
+                    );
+
+                bool dangerous = false;
+
+                foreach (Collider2D targetHit in targetHits)
+                {
+                    EnemyAttackHitbox targetAttack =
+                        targetHit.GetComponentInParent<EnemyAttackHitbox>();
+
+                    if (targetAttack != null &&
+                        targetAttack.isActiveAndEnabled)
+                    {
+                        dangerous = true;
+                        break;
+                    }
+                }
+
+                if (dangerous)
+                    continue;
+
+                dashDir = dir;
+                dashDuration = dashTime;
+                dashTimer = dashCooldown;
+
+                Flip(dir.x);
+
+                // หยุด NavMeshAgent ก่อน Dash
+                navMeshAgent.isStopped = true;
+                navMeshAgent.velocity = Vector3.zero;
+
+                return;
+            }
+        }
+    }
+
+    private void UpdateDash()
+    {
+        if (!navMeshAgent.isOnNavMesh)
+            return;
+
+        float t =
+            1f - dashDuration / dashTime;
+
+        float speed =
+            dashSpeed *
+            Mathf.SmoothStep(
+                1f,
+                0f,
+                t
+            );
+
+        // ใช้ NavMeshAgent.Move
+        // แทน Rigidbody2D
+        navMeshAgent.Move(
+            (Vector3)(dashDir * speed * Time.deltaTime)
+        );
+
+        dashDuration -= Time.deltaTime;
+
+        if (dashDuration <= 0f)
+        {
+            dashDuration = 0f;
+
+            navMeshAgent.isStopped = false;
+            navMeshAgent.velocity = Vector3.zero;
+        }
+    }
+
+
+    // =========================================================
+    // Skill 1 - Area Attack
+    // =========================================================
+
+    private void CheckSkill()
+    {
+        if (!attackMonsterMode)
+            return;
+
+        if (skillTimer > 0f)
+            return;
+
+        EnemyHealthPoint enemy =
+            FindNearestEnemy();
 
         if (enemy == null)
             return;
 
         float distance =
-            Vector2.Distance(rb.position, enemy.transform.position);
+            Vector2.Distance(
+                transform.position,
+                enemy.transform.position
+            );
 
         if (distance <= skillRadius)
             UseAreaSkill();
@@ -397,14 +565,20 @@ public class Poko : MonoBehaviour
     private void UseAreaSkill()
     {
         Collider2D[] enemies =
-            Physics2D.OverlapCircleAll(rb.position, skillRadius);
+            Physics2D.OverlapCircleAll(
+                transform.position,
+                skillRadius
+            );
 
         foreach (Collider2D col in enemies)
         {
             EnemyHealthPoint enemy =
                 col.GetComponentInParent<EnemyHealthPoint>();
 
-            if (enemy == null || !enemy.CompareTag("Enemy"))
+            if (enemy == null)
+                continue;
+
+            if (!enemy.CompareTag("Enemy"))
                 continue;
 
             enemy.TakeDamage(skillDamage);
@@ -413,21 +587,76 @@ public class Poko : MonoBehaviour
         skillTimer = skillCooldown;
     }
 
+
+    // =========================================================
     // Skill 2 - Boom Shroom
+    // =========================================================
+
     private void CheckBoomShroom()
     {
-        if (!boomShroomUnlocked ||
-            boomShroomPrefab == null ||
-            boomShroomTimer > 0f ||
-            hasBoomTarget)
-        {
+        if (!boomShroomUnlocked)
             return;
-        }
+
+        if (boomShroomPrefab == null)
+            return;
+
+        if (boomShroomTimer > 0f)
+            return;
+
+        if (hasBoomTarget)
+            return;
 
         boomTarget = FindNearestEnemy();
 
         if (boomTarget != null)
             hasBoomTarget = true;
+    }
+
+    private void MoveToBoomShroom()
+    {
+        if (boomTarget == null)
+        {
+            hasBoomTarget = false;
+            return;
+        }
+
+        Vector2 target =
+            boomTarget.transform.position;
+
+        if (MoveTo(target, boomPlantDistance))
+        {
+            PlaceBoomShroom(
+                target -
+                (Vector2)transform.position
+            );
+
+            hasBoomTarget = false;
+            boomTarget = null;
+        }
+    }
+
+    private void PlaceBoomShroom(Vector2 direction)
+    {
+        if (boomShroomPrefab == null)
+            return;
+
+        if (direction.sqrMagnitude < 0.01f)
+            direction = Vector2.up;
+
+        direction.Normalize();
+
+        Vector2 position =
+            (Vector2)transform.position
+            + direction * boomPlantOffset;
+
+        Instantiate(
+            boomShroomPrefab,
+            position,
+            Quaternion.identity
+        );
+
+        boomShroomTimer =
+            boomShroomCooldown;
     }
 
     public void UnlockBoomShroom()
@@ -445,88 +674,75 @@ public class Poko : MonoBehaviour
         return boomShroomCooldown;
     }
 
-    // Call
-    public void CallToPosition(Vector2 position)
-    {
-        AudioManager.Instance.PokoBark();
 
-        hasBoomTarget = false;
-        boomTarget = null;
-
-        hasCallTarget = true;
-        callPosition = position;
-    }
-
-    // Follow
-    public void ToggleFollow()
-    {
-        AudioManager.Instance.PokoBark();
-
-        followMode = !followMode;
-
-        if (!followMode)
-            return;
-
-        attackMonsterMode = false;
-
-        if (player != null)
-            followTarget = player.position;
-    }
-
-    public bool IsFollowing()
-    {
-        return followMode;
-    }
-
-    // Attack Mode
-    public void ToggleAttackMonster()
-    {
-        AudioManager.Instance.PokoBark();
-
-        attackMonsterMode = !attackMonsterMode;
-
-        if (attackMonsterMode)
-            followMode = false;
-    }
-
-    public bool IsAttackMonsterMode()
-    {
-        return attackMonsterMode;
-    }
+    // =========================================================
+    // Utility
+    // =========================================================
 
     private float CountDown(float timer)
     {
-        return Mathf.Max(0f, timer - Time.deltaTime);
+        return Mathf.Max(
+            0f,
+            timer - Time.deltaTime
+        );
     }
 
-    // Sprite
     private void Flip(float x)
     {
         if (characterSprite == null)
             return;
 
-        Vector3 scale = characterSprite.transform.localScale;
+        Vector3 scale =
+            characterSprite.transform.localScale;
 
         if (x > 0f)
-            scale.x = Mathf.Abs(scale.x);
+        {
+            scale.x =
+                Mathf.Abs(scale.x);
+        }
         else if (x < 0f)
-            scale.x = -Mathf.Abs(scale.x);
+        {
+            scale.x =
+                -Mathf.Abs(scale.x);
+        }
 
-        characterSprite.transform.localScale = scale;
+        characterSprite.transform.localScale =
+            scale;
     }
+
+
+    // =========================================================
+    // Gizmos
+    // =========================================================
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectRange);
+
+        Gizmos.DrawWireSphere(
+            transform.position,
+            detectRange
+        );
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        Gizmos.DrawWireSphere(
+            transform.position,
+            attackRange
+        );
 
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, skillRadius);
+
+        Gizmos.DrawWireSphere(
+            transform.position,
+            skillRadius
+        );
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(transform.position, 1.5f);
+
+        Gizmos.DrawWireSphere(
+            transform.position,
+            1.5f
+        );
     }
 }

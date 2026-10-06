@@ -13,7 +13,7 @@ public class SpawnPoint : MonoBehaviour
     [SerializeField] int objectAmount = 1;
     [SerializeField] float gapBTWObject;
     [SerializeField] float delaySpawnBTWObject;
-    [SerializeField] private float delayAttempt = 0.005f;
+    [SerializeField] private float delayAttempt = 0;
     [SerializeField] private int repeatAttemp = 50;
 
     [Header("Spawn Chance")]
