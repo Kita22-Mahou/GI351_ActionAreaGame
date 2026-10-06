@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealthPoint : MonoBehaviour
+public class PokoHealthPoint : MonoBehaviour
 {
     [Header("HP")]
     [SerializeField] private float maxHP = 100f;
@@ -43,12 +43,10 @@ public class PlayerHealthPoint : MonoBehaviour
 
         targetHP = currentHP / maxHP;
 
-        AudioManager.Instance.PipHit();
-
         if (currentHP <= 0f)
         {
             currentHP = 0f;
-            PlayerDead();
+            PokoDead();
         }
     }
 
@@ -60,7 +58,7 @@ public class PlayerHealthPoint : MonoBehaviour
         return Color.Lerp(lowHPColor, halfHPColor, hp * 2f);
     }
 
-    private void PlayerDead()
+    private void PokoDead()
     {
         Destroy(gameObject);
     }

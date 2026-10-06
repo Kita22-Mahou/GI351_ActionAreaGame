@@ -41,11 +41,11 @@ public class EnemyBullet : MonoBehaviour
 
         else if (collision.CompareTag("Car"))
         {
-            CarHealthPoint car = collision.GetComponent<CarHealthPoint>();
+            PokoHealthPoint Poko = collision.GetComponent<PokoHealthPoint>();
 
-            if (car != null)
+            if (Poko != null)
             {
-                car.TakeDamage(damage);
+                Poko.TakeDamage(damage);
             }
 
             Destroy(gameObject);

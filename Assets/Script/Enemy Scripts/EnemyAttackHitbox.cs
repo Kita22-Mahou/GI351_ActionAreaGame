@@ -27,10 +27,9 @@ public class EnemyAttackHitbox : MonoBehaviour
             target.GetComponent<PlayerHealthPoint>().TakeDamage(damage);
             Debug.Log($"Enemy | Player takes {damage} damage");
         }
-
         if (collision.CompareTag("Car"))
         {
-            CarHealthPoint target = collision.GetComponentInParent<CarHealthPoint>();
+            PokoHealthPoint target = collision.GetComponentInParent<PokoHealthPoint>();
 
             if (target == null)
             {
@@ -43,8 +42,8 @@ public class EnemyAttackHitbox : MonoBehaviour
                 return;
             }
 
-            target.GetComponent<CarHealthPoint>().TakeDamage(damage);
-            Debug.Log($"Enemy | Car takes {damage} damage");
+            target.GetComponent<PokoHealthPoint>().TakeDamage(damage);
+            Debug.Log($"Enemy | Poko takes {damage} damage");
         }
 
         hitTargets.Add(collision.gameObject);
