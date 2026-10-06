@@ -119,10 +119,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthPoint
   maxHP: 120
   currentHP: 0
-  hpBar: {fileID: 5657617725453746587}
   dropItems: []
   dropChance: 10
   dropRadius: 2
+  hpBar: {fileID: 5657617725453746587}
+  hpBarHideTime: 3
   minSeparation: 1.2
   maxSeparation: 2
   separationStrength: 2
@@ -373,7 +374,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4772850248516107483}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}

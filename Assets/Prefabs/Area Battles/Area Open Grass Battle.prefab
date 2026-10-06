@@ -126,6 +126,53 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &2625573928939345906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1892368773059572433}
+  - component: {fileID: 779413054374596524}
+  m_Layer: 0
+  m_Name: Gem Spawn Check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1892368773059572433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2625573928939345906}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.7747498, y: -0.13238001, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 347777719023761946}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &779413054374596524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2625573928939345906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad39ece33e7a4145815096175a8e973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GemSpawnCheck
+  isBlueGemSpawned: 0
+  isGreeneGemSpawned: 0
+  isYellowGemSpawned: 0
 --- !u!1 &3980383338613059071
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +203,8 @@ Transform:
   m_LocalPosition: {x: -0.5, y: -3.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1892368773059572433}
   m_Father: {fileID: 2898874739602887248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8438575458722285858
@@ -171,14 +219,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 413030016bcc2434182f159751d2a6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemEvent
-  gemPrefab: {fileID: 5957599948582675379, guid: 2e8507edba13c52438df0476c73396dd, type: 3}
+  gemPrefabs:
+  - {fileID: 3103615169542342046, guid: c3cd6ec018ca2a84b8016268dc7837cf, type: 3}
+  - {fileID: 5957599948582675379, guid: 2e8507edba13c52438df0476c73396dd, type: 3}
+  - {fileID: 1119242369590687341, guid: 9a6c5369473b4f2419bcb20d468d3e53, type: 3}
   monsters:
   - prefab: {fileID: 2559229383934123816, guid: 9a92f9efdb98d104ca4e3a0a2c5409a6, type: 3}
     amount: 20
-  - prefab: {fileID: 1218229870778524528, guid: dd28815f5ac64304cbf94558e260b918, type: 3}
-    amount: 5
   - prefab: {fileID: 3348858995144509124, guid: 2234ee75ec2f05148a05f3d52db2303c, type: 3}
-    amount: 5
+    amount: 20
   waveCount: 1
   spawnRadius: 20
   minPlayerDistance: 5

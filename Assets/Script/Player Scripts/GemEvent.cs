@@ -1,10 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GemEvent : MonoBehaviour
 {
-
     [System.Serializable]
     public class MonsterSpawn
     {
@@ -13,7 +12,7 @@ public class GemEvent : MonoBehaviour
     }
 
     [Header("Gem")]
-    [SerializeField] private GameObject gemPrefab;
+    [SerializeField] private GameObject[] gemPrefabs;
 
     [Header("Monster")]
     [SerializeField] private MonsterSpawn[] monsters;
@@ -25,8 +24,12 @@ public class GemEvent : MonoBehaviour
     [SerializeField] private float nextSpawnDelay = 1f;
 
     private Transform player;
+    private GemSpawnCheck gemSpawnCheck;
+
     private bool started;
+
     private List<GameObject> spawnedMonsters = new();
+
 
     private void Start()
     {
@@ -34,7 +37,10 @@ public class GemEvent : MonoBehaviour
 
         if (obj != null)
             player = obj.transform;
+
+        gemSpawnCheck = GetComponentInChildren<GemSpawnCheck>();
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -42,8 +48,10 @@ public class GemEvent : MonoBehaviour
             return;
 
         started = true;
+
         StartCoroutine(StartEvent());
     }
+
 
     private IEnumerator StartEvent()
     {
@@ -62,6 +70,7 @@ public class GemEvent : MonoBehaviour
         SpawnGem();
     }
 
+
     private bool HasMonster()
     {
         foreach (GameObject monster in spawnedMonsters)
@@ -72,6 +81,7 @@ public class GemEvent : MonoBehaviour
 
         return false;
     }
+
 
     private void SpawnMonsters(int batch)
     {
@@ -86,12 +96,17 @@ public class GemEvent : MonoBehaviour
 
             for (int i = 0; i < amount; i++)
             {
-                GameObject enemy = Instantiate(monster.prefab,GetSpawnPosition(),Quaternion.identity);
+                GameObject enemy = Instantiate(
+                    monster.prefab,
+                    GetSpawnPosition(),
+                    Quaternion.identity
+                );
 
                 spawnedMonsters.Add(enemy);
             }
         }
     }
+
 
     private Vector2 GetSpawnPosition()
     {
@@ -99,20 +114,114 @@ public class GemEvent : MonoBehaviour
 
         do
         {
-            position = (Vector2)transform.position + Random.insideUnitCircle * spawnRadius;
+            position =
+                (Vector2)transform.position +
+                Random.insideUnitCircle * spawnRadius;
 
-        } while (player != null &&Vector2.Distance(position, player.position) < minPlayerDistance);
+        } while (
+            player != null &&
+            Vector2.Distance(position, player.position) < minPlayerDistance
+        );
 
         return position;
     }
 
+
     private void SpawnGem()
     {
-        if (gemPrefab == null)
+        if (gemSpawnCheck == null)
+        {
+            Debug.LogWarning("ไม่พบ GemSpawnCheck");
             return;
+        }
 
-        Instantiate(gemPrefab,transform.position, Quaternion.identity);
+
+        // หา Gem ที่ยังไม่เคย Spawn
+        List<int> availableGems = new();
+
+
+        for (int i = 0; i < gemPrefabs.Length; i++)
+        {
+            if (!IsGemSpawned(i))
+            {
+                availableGems.Add(i);
+            }
+        }
+
+
+        // Gem ครบทั้ง 3 แบบแล้ว
+        if (availableGems.Count == 0)
+        {
+            Debug.Log("Gem ทั้ง 3 แบบถูก Spawn ครบแล้ว");
+            gameObject.SetActive(false);
+            return;
+        }
+
+
+        // สุ่มจาก Gem ที่ยังไม่เคย Spawn
+        int randomIndex =
+            Random.Range(0, availableGems.Count);
+
+        int gemIndex =
+            availableGems[randomIndex];
+
+
+        // บันทึกว่า Gem นี้ถูก Spawn แล้ว
+        SetGemSpawned(gemIndex);
+
+
+        // Spawn Gem
+        Instantiate(
+            gemPrefabs[gemIndex],
+            transform.position,
+            Quaternion.identity
+        );
+
+
+        Debug.Log(
+            "Spawn Gem: " +
+            gemPrefabs[gemIndex].name
+        );
+
 
         gameObject.SetActive(false);
+    }
+
+
+    private bool IsGemSpawned(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                return gemSpawnCheck.isGreeneGemSpawned;
+
+            case 1:
+                return gemSpawnCheck.isBlueGemSpawned;
+
+            case 2:
+                return gemSpawnCheck.isYellowGemSpawned;
+
+            default:
+                return true;
+        }
+    }
+
+
+    private void SetGemSpawned(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                gemSpawnCheck.isGreeneGemSpawned = true;
+                break;
+
+            case 1:
+                gemSpawnCheck.isBlueGemSpawned = true;
+                break;
+
+            case 2:
+                gemSpawnCheck.isYellowGemSpawned = true;
+                break;
+        }
     }
 }
