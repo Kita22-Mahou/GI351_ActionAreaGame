@@ -20,6 +20,8 @@ public class PlayerHealthPoint : MonoBehaviour
     private float targetHP;
     private float hpVelocity;
 
+    public GameOver gameOver;
+
     private void Start()
     {
         currentHP = maxHP;
@@ -63,5 +65,6 @@ public class PlayerHealthPoint : MonoBehaviour
     private void PlayerDead()
     {
         Destroy(gameObject);
+        gameOver.ShowGameOver();
     }
 }
