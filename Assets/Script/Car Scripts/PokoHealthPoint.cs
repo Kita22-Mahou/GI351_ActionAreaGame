@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class PokoHealthPoint : MonoBehaviour
@@ -19,7 +20,7 @@ public class PokoHealthPoint : MonoBehaviour
 
     private float targetHP;
     private float hpVelocity;
-
+    public GameOver gameOver;
     private void Start()
     {
         currentHP = maxHP;
@@ -61,5 +62,6 @@ public class PokoHealthPoint : MonoBehaviour
     private void PokoDead()
     {
         Destroy(gameObject);
+        gameOver.ShowGameOver();
     }
 }
