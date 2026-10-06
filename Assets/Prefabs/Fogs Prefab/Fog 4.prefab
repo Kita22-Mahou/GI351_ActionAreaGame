@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3989695996154293487}
   - component: {fileID: 7386583927098408193}
   - component: {fileID: 6930215578234040039}
-  - component: {fileID: 2155300177186016475}
   - component: {fileID: 1001823853246431711}
+  - component: {fileID: 2155300177186016475}
   m_Layer: 12
   m_Name: Fog 4
   m_TagString: Wall
@@ -218,22 +218,6 @@ MonoBehaviour:
   - {x: -6.98431, y: -3.1790252}
   - {x: -7.066165, y: -3.033452}
   m_ShadowSegment: []
---- !u!114 &2155300177186016475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7302865395302022837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
-  m_OverrideArea: 1
-  m_Area: 1
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
 --- !u!60 &1001823853246431711
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -296,3 +280,19 @@ PolygonCollider2D:
       - {x: -6.98431, y: -3.1790252}
       - {x: -7.066165, y: -3.033452}
   m_UseDelaunayMesh: 1
+--- !u!114 &2155300177186016475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7302865395302022837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshModifier
+  m_OverrideArea: 1
+  m_Area: 0
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff

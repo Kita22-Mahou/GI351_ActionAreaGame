@@ -517,7 +517,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.5
+  orthographic size: 12.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1157,6 +1157,7 @@ MonoBehaviour:
   fullHPColor: {r: 0, g: 1, b: 0, a: 1}
   halfHPColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   lowHPColor: {r: 1, g: 0, b: 0, a: 1}
+  gameOver: {fileID: 0}
 --- !u!114 &3089915180129787539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,6 +1201,8 @@ MonoBehaviour:
   isInShop: 0
   sword: {fileID: 4339468915297944196}
   isInWheel: 0
+  isGateOpen: 0
+  walkAudio: {fileID: 0}
 --- !u!114 &1441934380988993258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1238,9 +1241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c48cf40853f414786c263b9f5c69d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GemInventory
-  GreenGemAmount: 0
-  BlueGemAmount: 0
-  YellowGemAmount: 0
+  GreenGemAmount: 10
+  BlueGemAmount: 10
+  YellowGemAmount: 10
 --- !u!1 &4339468915297944196
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,7 +1273,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.78, z: 0}
-  m_LocalScale: {x: 1.4, y: 1, z: 1}
+  m_LocalScale: {x: 1.6, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6924145915681922018}
@@ -1362,7 +1365,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.72327036, g: 0.25701112, b: 0.25701112, a: 0.3137255}
+  m_Color: {r: 0.72327036, g: 0.25701112, b: 0.25701112, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

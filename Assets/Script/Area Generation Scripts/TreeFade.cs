@@ -60,6 +60,9 @@ public class TreeFade : MonoBehaviour
 
     private void FadeTo(float targetAlpha)
     {
+        if (!isActiveAndEnabled)
+            return;
+
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
 

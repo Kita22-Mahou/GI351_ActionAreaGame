@@ -114,7 +114,7 @@ public class Gate : MonoBehaviour
 
         AudioManager.Instance.StopWalk();
 
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
 
     #endregion
@@ -407,7 +407,7 @@ public class Gate : MonoBehaviour
 
         AudioManager.Instance.StopWalk();
 
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
 
 
