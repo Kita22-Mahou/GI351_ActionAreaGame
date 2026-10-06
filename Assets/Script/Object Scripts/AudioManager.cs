@@ -31,7 +31,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        
+        musicSource.clip = background;
+        musicSource.Play();
     }
 
     public void PokoBark()

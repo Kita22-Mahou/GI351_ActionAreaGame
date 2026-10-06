@@ -2508,7 +2508,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.237
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2605,7 +2605,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.203
+  m_Volume: 0.287
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2801,7 +2801,7 @@ MonoBehaviour:
   musicSource: {fileID: 242956593}
   SFXSource: {fileID: 242956595}
   loopSource: {fileID: 242956594}
-  background: {fileID: 0}
+  background: {fileID: 8300000, guid: b518e1cfe17fb184482868586bc889d3, type: 3}
   deathSounds:
   - {fileID: 8300000, guid: 92e9349d6e825b04db1baa09e901595f, type: 3}
   - {fileID: 8300000, guid: 1a167859d6c24694ab927cca044812dd, type: 3}
@@ -4177,6 +4177,18 @@ PrefabInstance:
       propertyPath: gameOver
       value: 
       objectReference: {fileID: 1827566619}
+    - target: {fileID: 8318438440666181773, guid: d8981a4816af8f942881e630859ec73d, type: 3}
+      propertyPath: dashSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318438440666181773, guid: d8981a4816af8f942881e630859ec73d, type: 3}
+      propertyPath: dashCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318438440666181773, guid: d8981a4816af8f942881e630859ec73d, type: 3}
+      propertyPath: boomShroomUnlocked
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8406701122415548742, guid: d8981a4816af8f942881e630859ec73d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -416289,7 +416301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1901098754
 RectTransform:
   m_ObjectHideFlags: 0
