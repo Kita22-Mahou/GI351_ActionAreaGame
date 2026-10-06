@@ -20,8 +20,6 @@ public class GameOver : MonoBehaviour
         isGameOver = true;
 
         gameOver.SetActive(true);
-
-        Time.timeScale = 0f;
     }
 
     public void ReturnToStart()
