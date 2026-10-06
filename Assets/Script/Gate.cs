@@ -39,7 +39,6 @@ public class Gate : MonoBehaviour
 
     private void Awake()
     {
-        // หา UI ที่อยู่ภายใน Gate Prefab
         FindUI();
 
         if (GatePanel != null)
@@ -143,57 +142,53 @@ public class Gate : MonoBehaviour
 
     private void FindUI()
     {
-        // หา Canvas
-        Canvas canvas = FindAnyObjectByType<Canvas>();
+        GameObject gateUIObject = null;
 
-        if (canvas == null)
+        GameObject[] allObjects =
+            Resources.FindObjectsOfTypeAll<GameObject>();
+
+        foreach (GameObject obj in allObjects)
         {
-            Debug.LogError("ไม่พบ Canvas");
-            return;
-        }
+            // ต้องเป็น Object ที่อยู่ใน Scene จริง
+            if (!obj.scene.IsValid())
+                continue;
 
-
-        // หา Gate UI
-        Transform gateUI = null;
-
-        Transform[] allTransforms =
-            canvas.GetComponentsInChildren<Transform>(true);
-
-        foreach (Transform child in allTransforms)
-        {
-            if (child.gameObject.name == "Gate UI")
+            if (obj.name == "Gate UI")
             {
-                gateUI = child;
+                gateUIObject = obj;
                 break;
             }
         }
 
 
-        if (gateUI == null)
+        if (gateUIObject == null)
         {
             Debug.LogError("ไม่พบ Gate UI");
             return;
         }
 
 
-        // -------------------------
+        Transform gateUI = gateUIObject.transform;
+
+
+        // =========================
         // Gate Panel
-        // -------------------------
+        // =========================
 
-        GatePanel = gateUI.gameObject;
+        GatePanel = gateUIObject;
 
 
-        // -------------------------
+        // =========================
         // Buttons
-        // -------------------------
+        // =========================
 
         submitButtons =
             gateUI.GetComponentsInChildren<Button>(true);
 
 
-        // -------------------------
+        // =========================
         // Name Text
-        // -------------------------
+        // =========================
 
         TMP_Text[] allTexts =
             gateUI.GetComponentsInChildren<TMP_Text>(true);
@@ -211,16 +206,18 @@ public class Gate : MonoBehaviour
         nameTexts = foundNameTexts.ToArray();
 
 
-        // -------------------------
+        // =========================
         // Done Image
-        // -------------------------
+        // =========================
+
+        Transform[] allChildren =
+            gateUI.GetComponentsInChildren<Transform>(true);
 
         List<GameObject> foundDonePanels = new();
 
-        foreach (Transform child in allTransforms)
+        foreach (Transform child in allChildren)
         {
-            if (child.gameObject.name == "Done Image" &&
-                child.IsChildOf(gateUI))
+            if (child.gameObject.name == "Done Image")
             {
                 foundDonePanels.Add(child.gameObject);
             }
@@ -229,9 +226,9 @@ public class Gate : MonoBehaviour
         donePanel = foundDonePanels.ToArray();
 
 
-        // -------------------------
+        // =========================
         // Debug
-        // -------------------------
+        // =========================
 
         //Debug.Log(
         //    "Gate UI Found | " +
