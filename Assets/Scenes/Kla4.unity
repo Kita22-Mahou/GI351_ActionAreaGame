@@ -483,7 +483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &87670007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,8 +558,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e1fddf113b57345849aed54f0ffacb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BakeNavMesh
+  delayTime: 0
+  time: 0
   navMeshSurface: {fileID: 87670008}
-  checker: 0
 --- !u!1 &96859637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1624,8 +1625,6 @@ MonoBehaviour:
   moveSpeed: 3
   followDistance: 2
   stopDistance: 0.05
-  acceleration: 10
-  deceleration: 15
   followMode: 0
   followSmooth: 8
   attackMonsterMode: 1
