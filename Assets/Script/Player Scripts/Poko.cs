@@ -29,17 +29,6 @@ public class Poko : MonoBehaviour
 
     private float attackTimer;
 
-    [Header("Dash")]
-    [SerializeField] private float dashSpeed = 12f;
-    [SerializeField] private float dashTime = 0.15f;
-    [SerializeField] private float dashCooldown = 1f;
-
-    private float dashTimer;
-    private float dashDuration;
-    private Vector2 dashDir;
-
-    public bool IsInvincible => dashDuration > 0f;
-
     [Header("Skill 1 - Area Attack")]
     [SerializeField] private float skillRadius = 2f;
     [SerializeField] private float skillDamage = 40f;
@@ -108,20 +97,7 @@ public class Poko : MonoBehaviour
         skillTimer = CountDown(skillTimer);
         boomShroomTimer = CountDown(boomShroomTimer);
 
-        // Dash cooldown
-        if (dashTimer > 0f)
-            dashTimer -= Time.deltaTime;
-
-        // Dash
-        if (dashDuration > 0f)
-        {
-            UpdateDash();
-        }
-        else
-        {
-            CheckDash();
-            UpdateMovement();
-        }
+        UpdateMovement();
 
         UpdateFollow();
         CheckAttack();
@@ -411,130 +387,6 @@ public class Poko : MonoBehaviour
 
 
     // =========================================================
-    // Dash
-    // =========================================================
-
-    private void CheckDash()
-    {
-        if (dashTimer > 0f)
-            return;
-
-        Collider2D[] hits =
-            Physics2D.OverlapCircleAll(
-                transform.position,
-                1.5f
-            );
-
-        foreach (Collider2D hit in hits)
-        {
-            EnemyAttackHitbox attackHitbox =
-                hit.GetComponentInParent<EnemyAttackHitbox>();
-
-            if (attackHitbox == null)
-                continue;
-
-            if (!attackHitbox.isActiveAndEnabled)
-                continue;
-
-            Vector2[] directions =
-            {
-                Vector2.up,
-                Vector2.down,
-                Vector2.left,
-                Vector2.right
-            };
-
-            int start =
-                Random.Range(
-                    0,
-                    directions.Length
-                );
-
-            for (int i = 0; i < directions.Length; i++)
-            {
-                Vector2 dir =
-                    directions[
-                        (start + i) % directions.Length
-                    ];
-
-                Vector2 target =
-                    (Vector2)transform.position
-                    + dir * 1.5f;
-
-                Collider2D[] targetHits =
-                    Physics2D.OverlapCircleAll(
-                        target,
-                        0.3f
-                    );
-
-                bool dangerous = false;
-
-                foreach (Collider2D targetHit in targetHits)
-                {
-                    EnemyAttackHitbox targetAttack =
-                        targetHit.GetComponentInParent<EnemyAttackHitbox>();
-
-                    if (targetAttack != null &&
-                        targetAttack.isActiveAndEnabled)
-                    {
-                        dangerous = true;
-                        break;
-                    }
-                }
-
-                if (dangerous)
-                    continue;
-
-                dashDir = dir;
-                dashDuration = dashTime;
-                dashTimer = dashCooldown;
-
-                Flip(dir.x);
-
-                // หยุด NavMeshAgent ก่อน Dash
-                navMeshAgent.isStopped = true;
-                navMeshAgent.velocity = Vector3.zero;
-
-                return;
-            }
-        }
-    }
-
-    private void UpdateDash()
-    {
-        if (!navMeshAgent.isOnNavMesh)
-            return;
-
-        float t =
-            1f - dashDuration / dashTime;
-
-        float speed =
-            dashSpeed *
-            Mathf.SmoothStep(
-                1f,
-                0f,
-                t
-            );
-
-        // ใช้ NavMeshAgent.Move
-        // แทน Rigidbody2D
-        navMeshAgent.Move(
-            (Vector3)(dashDir * speed * Time.deltaTime)
-        );
-
-        dashDuration -= Time.deltaTime;
-
-        if (dashDuration <= 0f)
-        {
-            dashDuration = 0f;
-
-            navMeshAgent.isStopped = false;
-            navMeshAgent.velocity = Vector3.zero;
-        }
-    }
-
-
-    // =========================================================
     // Skill 1 - Area Attack
     // =========================================================
 
@@ -736,13 +588,6 @@ public class Poko : MonoBehaviour
         Gizmos.DrawWireSphere(
             transform.position,
             skillRadius
-        );
-
-        Gizmos.color = Color.magenta;
-
-        Gizmos.DrawWireSphere(
-            transform.position,
-            1.5f
         );
     }
 }
