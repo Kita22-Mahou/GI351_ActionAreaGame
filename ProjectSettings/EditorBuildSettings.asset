@@ -14,8 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Co3.unity
     guid: 8c304a3f5ec04d140a6529d8800295cd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Kla4.unity
-    guid: 9e4f5cf8cb06d2d4f9b7ab6b267d94c2
+    guid: 72b6810db650818479553279be184c21
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}

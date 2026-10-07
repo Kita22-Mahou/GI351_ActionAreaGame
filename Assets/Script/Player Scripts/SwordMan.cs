@@ -400,7 +400,7 @@ public class SwordMan : MonoBehaviour
 
         isSkilling = false;
 
-        AudioManager.Instance.StopSkillSound();
+        //AudioManager.Instance.StopSkillSound();
 
         yield return new WaitForSeconds(skillCooldown);
 

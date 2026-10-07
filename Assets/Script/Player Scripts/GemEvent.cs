@@ -38,7 +38,7 @@ public class GemEvent : MonoBehaviour
         if (obj != null)
             player = obj.transform;
 
-        gemSpawnCheck = GetComponentInChildren<GemSpawnCheck>();
+        gemSpawnCheck = GameObject.FindGameObjectWithTag("GemSpawnCheck").GetComponent<GemSpawnCheck>();
     }
 
 

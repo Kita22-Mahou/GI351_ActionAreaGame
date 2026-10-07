@@ -124,9 +124,9 @@ MonoBehaviour:
   dropRadius: 2
   hpBar: {fileID: 5657617725453746587}
   hpBarHideTime: 3
-  minSeparation: 9
-  maxSeparation: 12
-  separationStrength: 2
+  minSeparation: 1
+  maxSeparation: 2
+  separationStrength: 4
 --- !u!114 &6926719188410467260
 MonoBehaviour:
   m_ObjectHideFlags: 0
