@@ -4250,6 +4250,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8318438440666181773, guid: d8981a4816af8f942881e630859ec73d, type: 3}
+      propertyPath: skillRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8318438440666181773, guid: d8981a4816af8f942881e630859ec73d, type: 3}
       propertyPath: dashCooldown
       value: 2
       objectReference: {fileID: 0}
